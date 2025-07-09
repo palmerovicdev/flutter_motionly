@@ -1,3 +1,4 @@
+import 'package:example/common/utils.dart';
 import 'package:example/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Motionly',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.black)),
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: bgDark.toColor())),
       home: const MyHomePage(title: 'Flutter Motionly Home Page'),
     );
   }
