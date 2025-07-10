@@ -144,33 +144,35 @@ Widget buildPracticeCard(String title, List<String> items, Color color, bool isN
           ),
         ),
         const SizedBox(height: 16),
-        ...items.map((item) => Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 6,
-                height: 6,
-                margin: const EdgeInsets.only(top: 7, right: 12),
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  item,
-                  style: TextStyle(
-                    color: textMuted.toColor(),
-                    fontSize: 14,
-                    height: 1.5,
+        ...items.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 6,
+                  height: 6,
+                  margin: const EdgeInsets.only(top: 7, right: 12),
+                  decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      color: textMuted.toColor(),
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        )),
+        ),
       ],
     ),
   );
@@ -236,30 +238,74 @@ Widget buildPropertiesTable(bool isNarrow, List properties) {
       ),
     ),
     child: Column(
-      children: properties.asMap().entries.map((entry) {
-        final index = entry.key;
-        final prop = entry.value;
-        final isLast = index == properties.length - 1;
+      children: properties.asMap().entries.map(
+        (entry) {
+          final index = entry.key;
+          final prop = entry.value;
+          final isLast = index == properties.length - 1;
 
-        return Container(
-          padding: EdgeInsets.all(isNarrow ? 16 : 20),
-          decoration: BoxDecoration(
-            border: isLast
-                ? null
-                : Border(
-                    bottom: BorderSide(
-                      color: border.toColor().withValues(alpha: 0.2),
-                      width: 1,
+          return Container(
+            padding: EdgeInsets.all(isNarrow ? 16 : 20),
+            decoration: BoxDecoration(
+              border: isLast
+                  ? null
+                  : Border(
+                      bottom: BorderSide(
+                        color: border.toColor().withValues(alpha: 0.2),
+                        width: 1,
+                      ),
                     ),
-                  ),
-          ),
-          child: isNarrow
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
+            ),
+            child: isNarrow
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            prop['name']!,
+                            style: TextStyle(
+                              color: primary.toColor(),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            prop['type']!,
+                            style: TextStyle(
+                              color: textMuted.toColor(),
+                              fontSize: 12,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        prop['description']!,
+                        style: TextStyle(
+                          color: text.toColor(),
+                          fontSize: 13,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Por defecto: ${prop['default']}',
+                        style: TextStyle(
+                          color: textMuted.toColor(),
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
                           prop['name']!,
                           style: TextStyle(
                             color: primary.toColor(),
@@ -268,86 +314,44 @@ Widget buildPropertiesTable(bool isNarrow, List properties) {
                             fontFamily: 'monospace',
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
                           prop['type']!,
                           style: TextStyle(
                             color: textMuted.toColor(),
-                            fontSize: 12,
+                            fontSize: 13,
                             fontFamily: 'monospace',
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      prop['description']!,
-                      style: TextStyle(
-                        color: text.toColor(),
-                        fontSize: 13,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Por defecto: ${prop['default']}',
-                      style: TextStyle(
-                        color: textMuted.toColor(),
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
-                )
-              : Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        prop['name']!,
-                        style: TextStyle(
-                          color: primary.toColor(),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'monospace',
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          prop['default']!,
+                          style: TextStyle(
+                            color: textMuted.toColor(),
+                            fontSize: 13,
+                            fontFamily: 'monospace',
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        prop['type']!,
-                        style: TextStyle(
-                          color: textMuted.toColor(),
-                          fontSize: 13,
-                          fontFamily: 'monospace',
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          prop['description']!,
+                          style: TextStyle(
+                            color: text.toColor(),
+                            fontSize: 13,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        prop['default']!,
-                        style: TextStyle(
-                          color: textMuted.toColor(),
-                          fontSize: 13,
-                          fontFamily: 'monospace',
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: Text(
-                        prop['description']!,
-                        style: TextStyle(
-                          color: text.toColor(),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-        );
-      }).toList(),
+                    ],
+                  ),
+          );
+        },
+      ).toList(),
     ),
   );
 }
