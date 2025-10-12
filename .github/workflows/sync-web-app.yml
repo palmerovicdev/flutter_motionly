@@ -49,6 +49,9 @@ jobs:
           # Sincroniza TODO el repo destino con el contenido de SOURCE_DIR
           # --delete asegura que lo que no esté en SOURCE_DIR se borra del destino
           rsync -a --delete --exclude ".git" "${SOURCE_DIR}/" "target/"
+          
+          # Copia el README del example al repo destino
+          cp example/README.md target/README.md
 
       - name: Commit & push if changes (and tag)
         run: |

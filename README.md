@@ -337,6 +337,16 @@ Las contribuciones son bienvenidas! Si encuentras un bug o tienes una sugerencia
 1. Abre un [issue](https://github.com/palmerovicdev/flutter_motionly_web/issues)
 2. Envía un [pull request](https://github.com/palmerovicdev/flutter_motionly_web/pulls)
 
+## ✨ Nuevo release:
+
+```git
+git add . && \
+git commit -m "<message>" && \
+git tag -a v<num> -m "<tag-message>" && \
+git push origin main && \
+git push origin v<num>
+```
+
 ## 📄 Licencia
 
 Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
