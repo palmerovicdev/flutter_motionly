@@ -1,0 +1,74 @@
+name: Sync folder to target repo on tag
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_DIR: example/build/web
+      TARGET_REPO: palmerovicdev/flutter_motionly_web
+      TARGET_BRANCH: main
+    steps:
+      - name: Checkout source (at tag)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_ENV"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          cd example
+          flutter pub get
+
+      - name: Build web app
+        run: |
+          cd example
+          flutter build web --release --base-href "/"
+
+      - name: Clone target repo
+        run: |
+          git clone "https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/${TARGET_REPO}.git" target
+          cd target
+          git checkout "${TARGET_BRANCH}"
+
+      - name: Sync folder -> target repo (replace all)
+        run: |
+          # Sincroniza TODO el repo destino con el contenido de SOURCE_DIR
+          # --delete asegura que lo que no esté en SOURCE_DIR se borra del destino
+          rsync -a --delete --exclude ".git" "${SOURCE_DIR}/" "target/"
+
+      - name: Commit & push if changes (and tag)
+        run: |
+          cd target
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add -A
+            git commit -m "Sync from ${GITHUB_REPOSITORY}@${GITHUB_SHA} (tag ${VERSION})"
+            # Empuja cambios
+            git push origin "HEAD:${TARGET_BRANCH}"
+            # Crea el tag en el repo destino con el mismo nombre
+            git tag -a "${VERSION}" -m "Release ${VERSION} (synced from ${GITHUB_REPOSITORY})"
+            git push origin "${VERSION}"
+          else
+            echo "No changes to commit."
+            # Aun así, asegúrate de que el tag exista en destino
+            if ! git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+              git tag -a "${VERSION}" -m "Release ${VERSION} (no content changes)"
+              git push origin "${VERSION}"
+            fi
+          fi
