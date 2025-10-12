@@ -1,6 +1,7 @@
 name: flutter_motionly
 description: "A new Flutter package project."
 version: 0.0.1
+homepage: https://flutter-motionly-web.onrender.com/
 
 environment:
   sdk: ^3.9.2
