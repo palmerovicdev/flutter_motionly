@@ -82,7 +82,7 @@ Widget buildFeatureGrid(bool isNarrow, List features) {
             Icon(
               feature['icon'] as IconData,
               color: primary.toColor(),
-              size: isNarrowScreen(context)?24: 48,
+              size: isNarrowScreen(context) ? 24 : 48,
             ),
             const SizedBox(height: 12),
             Text(

@@ -5,11 +5,12 @@ import 'package:example/pages/buttons/ripple_reveal_button_doc_page.dart';
 import 'package:example/pages/indicators/indicators_page.dart';
 import 'package:example/pages/texts/animated_text_doc_page.dart';
 import 'package:example/pages/texts/fuzzy_text_doc_page.dart';
+import 'package:example/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_motionly/widget/button/focus_button.dart';
 import 'package:flutter_motionly/widget/button/ripple_reveal_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../common/utils.dart';
 
@@ -161,6 +162,44 @@ class _HomePageState extends State<HomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 12),
+                            _buildSectionTitle('Home'),
+                            RippleRevealButton(
+                              radius: 4,
+                              widgetA: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  'Welcome',
+                                  style: TextStyle(
+                                    color: bgDark.toColor(),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              widgetB: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  'Welcome',
+                                  style: TextStyle(
+                                    color: text.toColor(),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  selectedIndex = 0;
+                                  toggleButton('Welcome');
+                                });
+                              },
+                              height: 35,
+                              backgroundColorA: bgLight.toColor(),
+                              selected: components[0].selected,
+                              backgroundColorB: text.toColor(),
+                              rippleColorA: text.toColor(),
+                              rippleColorB: bgLight.toColor(),
+                            ),
                             _buildSectionTitle('Buttons'),
                             ...buttons.map(
                               (e) {
@@ -444,9 +483,7 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 8,
-        children: [
-          icon
-        ],
+        children: [icon],
       ),
     );
   }
@@ -477,6 +514,11 @@ class ButtonItem {
 }
 
 final components = [
+  ButtonItem(
+    title: 'Welcome',
+    page: WelcomePage(),
+    selected: true,
+  ),
   ...buttons,
   ...texts,
   ...indicators,
@@ -507,7 +549,7 @@ final buttons = [
   ButtonItem(
     title: 'Ripple Reveal Button',
     page: RippleRevealButtonDocPage(),
-    selected: true,
+    selected: false,
   ),
   ButtonItem(
     title: 'Rect Reveal Button',
