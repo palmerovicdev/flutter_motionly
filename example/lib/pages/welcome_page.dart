@@ -22,7 +22,7 @@ class WelcomePage extends StatelessWidget {
       _buildLinkButton(
         icon: Icons.code_outlined,
         label: 'GitHub',
-        url: 'https://github.com/palmerovicdev/flutter_motionly_web',
+        url: 'https://github.com/palmerovicdev/flutter_motionly',
         color: info.toColor(),
         svgAsset: 'assets/github_svg.svg',
       ),
