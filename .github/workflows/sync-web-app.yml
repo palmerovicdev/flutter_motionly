@@ -57,7 +57,7 @@ jobs:
           # Guardar archivos que no queremos que se borren
           mkdir -p ../preserve
           [ -f package.json ] && cp package.json ../preserve/ || true
-          [ -f main.js ] && cp main.js ../preserve/ || true
+          [ -f app.js ] && cp app.js ../preserve/ || true
           [ -f icon_4.png ] && cp icon_4.png ../preserve/ || true
 
       - name: Sync folder -> target repo (replace all)
@@ -74,7 +74,7 @@ jobs:
           cd target
           # Restaurar archivos preservados
           [ -f ../preserve/package.json ] && cp ../preserve/package.json . || true
-          [ -f ../preserve/main.js ] && cp ../preserve/main.js . || true
+          [ -f ../preserve/app.js ] && cp ../preserve/app.js . || true
           [ -f ../preserve/icon_4.png ] && cp ../preserve/icon_4.png . || true
 
       - name: Commit & push if changes (and tag)
