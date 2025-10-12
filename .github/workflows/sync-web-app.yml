@@ -2,6 +2,8 @@ name: Sync folder to target repo on tag
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
 
@@ -19,7 +21,12 @@ jobs:
           fetch-depth: 0
 
       - name: Extract version from tag
-        run: echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_ENV"
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "VERSION=${GITHUB_REF_NAME}" >> "$GITHUB_ENV"
+          else
+            echo "VERSION=dev-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+          fi
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -44,6 +51,15 @@ jobs:
           cd target
           git checkout "${TARGET_BRANCH}"
 
+      - name: Backup files to preserve
+        run: |
+          cd target
+          # Guardar archivos que no queremos que se borren
+          mkdir -p ../preserve
+          [ -f package.json ] && cp package.json ../preserve/ || true
+          [ -f main.js ] && cp main.js ../preserve/ || true
+          [ -f icon_4.png ] && cp icon_4.png ../preserve/ || true
+
       - name: Sync folder -> target repo (replace all)
         run: |
           # Sincroniza TODO el repo destino con el contenido de SOURCE_DIR
@@ -53,6 +69,14 @@ jobs:
           # Copia el README del example al repo destino
           cp example/README.md target/README.md
 
+      - name: Restore preserved files
+        run: |
+          cd target
+          # Restaurar archivos preservados
+          [ -f ../preserve/package.json ] && cp ../preserve/package.json . || true
+          [ -f ../preserve/main.js ] && cp ../preserve/main.js . || true
+          [ -f ../preserve/icon_4.png ] && cp ../preserve/icon_4.png . || true
+
       - name: Commit & push if changes (and tag)
         run: |
           cd target
@@ -61,17 +85,22 @@ jobs:
 
           if [[ -n "$(git status --porcelain)" ]]; then
             git add -A
-            git commit -m "Sync from ${GITHUB_REPOSITORY}@${GITHUB_SHA} (tag ${VERSION})"
+            git commit -m "Sync from ${GITHUB_REPOSITORY}@${GITHUB_SHA} (${VERSION})"
             # Empuja cambios
             git push origin "HEAD:${TARGET_BRANCH}"
-            # Crea el tag en el repo destino con el mismo nombre
-            git tag -a "${VERSION}" -m "Release ${VERSION} (synced from ${GITHUB_REPOSITORY})"
-            git push origin "${VERSION}"
+            
+            # Solo crea tag si el push original fue un tag
+            if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+              git tag -a "${VERSION}" -m "Release ${VERSION} (synced from ${GITHUB_REPOSITORY})"
+              git push origin "${VERSION}"
+            fi
           else
             echo "No changes to commit."
-            # Aun así, asegúrate de que el tag exista en destino
-            if ! git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
-              git tag -a "${VERSION}" -m "Release ${VERSION} (no content changes)"
-              git push origin "${VERSION}"
+            # Solo intenta crear tag si el push original fue un tag
+            if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+              if ! git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+                git tag -a "${VERSION}" -m "Release ${VERSION} (no content changes)"
+                git push origin "${VERSION}"
+              fi
             fi
           fi
