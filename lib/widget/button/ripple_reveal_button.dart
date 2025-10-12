@@ -147,8 +147,8 @@ class RippleRevealButton extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.alignment = Alignment.center,
   }) : assert(backgroundColorA != backgroundColorB, 'backgroundColorA and backgroundColorB must be different'),
-       // Nota: el mensaje habla de "foregroundColor", pero las props son rippleColorA/B.
-       // Si quieres, ajustamos el texto del assert a "rippleColorA and rippleColorB".
+
+
        assert(rippleColorA != rippleColorB, 'foregroundColorA and foregroundColorB must be different'),
        assert(radius >= 2, 'radius must be at least 2');
 

@@ -18,6 +18,9 @@ Esta aplicación es una galería interactiva que presenta todos los componentes 
 - **Animated Text** - Texto con animaciones personalizadas
 - **Fuzzy Text** - Texto con efecto difuminado animado
 
+### ⏳ Loaders
+- **Wave Sticks Loader** - Loader con efecto de onda gaussiana suave
+
 ### ⭕ Indicadores
 - **Circular Reveal Indicator** - Indicador con revelación circular animada
 
@@ -78,6 +81,8 @@ example/
 │       ├── texts/                  # Páginas de documentación de textos
 │       │   ├── animated_text_doc_page.dart
 │       │   └── fuzzy_text_doc_page.dart
+│       ├── loaders/                # Páginas de documentación de loaders
+│       │   └── wave_sticks_loader_doc_page.dart
 │       └── indicators/             # Páginas de documentación de indicadores
 │           └── indicators_page.dart
 └── assets/                         # Recursos (SVG, imágenes)

@@ -217,18 +217,18 @@ class _CircularRevealIndicatorState extends State<CircularRevealIndicator> with 
       duration: widget.animationDuration,
       vsync: this,
     );
-    // En modo automático (sin currentIndex) arranca la rotación continua
+
     if (widget.animate && widget.currentIndex == null) _controller.repeat();
   }
 
   @override
   void didUpdateWidget(CircularRevealIndicator old) {
     super.didUpdateWidget(old);
-    // Sincroniza cambios de duración
+
     if (old.animationDuration != widget.animationDuration) {
       _controller.duration = widget.animationDuration;
     }
-    // Arranca/detén según modo actual
+
     if (widget.animate && widget.currentIndex == null && !_controller.isAnimating) {
       _controller.repeat();
     } else if (!widget.animate || widget.currentIndex != null) {
@@ -248,7 +248,7 @@ class _CircularRevealIndicatorState extends State<CircularRevealIndicator> with 
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, _) {
-          // Índice activo: manual si currentIndex != null; si no, proporcional al avance de la animación
+
           final index = widget.currentIndex ?? (_controller.value * widget.segmentCount).floor() % widget.segmentCount;
           return CustomPaint(
             size: Size(widget.size, widget.size),
@@ -314,7 +314,7 @@ class _CircularRevealPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = size.width / 2;
     final radius = (size.width - strokeWidth) / 2;
-    // Longitud base del segmento; se amplifica en el activo/adyacentes
+
     final segmentLength = radius * 0.15;
     final angleStep = (2 * pi) / segmentCount;
 
@@ -328,7 +328,7 @@ class _CircularRevealPainter extends CustomPainter {
       if (isCurrentSegment) {
         length = segmentLength * 1.7;
       } else if (distance != null) {
-        // Atenúa la longitud con la distancia al activo, respetando un mínimo
+
         length = segmentLength * (1.5 - (distance / activeSegments) * 0.5);
         if (length < segmentLength) length = segmentLength;
       } else {
@@ -342,7 +342,7 @@ class _CircularRevealPainter extends CustomPainter {
           ? activeColor
           : inactiveColor;
 
-      // Se dibuja un segmento radial corto, orientado hacia fuera del centro
+
       final startY = -(radius - segmentLength / 2 - length / 2);
       final endY = -(radius - segmentLength / 2 + length / 2);
 

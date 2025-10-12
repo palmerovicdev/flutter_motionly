@@ -38,6 +38,13 @@ Una colección de widgets animados personalizados para Flutter que añaden inter
   - Control manual o automático
 - **FuzzyText** - Efectos glitch y fluctuación para textos dinámicos
 
+### ⏳ Loaders
+
+- **WaveSticksLoader** - Loader con efecto de onda gaussiana suave
+  - Ancho de onda configurable
+  - Perfecto para estados de carga y visualizadores de audio
+  - Múltiples opciones de alineación
+
 ### ⭕ Indicadores
 
 - **CircularRevealIndicator** - Indicador circular por segmentos con revelación animada
@@ -163,6 +170,74 @@ FuzzyText.height(
   amplitude: 6.0,
 )
 ```
+
+### WaveSticksLoader
+
+Loader con efecto de onda gaussiana:
+
+```dart
+import 'package:flutter_motionly/widget/loaders/wave_stick_loader.dart';
+
+// Loader básico
+WaveSticksLoader(
+  size: Size(350, 100),
+  duration: Duration(milliseconds: 1500),
+  numberOfSticks: 10,
+  stickWidth: 5,
+  stickHeight: 30,
+  middleWaveStickHeight: 45,
+  stickSpacing: 8,
+  stickColor: Colors.blue,
+  waveWidth: 1.5,
+)
+
+// Efecto de visualizador de audio
+WaveSticksLoader(
+  size: Size(400, 120),
+  numberOfSticks: 20,
+  stickWidth: 4,
+  stickHeight: 20,
+  middleWaveStickHeight: 60,
+  stickColor: Colors.orange,
+  waveWidth: 2.0,
+)
+
+// Con controller personalizado
+class MyWidget extends StatefulWidget {
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> 
+    with TickerProviderStateMixin {
+  late WaveStickAnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WaveStickAnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1500),
+    )..start();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WaveSticksLoader(controller: _controller);
+  }
+}
+```
+
+Parámetros configurables:
+- `waveWidth` - Ancho de la onda (0.5-3.0 recomendado)
+- `alignment` - Alineación vertical (start, center, end)
+- `radius` - Radio de las esquinas de cada stick
 
 ### CircularRevealIndicator
 

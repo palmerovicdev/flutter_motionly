@@ -450,7 +450,7 @@ class AnimatedTextState extends State<AnimatedText> {
       case AnimationType.rotate:
         return Transform(
           transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.001) // pequeña perspectiva
+            ..setEntry(3, 2, 0.001)
             ..rotateY((1 - value) * 3.14 / 2),
           alignment: Alignment.center,
           child: Opacity(

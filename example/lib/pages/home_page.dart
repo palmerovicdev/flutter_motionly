@@ -3,6 +3,7 @@ import 'package:example/pages/buttons/focus_button_doc_page.dart';
 import 'package:example/pages/buttons/rect_reveal_button_doc_page.dart';
 import 'package:example/pages/buttons/ripple_reveal_button_doc_page.dart';
 import 'package:example/pages/indicators/indicators_page.dart';
+import 'package:example/pages/loaders/wave_stick_page.dart';
 import 'package:example/pages/texts/animated_text_doc_page.dart';
 import 'package:example/pages/texts/fuzzy_text_doc_page.dart';
 import 'package:example/pages/welcome_page.dart';
@@ -326,6 +327,48 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                             ),
+                            _buildSectionTitle('Loaders'),
+                            ...loaders.map(
+                              (e) {
+                                return RippleRevealButton(
+                                  radius: 4,
+                                  widgetA: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      e.title,
+                                      style: TextStyle(
+                                        color: bgDark.toColor(),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  widgetB: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      e.title,
+                                      style: TextStyle(
+                                        color: text.toColor(),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedIndex = components.indexOf(e);
+                                      toggleButton(e.title);
+                                    });
+                                  },
+                                  height: 35,
+                                  backgroundColorA: bgLight.toColor(),
+                                  selected: e.selected,
+                                  backgroundColorB: text.toColor(),
+                                  rippleColorA: text.toColor(),
+                                  rippleColorB: bgLight.toColor(),
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -522,6 +565,15 @@ final components = [
   ...buttons,
   ...texts,
   ...indicators,
+  ...loaders,
+];
+
+final loaders = [
+  ButtonItem(
+    title: 'Wave Stick Loader',
+    page: WaveStickPage(),
+    selected: false,
+  ),
 ];
 
 final texts = [
