@@ -211,7 +211,6 @@ class AnimatedText extends StatefulWidget {
 /// Expone métodos para controlar la animación externamente mediante un [GlobalKey].
 class AnimatedTextState extends State<AnimatedText> {
   int _animationKey = 0;
-  final _random = Random();
 
   /// Inicia la animación desde el principio (reinicia y ejecuta la cascada).
   void play() {
