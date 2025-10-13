@@ -20,6 +20,8 @@ Esta aplicación es una galería interactiva que presenta todos los componentes 
 
 ### ⏳ Loaders
 - **Wave Sticks Loader** - Loader con efecto de onda gaussiana suave
+- **Square Matrix Loader** - Loader con matriz de cuadrados animados en múltiples direcciones
+
 
 ### ⭕ Indicadores
 - **Circular Reveal Indicator** - Indicador con revelación circular animada

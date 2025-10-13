@@ -5,6 +5,31 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+### [0.0.4] - 2025-10-13
+
+#### Añadido
+
+##### Loaders
+- **SquareMatrixLoader**: Loader animado con matriz de cuadrados que se expanden y contraen
+  - Matriz configurable de cuadrados (3x3, 4x4, 5x5, 6x6, etc.)
+  - 8 direcciones de animación:
+    - Verticales: `BOTTOM_UP`, `UP_BOTTOM`
+    - Horizontales: `LEFT_RIGHT`, `RIGHT_LEFT`
+    - Diagonales: `LEFT_UP_RIGHT_BOTTOM`, `RIGHT_BOTTOM_LEFT_UP`, `LEFT_BOTTOM_RIGHT_UP`, `RIGHT_UP_LEFT_BOTTOM`
+  - Transformaciones de escala suaves con ondas sinusoidales
+  - Curvas de animación personalizables (linear, easeInOut, bounceInOut, etc.)
+  - Tamaño de cuadrados y duración configurables
+  - Color personalizable
+  - Optimizado para rendimiento (recomendado 3-6 cuadrados por lado)
+  - Perfecto para estados de carga modernos y pantallas splash
+
+#### Mejorado
+- Documentación inline completa del SquareMatrixLoader con ejemplos
+- README actualizado con ejemplos detallados del nuevo loader
+- Aplicación de ejemplo actualizada con página de demostración interactiva
+- Grid visual de las 8 direcciones disponibles en la app de ejemplo
+- Sección de mejores prácticas y recomendaciones de uso
+
 ### [0.0.3] - 2025-10-12
 
 #### Añadido

@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -236,15 +236,10 @@ class _WaveSticksLoaderState extends State<WaveSticksLoader> with TickerProvider
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
-
           final sigma = widget.numberOfSticks / 6 * widget.waveWidth;
-
-
-
 
           final startPosition = -3 * sigma;
           final endPosition = widget.numberOfSticks + 3 * sigma;
-
 
           final wavePosition = startPosition + _animationController.value * (endPosition - startPosition);
 
@@ -287,7 +282,7 @@ class _WaveSticksLoaderState extends State<WaveSticksLoader> with TickerProvider
   double _getHeightByGauss(double x, double sigma, double u) {
     final A = widget.middleWaveStickHeight;
     final diff = (x - u) / sigma;
-    final exponent = -math.pow(diff, 2) / 2;
-    return A * math.pow(math.e, exponent);
+    final exponent = -pow(diff, 2) / 2;
+    return A * pow(e, exponent);
   }
 }

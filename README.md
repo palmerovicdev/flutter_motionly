@@ -44,6 +44,11 @@ Una colección de widgets animados personalizados para Flutter que añaden inter
   - Ancho de onda configurable
   - Perfecto para estados de carga y visualizadores de audio
   - Múltiples opciones de alineación
+- **SquareMatrixLoader** - Loader con matriz de cuadrados que se expanden y contraen
+  - 8 direcciones de animación (vertical, horizontal y diagonales)
+  - Tamaño de matriz configurable (3x3, 4x4, 5x5, etc.)
+  - Curvas de animación personalizables
+  - Perfecto para estados de carga modernos
 
 ### ⭕ Indicadores
 
@@ -239,6 +244,59 @@ Parámetros configurables:
 - `alignment` - Alineación vertical (start, center, end)
 - `radius` - Radio de las esquinas de cada stick
 
+### SquareMatrixLoader
+
+Loader con matriz de cuadrados que se expanden y contraen:
+
+```dart
+import 'package:flutter_motionly/widget/loaders/square_matrix_loader.dart';
+import 'package:flutter_motionly/common/utils.dart';
+
+// Loader básico
+SquareMatrixLoader(
+  numberOfSquares: 4,
+  squareHeight: 40,
+  duration: Duration(milliseconds: 1500),
+  color: Colors.blue,
+  direction: TraverseDirection.LEFT_UP_RIGHT_BOTTOM,
+)
+
+// Con efecto diagonal
+SquareMatrixLoader(
+  numberOfSquares: 5,
+  squareHeight: 35,
+  duration: Duration(milliseconds: 1800),
+  color: Colors.orange,
+  direction: TraverseDirection.RIGHT_BOTTOM_LEFT_UP,
+  curve: Curves.easeInOut,
+)
+
+// Con matriz grande
+SquareMatrixLoader(
+  numberOfSquares: 6,
+  squareHeight: 25,
+  duration: Duration(milliseconds: 2000),
+  color: Colors.purple,
+  direction: TraverseDirection.UP_BOTTOM,
+  curve: Curves.linear,
+)
+```
+
+Direcciones de animación disponibles:
+- `TraverseDirection.BOTTOM_UP` - De abajo hacia arriba
+- `TraverseDirection.UP_BOTTOM` - De arriba hacia abajo
+- `TraverseDirection.LEFT_RIGHT` - De izquierda a derecha
+- `TraverseDirection.RIGHT_LEFT` - De derecha a izquierda
+- `TraverseDirection.LEFT_UP_RIGHT_BOTTOM` - Diagonal: superior izquierda a inferior derecha
+- `TraverseDirection.RIGHT_BOTTOM_LEFT_UP` - Diagonal: inferior derecha a superior izquierda
+- `TraverseDirection.LEFT_BOTTOM_RIGHT_UP` - Diagonal: inferior izquierda a superior derecha
+- `TraverseDirection.RIGHT_UP_LEFT_BOTTOM` - Diagonal: superior derecha a inferior izquierda
+
+Parámetros configurables:
+- `numberOfSquares` - Tamaño de la matriz (3-6 recomendado)
+- `squareHeight` - Tamaño de cada cuadrado en píxeles
+- `curve` - Curva de animación (linear, easeInOut, bounceInOut, etc.)
+
 ### CircularRevealIndicator
 
 Indicador circular animado:
@@ -338,6 +396,11 @@ Las contribuciones son bienvenidas! Si encuentras un bug o tienes una sugerencia
 2. Envía un [pull request](https://github.com/palmerovicdev/flutter_motionly_web/pulls)
 
 ## ✨ Nuevo release:
+
+1- Actualiza la versión en `pubspec.yaml` y `CHANGELOG.md`.
+2- Actualiza el README.md si es necesario.
+3- Actualiza example/README.md si es necesario.
+4- Actualiza example/lib/ si es necesario.
 
 ```git
 git add . && \
