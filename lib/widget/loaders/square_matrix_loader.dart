@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_motionly/common/utils.dart';
 
@@ -173,14 +174,23 @@ class SquareMatrixLoader extends StatefulWidget {
   State<SquareMatrixLoader> createState() => _SquareMatrixLoaderState();
 }
 
-class _SquareMatrixLoaderState extends State<SquareMatrixLoader>
-    with SingleTickerProviderStateMixin {
+class _SquareMatrixLoaderState extends State<SquareMatrixLoader> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late List<List<SquareHeight>> _matrix;
+  late List<List<SquareHeight>> _traversed;
+  late double cellSize;
+  late double squareSize;
 
   @override
   void initState() {
     super.initState();
+
+    cellSize = widget.squareHeight;
+    squareSize = cellSize * 0.8;
+
+    _matrix = _generateMatrix();
+    _traversed = traverseMatrix(_matrix, widget.direction);
 
     _controller = AnimationController(
       vsync: this,
@@ -203,58 +213,48 @@ class _SquareMatrixLoaderState extends State<SquareMatrixLoader>
 
   @override
   Widget build(BuildContext context) {
-    final matrix = _generateMatrix();
-    final traversed = traverseMatrix(matrix, widget.direction);
-
     return SizedBox(
-      height: widget.squareHeight * widget.numberOfSquares,
-      width: widget.squareHeight * widget.numberOfSquares,
+      height: cellSize * widget.numberOfSquares,
+      width: cellSize * widget.numberOfSquares,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
-
           int diagonalIndex = 0;
-          for (var diagonal in traversed) {
+          for (var diagonal in _traversed) {
+            double offset = diagonalIndex / _traversed.length;
             for (var square in diagonal) {
-
-              double offset = diagonalIndex / traversed.length;
-
               square.height = _calculateHeight(_animation.value, offset);
             }
             diagonalIndex++;
           }
 
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.numberOfSquares,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
-            ),
-            itemCount: pow(widget.numberOfSquares, 2).toInt(),
-            itemBuilder: (context, index) {
+          return Stack(
+            children: List.generate(
+              widget.numberOfSquares * widget.numberOfSquares,
+              (index) {
+                final row = index ~/ widget.numberOfSquares;
+                final col = index % widget.numberOfSquares;
+                final square = _matrix[row][col];
 
-              final flattenedMatrix = matrix
-                  .expand((row) => row)
-                  .toList();
+                final scale = square.height / widget.squareHeight;
 
-              final square = flattenedMatrix[index];
-
-              return Container(
-                alignment: Alignment.center,
-                child: Transform.scale(
-                  scale: square.height / widget.squareHeight,
-                  child: Container(
-                    width: widget.squareHeight * 0.8,
-                    height: widget.squareHeight * 0.8,
-                    decoration: BoxDecoration(
-                      color: widget.color,
-                      borderRadius: BorderRadius.circular(2),
+                return Positioned(
+                  left: col * cellSize + (cellSize - squareSize) / 2,
+                  top: row * cellSize + (cellSize - squareSize) / 2,
+                  child: Transform.scale(
+                    scale: scale,
+                    child: Container(
+                      width: squareSize,
+                      height: squareSize,
+                      decoration: BoxDecoration(
+                        color: widget.color,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),
@@ -269,10 +269,10 @@ class _SquareMatrixLoaderState extends State<SquareMatrixLoader>
     var i = 0;
     return List.generate(
       widget.numberOfSquares,
-          (_) {
+      (_) {
         return List.generate(
           widget.numberOfSquares,
-              (_) => SquareHeight(height: widget.squareHeight, index: i++),
+          (_) => SquareHeight(height: widget.squareHeight, index: i++),
         );
       },
     );
@@ -286,11 +286,8 @@ class _SquareMatrixLoaderState extends State<SquareMatrixLoader>
   /// La altura oscila entre el 30% y 100% de [squareHeight],
   /// creando un efecto de pulsación suave.
   double _calculateHeight(double t, double offset) {
-
     double wave = sin((t + offset) * 2 * pi);
-
     double normalized = (wave + 1) / 2;
-
     normalized = 0.3 + (normalized * 0.7);
 
     return widget.squareHeight * normalized;

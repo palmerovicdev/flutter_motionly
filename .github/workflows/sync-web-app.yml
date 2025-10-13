@@ -59,6 +59,7 @@ jobs:
           [ -f package.json ] && cp package.json ../preserve/ || true
           [ -f app.js ] && cp app.js ../preserve/ || true
           [ -f icon_4.png ] && cp icon_4.png ../preserve/ || true
+          [ -f nixpacs.toml ] && cp nixpacs.toml ../preserve/ || true
 
       - name: Sync folder -> target repo (replace all)
         run: |
@@ -76,6 +77,7 @@ jobs:
           [ -f ../preserve/package.json ] && cp ../preserve/package.json . || true
           [ -f ../preserve/app.js ] && cp ../preserve/app.js . || true
           [ -f ../preserve/icon_4.png ] && cp ../preserve/icon_4.png . || true
+          [ -f ../preserve/nixpacs.toml ] && cp ../preserve/nixpacs.toml . || true
 
       - name: Commit & push if changes (and tag)
         run: |

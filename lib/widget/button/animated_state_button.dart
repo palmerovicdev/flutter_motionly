@@ -57,21 +57,21 @@ class ButtonState {
   static ButtonState loading({
     Color color = Colors.lightBlue,
     Widget? child,
-  }) =>
-      ButtonState(
-        id: 'loading',
-        color: color,
-        child: child ??
-            const SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-                color: Colors.white,
-              ),
-            ),
-        isCompact: true,
-      );
+  }) => ButtonState(
+    id: 'loading',
+    color: color,
+    child:
+        child ??
+        const SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(
+            strokeWidth: 3,
+            color: Colors.white,
+          ),
+        ),
+    isCompact: true,
+  );
 
   /// Estado de éxito predefinido.
   ///
@@ -89,13 +89,12 @@ class ButtonState {
   static ButtonState success({
     Color color = Colors.green,
     Widget? child,
-  }) =>
-      ButtonState(
-        id: 'success',
-        color: color,
-        child: child ?? const Icon(Icons.check, color: Colors.white, size: 28),
-        isCompact: true,
-      );
+  }) => ButtonState(
+    id: 'success',
+    color: color,
+    child: child ?? const Icon(Icons.check, color: Colors.white, size: 28),
+    isCompact: true,
+  );
 
   /// Estado de error predefinido.
   ///
@@ -113,20 +112,15 @@ class ButtonState {
   static ButtonState error({
     Color color = Colors.red,
     Widget? child,
-  }) =>
-      ButtonState(
-        id: 'error',
-        color: color,
-        child: child ?? const Icon(Icons.error, color: Colors.white, size: 28),
-        isCompact: true,
-      );
+  }) => ButtonState(
+    id: 'error',
+    color: color,
+    child: child ?? const Icon(Icons.error, color: Colors.white, size: 28),
+    isCompact: true,
+  );
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ButtonState &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+  bool operator ==(Object other) => identical(this, other) || other is ButtonState && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -179,10 +173,7 @@ class ButtonState {
 ///   }
 /// });
 /// ```
-class AnimatedStateButtonController extends ChangeNotifier {
-  /// Estado actual del botón ('init' para inicial, 'loading' para carga).
-  String _currentStateId = 'init';
-
+class AnimatedStateButtonController extends ValueNotifier<String> {
   /// Estados disponibles del botón.
   /// Cada clave es el id del estado y el valor es el ButtonState correspondiente.
   final Map<String, ButtonState> states;
@@ -192,17 +183,17 @@ class AnimatedStateButtonController extends ChangeNotifier {
   final ButtonState loadingState;
 
   /// Estado actual del botón como String (id del estado).
-  String get currentStateId => _currentStateId;
+  String get currentStateId => value;
 
   /// Obtiene el estado actual como objeto ButtonState.
   /// Retorna null si está en estado inicial.
-  ButtonState? get currentState => states[_currentStateId];
+  ButtonState? get currentState => states[value];
 
   /// Verifica si el botón está en estado inicial.
-  bool get isInit => _currentStateId == 'init';
+  bool get isInit => value == 'init';
 
   /// Verifica si el botón está cargando.
-  bool get isLoading => _currentStateId == 'loading';
+  bool get isLoading => value == 'loading';
 
   /// Callbacks opcionales que se ejecutan cuando se alcanza cada estado.
   /// La clave es el id del estado y el valor es la función a ejecutar.
@@ -217,15 +208,15 @@ class AnimatedStateButtonController extends ChangeNotifier {
     Map<String, ButtonState>? states,
     ButtonState? loadingState,
     this.stateCallbacks = const {},
-  })  : states = states ?? {},
-        loadingState = loadingState ?? ButtonState.loading() {
+  }) : states = states ?? {},
+       loadingState = loadingState ?? ButtonState.loading(),
+       super('init') {
     this.states['loading'] = this.states['loading'] ?? this.loadingState;
   }
 
   void _set(String stateId) {
-    if (_currentStateId == stateId) return;
-    _currentStateId = stateId;
-    notifyListeners();
+    if (value == stateId) return;
+    value = stateId;
   }
 
   /// Cambia el estado a inicial.
@@ -435,8 +426,8 @@ class AnimatedStateButton extends StatefulWidget {
     this.enabled = true,
     this.elevation,
     this.shadowColor,
-  })  : assert(height > 0, 'La altura debe ser mayor a 0'),
-        assert(compactSize > 0, 'El tamaño compacto debe ser mayor a 0');
+  }) : assert(height > 0, 'La altura debe ser mayor a 0'),
+       assert(compactSize > 0, 'El tamaño compacto debe ser mayor a 0');
 
   /// Ancho del botón en estado inicial.
   /// Si es null, usa el ancho disponible menos el padding horizontal.
@@ -504,103 +495,83 @@ class AnimatedStateButton extends StatefulWidget {
 ///
 /// Maneja los listeners del controlador y renderiza el botón según su estado actual.
 class _AnimatedStateButtonState extends State<AnimatedStateButton> {
-  late String _currentStateId;
+  late final Widget _loadingWidget;
+  late final double _fullWidth;
 
   @override
   void initState() {
     super.initState();
-    _currentStateId = widget.controller.currentStateId;
-    widget.controller.addListener(_handleController);
-  }
 
-  @override
-  void didUpdateWidget(covariant AnimatedStateButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      oldWidget.controller.removeListener(_handleController);
-      _currentStateId = widget.controller.currentStateId;
-      widget.controller.addListener(_handleController);
-    }
-  }
-
-  void _handleController() {
-    if (!mounted) return;
-    setState(() => _currentStateId = widget.controller.currentStateId);
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_handleController);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isInit = _currentStateId == 'init';
-    final currentState = widget.controller.states[_currentStateId];
-
-    final fullWidth = widget.width ?? MediaQuery.sizeOf(context).width - 48;
-
-    final bgColor = _getBackgroundColor();
-
-    return Padding(
-      padding: widget.padding,
-      child: AnimatedContainer(
-        duration: widget.animationDuration,
-        curve: widget.animationCurve,
-        width: isInit ? fullWidth : widget.compactSize,
-        height: widget.height,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(
-            isInit ? widget.borderRadius : widget.compactSize / 2,
-          ),
-          boxShadow: widget.elevation != null && widget.shadowColor != null
-              ? [
-                  BoxShadow(
-                    color: widget.shadowColor!,
-                    blurRadius: widget.elevation!,
-                    offset: Offset(0, widget.elevation! / 2),
-                  ),
-                ]
-              : null,
-        ),
-        child: AnimatedSwitcher(
-          duration: widget.switchDuration,
-          switchInCurve: widget.switchInCurve,
-          switchOutCurve: widget.switchOutCurve,
-          layoutBuilder: (currentChild, previousChildren) => Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              ...previousChildren,
-              if (currentChild != null) currentChild,
-            ],
-          ),
-          child: _buildChild(isInit, currentState),
-        ),
+    _loadingWidget = const SizedBox(
+      width: 22,
+      height: 22,
+      child: CircularProgressIndicator(
+        strokeWidth: 3,
+        color: Colors.white,
       ),
     );
   }
 
-  Color _getBackgroundColor() {
-    if (_currentStateId == 'init') {
-      return widget.initColor;
-    }
-    return widget.controller.states[_currentStateId]?.color ?? widget.initColor;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fullWidth = widget.width ?? MediaQuery.sizeOf(context).width - 48;
   }
 
-  Widget _buildChild(bool isInit, ButtonState? currentState) {
-    if (isInit) {
-      return _buildInitButton();
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: widget.padding,
+      child: ValueListenableBuilder<String>(
+        valueListenable: widget.controller,
+        builder: (context, currentStateId, child) {
+          final isInit = currentStateId == 'init';
+          final currentState = widget.controller.states[currentStateId];
+          final bgColor = isInit ? widget.initColor : (currentState?.color ?? widget.initColor);
 
-    return _buildStateWidget(currentState);
+          return AnimatedContainer(
+            duration: widget.animationDuration,
+            curve: widget.animationCurve,
+            width: isInit ? _fullWidth : widget.compactSize,
+            height: widget.height,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(
+                isInit ? widget.borderRadius : widget.compactSize / 2,
+              ),
+              boxShadow: widget.elevation != null && widget.shadowColor != null
+                  ? [
+                      BoxShadow(
+                        color: widget.shadowColor!,
+                        blurRadius: widget.elevation!,
+                        offset: Offset(0, widget.elevation! / 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: AnimatedSwitcher(
+              duration: widget.switchDuration,
+              switchInCurve: widget.switchInCurve,
+              switchOutCurve: widget.switchOutCurve,
+              layoutBuilder: (currentChild, previousChildren) => Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  ...previousChildren,
+                  if (currentChild != null) currentChild,
+                ],
+              ),
+              child: isInit ? _buildInitButton(currentStateId) : _buildStateWidget(currentState, currentStateId),
+            ),
+          );
+        },
+      ),
+    );
   }
 
-  Widget _buildInitButton() {
+  Widget _buildInitButton(String stateId) {
     return SizedBox(
-      key: const ValueKey('wide-button'),
+      key: ValueKey('wide-button-$stateId'),
       width: double.infinity,
       height: widget.height,
       child: FilledButton(
@@ -622,28 +593,17 @@ class _AnimatedStateButtonState extends State<AnimatedStateButton> {
             ),
         child: FittedBox(
           fit: BoxFit.scaleDown,
-          child: widget.initChild ?? Text('Enviar'),
+          child: widget.initChild ?? const Text('Enviar'),
         ),
       ),
     );
   }
 
-  Widget _buildStateWidget(ButtonState? state) {
-    final stateKey = state?.id ?? 'unknown';
-
-    final child =
-        state?.child ??
-        const SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(
-            strokeWidth: 3,
-            color: Colors.white,
-          ),
-        );
+  Widget _buildStateWidget(ButtonState? state, String stateId) {
+    final child = state?.child ?? _loadingWidget;
 
     return SizedBox(
-      key: ValueKey(stateKey),
+      key: ValueKey('state-$stateId'),
       width: widget.compactSize,
       height: widget.compactSize,
       child: Center(child: child),
@@ -651,7 +611,7 @@ class _AnimatedStateButtonState extends State<AnimatedStateButton> {
   }
 
   Future<void> _handlePressed() async {
-    if (!widget.enabled || _currentStateId != 'init') return;
+    if (!widget.enabled || widget.controller.value != 'init') return;
 
     if (widget.onPressed != null) {
       await widget.onPressed!();

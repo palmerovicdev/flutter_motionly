@@ -178,10 +178,20 @@ class CircleMatrixLoader extends StatefulWidget {
 class _CircleMatrixLoaderState extends State<CircleMatrixLoader> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late List<List<CircleHeight>> _matrix;
+  late List<List<CircleHeight>> _traversed;
+  late double cellSize;
+  late double circleSize;
 
   @override
   void initState() {
     super.initState();
+
+    cellSize = widget.squareHeight;
+    circleSize = cellSize * 0.8;
+
+    _matrix = _generateMatrix();
+    _traversed = traverseMatrix(_matrix, widget.direction);
 
     _controller = AnimationController(
       vsync: this,
@@ -204,57 +214,46 @@ class _CircleMatrixLoaderState extends State<CircleMatrixLoader> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    final matrix = _generateMatrix();
-    final traversed = traverseMatrix(matrix, widget.direction);
-
     return SizedBox(
-      height: widget.squareHeight * widget.numberOfSquares,
-      width: widget.squareHeight * widget.numberOfSquares,
+      height: cellSize * widget.numberOfSquares,
+      width: cellSize * widget.numberOfSquares,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
-
           int diagonalIndex = 0;
-          for (var diagonal in traversed) {
+          for (var diagonal in _traversed) {
+            double offset = diagonalIndex / _traversed.length;
             for (var circle in diagonal) {
-
-              double offset = diagonalIndex / traversed.length;
-
               circle.height = _calculateHeight(_animation.value, offset);
             }
             diagonalIndex++;
           }
 
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.numberOfSquares,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
-            ),
-            itemCount: pow(widget.numberOfSquares, 2).toInt(),
-            itemBuilder: (context, index) {
+          return Stack(
+            children: List.generate(
+              widget.numberOfSquares * widget.numberOfSquares,
+              (index) {
+                final row = index ~/ widget.numberOfSquares;
+                final col = index % widget.numberOfSquares;
+                final circle = _matrix[row][col];
 
-              final flattenedMatrix = matrix.expand((row) => row).toList();
+                final opacity = ((circle.height - (widget.squareHeight / 5)) / widget.squareHeight)
+                    .clamp(0.0, 1.0);
 
-              final circle = flattenedMatrix[index];
-
-              return Container(
-                alignment: Alignment.center,
-                child: Opacity(
-
-                  opacity: (circle.height - (widget.squareHeight / 5)) / widget.squareHeight,
+                return Positioned(
+                  left: col * cellSize + (cellSize - circleSize) / 2,
+                  top: row * cellSize + (cellSize - circleSize) / 2,
                   child: Container(
-                    width: widget.squareHeight * 0.8,
-                    height: widget.squareHeight * 0.8,
+                    width: circleSize,
+                    height: circleSize,
                     decoration: BoxDecoration(
-                      color: widget.color,
-                      borderRadius: BorderRadius.circular(32),
+                      color: widget.color.withValues(alpha: opacity),
+                      shape: BoxShape.circle,
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),
@@ -287,13 +286,9 @@ class _CircleMatrixLoaderState extends State<CircleMatrixLoader> with SingleTick
   /// creando un efecto de pulsación suave. Esta altura también afecta
   /// la opacidad del círculo, creando un efecto de desvanecimiento coordinado.
   double _calculateHeight(double t, double offset) {
-
     double wave = sin((t + offset) * 2 * pi);
-
     double normalized = (wave + 1) / 2;
-
     normalized = 0.3 + (normalized * 0.7);
-
     return widget.squareHeight * normalized;
   }
 }

@@ -207,10 +207,31 @@ class WaveSticksLoader extends StatefulWidget {
 
 class _WaveSticksLoaderState extends State<WaveSticksLoader> with TickerProviderStateMixin {
   late WaveStickAnimationController _animationController;
+  late double sigma;
+  late double startPosition;
+  late double endPosition;
+  late double travelDistance;
+  late List<double> stickPositions;
 
   @override
   void initState() {
     super.initState();
+
+    sigma = widget.numberOfSticks / 6 * widget.waveWidth;
+    startPosition = -3 * sigma;
+    endPosition = widget.numberOfSticks + 3 * sigma;
+    travelDistance = endPosition - startPosition;
+
+    final totalStickWidth = widget.stickWidth * widget.numberOfSticks;
+    final totalSpacing = widget.stickSpacing * (widget.numberOfSticks - 1);
+    final totalWidth = totalStickWidth + totalSpacing;
+    final startX = (widget.size.width - totalWidth) / 2;
+
+    stickPositions = List.generate(
+      widget.numberOfSticks,
+      (index) => startX + (index * (widget.stickWidth + widget.stickSpacing)),
+    );
+
     _animationController =
         widget.controller ??
               WaveStickAnimationController(
@@ -236,31 +257,37 @@ class _WaveSticksLoaderState extends State<WaveSticksLoader> with TickerProvider
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
-          final sigma = widget.numberOfSticks / 6 * widget.waveWidth;
+          final wavePosition = startPosition + _animationController.value * travelDistance;
 
-          final startPosition = -3 * sigma;
-          final endPosition = widget.numberOfSticks + 3 * sigma;
-
-          final wavePosition = startPosition + _animationController.value * (endPosition - startPosition);
-
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: widget.alignment,
+          return Stack(
             children: List.generate(
               widget.numberOfSticks,
               (index) {
                 final gaussHeight = _getHeightByGauss(
                   index.toDouble(),
-                  sigma,
                   wavePosition,
                 );
-                return Container(
-                  width: widget.stickWidth,
-                  height: gaussHeight + widget.stickHeight,
-                  margin: EdgeInsets.symmetric(horizontal: widget.stickSpacing / 2),
-                  decoration: BoxDecoration(
-                    color: widget.stickColor,
-                    borderRadius: BorderRadius.circular(widget.radius),
+                final totalHeight = gaussHeight + widget.stickHeight;
+
+                double topPosition;
+                if (widget.alignment == CrossAxisAlignment.end) {
+                  topPosition = widget.size.height - totalHeight;
+                } else if (widget.alignment == CrossAxisAlignment.start) {
+                  topPosition = 0;
+                } else {
+                  topPosition = (widget.size.height - totalHeight) / 2;
+                }
+
+                return Positioned(
+                  left: stickPositions[index],
+                  top: topPosition,
+                  child: Container(
+                    width: widget.stickWidth,
+                    height: totalHeight,
+                    decoration: BoxDecoration(
+                      color: widget.stickColor,
+                      borderRadius: BorderRadius.circular(widget.radius),
+                    ),
                   ),
                 );
               },
@@ -274,15 +301,13 @@ class _WaveSticksLoaderState extends State<WaveSticksLoader> with TickerProvider
   /// Calcula la altura adicional del stick basado en la función gaussiana.
   ///
   /// [x] - Índice del stick
-  /// [sigma] - Desviación estándar (controla el ancho de la campana)
   /// [u] - Posición del centro de la onda (media)
   ///
   /// Retorna la altura adicional calculada con la fórmula gaussiana:
   /// A * e^(-(x-u)²/(2σ²))
-  double _getHeightByGauss(double x, double sigma, double u) {
-    final A = widget.middleWaveStickHeight;
+  double _getHeightByGauss(double x, double u) {
     final diff = (x - u) / sigma;
-    final exponent = -pow(diff, 2) / 2;
-    return A * pow(e, exponent);
+    final exponent = -diff * diff / 2;
+    return widget.middleWaveStickHeight * exp(exponent);
   }
 }
