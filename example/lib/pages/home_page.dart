@@ -3,6 +3,7 @@ import 'package:example/pages/buttons/focus_button_doc_page.dart';
 import 'package:example/pages/buttons/rect_reveal_button_doc_page.dart';
 import 'package:example/pages/buttons/ripple_reveal_button_doc_page.dart';
 import 'package:example/pages/indicators/indicators_page.dart';
+import 'package:example/pages/loaders/circle_matrix_page.dart';
 import 'package:example/pages/loaders/square_matrix_page.dart';
 import 'package:example/pages/loaders/wave_stick_page.dart';
 import 'package:example/pages/texts/animated_text_doc_page.dart';
@@ -578,6 +579,11 @@ final loaders = [
   ButtonItem(
     title: 'Square Matrix Loader',
     page: SquareMatrixPage(),
+    selected: false,
+  ),
+  ButtonItem(
+    title: 'Circle Matrix Loader',
+    page: CircleMatrixPage(),
     selected: false,
   ),
 ];

@@ -5,6 +5,33 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+### [0.0.5] - 2025-01-14
+
+#### Añadido
+
+##### Loaders
+- **CircleMatrixLoader**: Loader animado con matriz de círculos que se desvanecen elegantemente
+  - Matriz configurable de círculos perfectos (3x3, 4x4, 5x5, 6x6, etc.)
+  - 8 direcciones de animación:
+    - Verticales: `BOTTOM_UP`, `UP_BOTTOM`
+    - Horizontales: `LEFT_RIGHT`, `RIGHT_LEFT`
+    - Diagonales: `LEFT_UP_RIGHT_BOTTOM`, `RIGHT_BOTTOM_LEFT_UP`, `LEFT_BOTTOM_RIGHT_UP`, `RIGHT_UP_LEFT_BOTTOM`
+  - Efecto de desvanecimiento fluido con animación de opacidad
+  - Transformaciones de escala coordinadas con opacidad
+  - Círculos perfectos con BorderRadius circular
+  - Efecto orgánico y suave ideal para interfaces minimalistas
+  - Curvas de animación personalizables
+  - Color y tamaño configurables
+  - Optimizado para rendimiento (recomendado 3-6 círculos por lado)
+  - Perfecto para estados de carga elegantes y transiciones suaves
+
+#### Mejorado
+- Documentación inline completa del CircleMatrixLoader con ejemplos
+- README actualizado con ejemplos detallados del nuevo loader
+- Aplicación de ejemplo actualizada con página de demostración interactiva
+- Grid visual de las 8 direcciones disponibles en la app de ejemplo
+- Sección de mejores prácticas específicas para el efecto de desvanecimiento
+
 ### [0.0.4] - 2025-10-13
 
 #### Añadido

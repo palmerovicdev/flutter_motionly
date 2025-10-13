@@ -49,6 +49,11 @@ Una colección de widgets animados personalizados para Flutter que añaden inter
   - Tamaño de matriz configurable (3x3, 4x4, 5x5, etc.)
   - Curvas de animación personalizables
   - Perfecto para estados de carga modernos
+- **CircleMatrixLoader** - Loader con matriz de círculos que se desvanecen elegantemente
+  - 8 direcciones de animación con efecto de opacidad
+  - Desvanecimiento fluido y orgánico
+  - Círculos perfectos con animación coordinada
+  - Ideal para interfaces suaves y minimalistas
 
 ### ⭕ Indicadores
 
@@ -295,6 +300,58 @@ Direcciones de animación disponibles:
 Parámetros configurables:
 - `numberOfSquares` - Tamaño de la matriz (3-6 recomendado)
 - `squareHeight` - Tamaño de cada cuadrado en píxeles
+- `curve` - Curva de animación (linear, easeInOut, bounceInOut, etc.)
+
+### CircleMatrixLoader
+
+Loader con matriz de círculos que se desvanecen:
+
+```dart
+import 'package:flutter_motionly/widget/loaders/circle_matrix_loader.dart';
+
+// Loader básico
+CircleMatrixLoader(
+  numberOfCircles: 4,
+  circleRadius: 20,
+  duration: Duration(milliseconds: 1500),
+  color: Colors.blue,
+  direction: TraverseDirection.LEFT_UP_RIGHT_BOTTOM,
+)
+
+// Con efecto de desvanecimiento
+CircleMatrixLoader(
+  numberOfCircles: 5,
+  circleRadius: 18,
+  duration: Duration(milliseconds: 1800),
+  color: Colors.orange,
+  direction: TraverseDirection.RIGHT_BOTTOM_LEFT_UP,
+  curve: Curves.easeInOut,
+)
+
+// Con matriz grande
+CircleMatrixLoader(
+  numberOfCircles: 6,
+  circleRadius: 15,
+  duration: Duration(milliseconds: 2000),
+  color: Colors.purple,
+  direction: TraverseDirection.UP_BOTTOM,
+  curve: Curves.linear,
+)
+```
+
+Direcciones de animación disponibles:
+- `TraverseDirection.BOTTOM_UP` - De abajo hacia arriba
+- `TraverseDirection.UP_BOTTOM` - De arriba hacia abajo
+- `TraverseDirection.LEFT_RIGHT` - De izquierda a derecha
+- `TraverseDirection.RIGHT_LEFT` - De derecha a izquierda
+- `TraverseDirection.LEFT_UP_RIGHT_BOTTOM` - Diagonal: superior izquierda a inferior derecha
+- `TraverseDirection.RIGHT_BOTTOM_LEFT_UP` - Diagonal: inferior derecha a superior izquierda
+- `TraverseDirection.LEFT_BOTTOM_RIGHT_UP` - Diagonal: inferior izquierda a superior derecha
+- `TraverseDirection.RIGHT_UP_LEFT_BOTTOM` - Diagonal: superior derecha a inferior izquierda
+
+Parámetros configurables:
+- `numberOfCircles` - Tamaño de la matriz (3-6 recomendado)
+- `circleRadius` - Radio de cada círculo en píxeles
 - `curve` - Curva de animación (linear, easeInOut, bounceInOut, etc.)
 
 ### CircularRevealIndicator
