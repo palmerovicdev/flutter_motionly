@@ -1,5 +1,6 @@
 import 'package:example/pages/buttons/animated_state_button_doc_page.dart';
 import 'package:example/pages/buttons/focus_button_doc_page.dart';
+import 'package:example/pages/buttons/pulsating_button_page.dart';
 import 'package:example/pages/buttons/rect_reveal_button_doc_page.dart';
 import 'package:example/pages/buttons/ripple_reveal_button_doc_page.dart';
 import 'package:example/pages/indicators/indicators_page.dart';
@@ -628,6 +629,11 @@ final buttons = [
   ButtonItem(
     title: 'State Button',
     page: AnimatedStateButtonDocPage(),
+    selected: false,
+  ),
+  ButtonItem(
+    title: 'Pulsating Button',
+    page: PulsatingButtonDocPage(),
     selected: false,
   ),
 ];

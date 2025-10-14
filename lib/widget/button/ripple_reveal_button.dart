@@ -148,7 +148,6 @@ class RippleRevealButton extends StatefulWidget {
     this.alignment = Alignment.center,
   }) : assert(backgroundColorA != backgroundColorB, 'backgroundColorA and backgroundColorB must be different'),
 
-
        assert(rippleColorA != rippleColorB, 'foregroundColorA and foregroundColorB must be different'),
        assert(radius >= 2, 'radius must be at least 2');
 

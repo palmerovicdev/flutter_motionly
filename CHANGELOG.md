@@ -5,6 +5,28 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+### [0.0.7] - 2025-01-14
+
+#### Añadido
+
+##### Botones
+- **PulsatingButton**: Botón con efecto de pulsación continua tipo latido
+  - Animación de escala que expande y contrae el botón
+  - Efecto de opacidad sincronizado con la pulsación
+  - Radio de esquinas animado que se expande con la pulsación
+  - Duración de pulsación configurable
+  - Tamaño de pulsación ajustable (determina cuánto se expande)
+  - Curvas de animación personalizables
+  - Color, ancho y alto configurables
+  - Soporte para contenido personalizado (child)
+  - Borde opcional
+  - Efecto continuo ideal para llamadas a la acción (CTA)
+  - Perfecto para botones destacados que requieren atención del usuario
+
+#### Mejorado
+- Documentación inline completa del PulsatingButton
+- Efectos visuales más llamativos para mejorar la experiencia de usuario
+
 ### [0.0.6] - 2025-01-14
 
 #### Optimizado

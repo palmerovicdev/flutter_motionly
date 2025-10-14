@@ -363,21 +363,21 @@ class _MyWidgetState extends State<MyWidget>
   }
 
   Widget _buildBestPractices(bool isNarrow) {
-    final _dos = [
+    final dos = [
       'Ajusta waveWidth según el número de sticks. Para pocos sticks (5-10) usa valores entre 1.0-1.5. Para muchos sticks (15+) usa 1.5-2.5',
       'Mantén la duración proporcional. Animaciones más rápidas (<1000ms) funcionan mejor con ondas estrechas (waveWidth < 1.5)',
       'Usa alignment para efectos creativos. CrossAxisAlignment.end/start permiten crear efectos de espejo o visualizadores de audio',
     ];
-    final _donts = [
+    final donts = [
       'Evita valores extremos de waveWidth. Valores menores a 0.5 o mayores a 3.0 pueden hacer la animación parecer brusca',
       'No olvides el spacing adecuado. Si stickWidth es grande, aumenta stickSpacing proporcionalmente para evitar solapamiento visual',
     ];
     if (isNarrow) {
       return Column(
         children: [
-          buildPracticeCard('✓ Hacer', _dos, isNarrow, true),
+          buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
           const SizedBox(height: 20),
-          buildPracticeCard('✗ Evitar', _donts, isNarrow, false),
+          buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
         ],
       );
     } else {
@@ -385,11 +385,11 @@ class _MyWidgetState extends State<MyWidget>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: buildPracticeCard('✓ Hacer', _dos, isNarrow, true),
+            child: buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
           ),
           const SizedBox(width: 24),
           Expanded(
-            child: buildPracticeCard('✗ Evitar', _donts, isNarrow, false),
+            child: buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
           ),
         ],
       );

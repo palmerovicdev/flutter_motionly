@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 /// Indicador circular animado tipo “reveal por segmentos”.
@@ -248,7 +249,6 @@ class _CircularRevealIndicatorState extends State<CircularRevealIndicator> with 
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, _) {
-
           final index = widget.currentIndex ?? (_controller.value * widget.segmentCount).floor() % widget.segmentCount;
           return CustomPaint(
             size: Size(widget.size, widget.size),
@@ -328,7 +328,6 @@ class _CircularRevealPainter extends CustomPainter {
       if (isCurrentSegment) {
         length = segmentLength * 1.7;
       } else if (distance != null) {
-
         length = segmentLength * (1.5 - (distance / activeSegments) * 0.5);
         if (length < segmentLength) length = segmentLength;
       } else {
@@ -341,7 +340,6 @@ class _CircularRevealPainter extends CustomPainter {
           : currentIndex > i && shouldPaint
           ? activeColor
           : inactiveColor;
-
 
       final startY = -(radius - segmentLength / 2 - length / 2);
       final endY = -(radius - segmentLength / 2 + length / 2);
@@ -373,10 +371,10 @@ class _CircularRevealPainter extends CustomPainter {
   @override
   bool shouldRepaint(_CircularRevealPainter old) =>
       old.currentIndex != currentIndex ||
-          old.segmentCount != segmentCount ||
-          old.activeColor != activeColor ||
-          old.inactiveColor != inactiveColor ||
-          old.strokeWidth != strokeWidth ||
-          old.activeSegments != activeSegments ||
-          old.shouldPaint != shouldPaint;
+      old.segmentCount != segmentCount ||
+      old.activeColor != activeColor ||
+      old.inactiveColor != inactiveColor ||
+      old.strokeWidth != strokeWidth ||
+      old.activeSegments != activeSegments ||
+      old.shouldPaint != shouldPaint;
 }

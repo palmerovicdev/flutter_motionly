@@ -574,9 +574,9 @@ RectRevealButton(
     if (isNarrow) {
       return Column(
         children: [
-          buildPracticeCard('✓ Hacer', dos, isNarrow, true),
+          buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
           const SizedBox(height: 20),
-          buildPracticeCard('✗ Evitar', donts, isNarrow, false),
+          buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
         ],
       );
     } else {
@@ -584,11 +584,11 @@ RectRevealButton(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: buildPracticeCard('✓ Hacer', dos, isNarrow, true),
+            child: buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
           ),
           const SizedBox(width: 24),
           Expanded(
-            child: buildPracticeCard('✗ Evitar', donts, isNarrow, false),
+            child: buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
           ),
         ],
       );

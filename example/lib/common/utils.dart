@@ -121,6 +121,61 @@ Widget buildSectionTitle(String title, bool isNarrow) {
   );
 }
 
+Widget buildPracticeCard(String title, List<String> items, Color color, bool isNarrow) {
+  return Container(
+    padding: EdgeInsets.all(isNarrow ? 20 : 28),
+    decoration: BoxDecoration(
+      color: bgLight.toColor().withValues(alpha: 0.2),
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: color.withValues(alpha: 0.3),
+        width: 1,
+      ),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: color,
+            fontSize: isNarrow ? 18 : 20,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ...items.map((item) => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 6,
+                height: 6,
+                margin: const EdgeInsets.only(top: 7, right: 12),
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  item,
+                  style: TextStyle(
+                    color: textMuted.toColor(),
+                    fontSize: 14,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )),
+      ],
+    ),
+  );
+}
+
 Widget buildExampleCard(
   String title,
   String description,
@@ -293,71 +348,6 @@ Widget buildPropertiesTable(bool isNarrow, List properties) {
                 ),
         );
       }).toList(),
-    ),
-  );
-}
-
-Widget buildPracticeCard(
-  String title,
-  List<String> items,
-  bool isNarrow,
-  bool isPositive,
-) {
-  return Container(
-    width: double.infinity,
-    padding: EdgeInsets.all(isNarrow ? 20 : 24),
-    decoration: BoxDecoration(
-      color: (isPositive ? success.toColor() : danger.toColor()).withValues(
-        alpha: 0.1,
-      ),
-      borderRadius: BorderRadius.circular(12),
-      border: Border.all(
-        color: (isPositive ? success.toColor() : danger.toColor()).withValues(
-          alpha: 0.3,
-        ),
-        width: 1,
-      ),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: text.toColor(),
-            fontSize: isNarrow ? 18 : 20,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(height: 16),
-        ...items.map(
-          (item) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '•  ',
-                  style: TextStyle(
-                    color: textMuted.toColor(),
-                    fontSize: 14,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    item,
-                    style: TextStyle(
-                      color: textMuted.toColor(),
-                      fontSize: 14,
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     ),
   );
 }

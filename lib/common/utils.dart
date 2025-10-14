@@ -98,7 +98,6 @@ List<List<T>> traverseMatrix<T>(List<List<T>> matrix, TraverseDirection directio
       }
       break;
 
-
     case TraverseDirection.LEFT_BOTTOM_RIGHT_UP:
       return traverseMatrix(
         matrix,

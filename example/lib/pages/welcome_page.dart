@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_motionly/common/utils.dart';
 import 'package:flutter_motionly/widget/button/focus_button.dart';
-import 'package:flutter_motionly/widget/loaders/square_matrix_loader.dart';
+import 'package:flutter_motionly/widget/button/pulsating_button.dart';
 import 'package:flutter_motionly/widget/text/animated_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -13,7 +12,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isNarrow = isNarrowScreen(context);
+    var width = MediaQuery.sizeOf(context).width;
     final links = [
       _buildLinkButton(
         icon: Icons.code,
@@ -47,8 +46,8 @@ class WelcomePage extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: isNarrow ? 16.0 : 48.0,
-            vertical: isNarrow ? 24.0 : 48.0,
+            horizontal: width < 940 ? 16.0 : 48.0,
+            vertical: width < 940 ? 24.0 : 48.0,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +57,7 @@ class WelcomePage extends StatelessWidget {
 
               Icon(
                 Icons.animation,
-                size: isNarrow ? 80 : 120,
+                size: width < 940 ? 80 : 120,
                 color: primary.toColor(),
               ),
 
@@ -82,7 +81,7 @@ class WelcomePage extends StatelessWidget {
                 'Widgets animados personalizados para Flutter',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: isNarrow ? 16 : 20,
+                  fontSize: width < 940 ? 16 : 20,
                   color: textMuted.toColor(),
                   fontWeight: FontWeight.w400,
                 ),
@@ -90,33 +89,30 @@ class WelcomePage extends StatelessWidget {
 
               const SizedBox(height: 48),
 
-              _buildFeatureSection(isNarrow),
+              _buildFeatureSection(width < 940),
 
               const SizedBox(height: 56),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: isNarrowScreen(context) ? 32.0 : 148),
+                padding: EdgeInsets.symmetric(horizontal: width < 940 ? 32.0 : 148),
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isNarrow ? 2 : 4,
+                    crossAxisCount: width < 940 ? 2 : 4,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
                     mainAxisExtent: 50,
                   ),
                   itemCount: links.length,
-                  itemBuilder: (context, index) => SizedBox(
-                    width: 120,
-                    child: links[index],
-                  ),
+                  itemBuilder: (context, index) => links[index],
                 ),
               ),
 
               const SizedBox(height: 56),
 
               Container(
-                padding: EdgeInsets.all(isNarrow ? 24 : 32),
+                padding: EdgeInsets.all(width < 940 ? 24 : 32),
                 decoration: BoxDecoration(
                   color: bg.toColor(),
                   borderRadius: BorderRadius.circular(16),
@@ -131,7 +127,7 @@ class WelcomePage extends StatelessWidget {
                       '🚀 Comienza a usar Flutter Motionly',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: isNarrow ? 18 : 22,
+                        fontSize: width < 940 ? 18 : 22,
                         fontWeight: FontWeight.w600,
                         color: text.toColor(),
                       ),
@@ -141,7 +137,7 @@ class WelcomePage extends StatelessWidget {
                       'Selecciona un componente del menú lateral para ver ejemplos interactivos y código',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: isNarrow ? 14 : 16,
+                        fontSize: width < 940 ? 14 : 16,
                         color: textMuted.toColor(),
                       ),
                     ),
@@ -253,7 +249,6 @@ class WelcomePage extends StatelessWidget {
         }
       },
       height: 50,
-      width: 160,
       duration: Duration(seconds: 2),
       borderRadius: 8,
       backgroundColor: bgLight.toColor(),
@@ -281,12 +276,15 @@ class WelcomePage extends StatelessWidget {
             )
           else
             Icon(icon, color: text.toColor(), size: 20),
-          Text(
-            label,
-            style: TextStyle(
-              color: text.toColor(),
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: text.toColor(),
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
             ),
           ),
         ],

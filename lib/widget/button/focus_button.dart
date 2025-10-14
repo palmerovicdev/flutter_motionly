@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 
 /// Botón con un gradiente animado en el borde que rota continuamente.
 ///
@@ -263,9 +264,6 @@ class _GradientBorderPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_GradientBorderPainter oldDelegate) {
-    return oldDelegate.progress != progress ||
-        oldDelegate.borderWidth != borderWidth ||
-        oldDelegate.gradientColors != gradientColors ||
-        oldDelegate.borderRadius != borderRadius;
+    return oldDelegate.progress != progress || oldDelegate.borderWidth != borderWidth || oldDelegate.gradientColors != gradientColors || oldDelegate.borderRadius != borderRadius;
   }
 }

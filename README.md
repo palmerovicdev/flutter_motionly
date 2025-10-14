@@ -30,6 +30,7 @@ Una colección de widgets animados personalizados para Flutter que añaden inter
 - **RectRevealButton** - Revelación rectangular con múltiples direcciones (desde clic, izquierda, derecha)
 - **FocusButton** - Gradiente animado rotatorio en el borde
 - **AnimatedStateButton** - Botón con estados animados personalizables
+- **PulsatingButton** - Botón con efecto de pulsación continua tipo latido
 
 ### 📝 Textos Animados
 
@@ -407,6 +408,64 @@ Direcciones disponibles:
 - `fromLeft` - De izquierda a derecha
 - `fromRight` - De derecha a izquierda
 
+### PulsatingButton
+
+Botón con efecto de pulsación continua tipo latido:
+
+```dart
+import 'package:flutter_motionly/widget/button/pulsating_button.dart';
+
+// Botón básico
+PulsatingButton(
+  onClick: () => print('¡Comenzar!'),
+  child: Text(
+    'Comenzar',
+    style: TextStyle(color: Colors.white, fontSize: 16),
+  ),
+)
+
+// Botón personalizado para CTA principal
+PulsatingButton(
+  onClick: _startGame,
+  color: Colors.red,
+  width: 200.0,
+  height: 70.0,
+  pulsationDuration: Duration(milliseconds: 1000),
+  pulsationSize: 20.0,
+  curve: Curves.easeInOutCubic,
+  borderRadius: BorderRadius.circular(35.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(Icons.play_arrow, color: Colors.white),
+      SizedBox(width: 8),
+      Text('Jugar Ahora', style: TextStyle(color: Colors.white, fontSize: 18)),
+    ],
+  ),
+)
+
+// Botón con estilo outline
+PulsatingButton(
+  onClick: _subscribe,
+  color: Colors.transparent,
+  border: Border.all(color: Colors.purple, width: 2),
+  width: 150.0,
+  height: 50.0,
+  pulsationSize: 15.0,
+  child: Text(
+    'Suscribirse',
+    style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
+  ),
+)
+```
+
+Parámetros configurables:
+- `pulsationSize` - Tamaño de la expansión del halo (8-30px recomendado)
+- `pulsationDuration` - Velocidad de pulsación (500-1500ms)
+- `curve` - Curva de animación (easeInOut, easeInOutCubic, elasticInOut, etc.)
+- `color` - Color del botón y del halo pulsante
+- `border` - Borde opcional para estilo outline
+
 ## 📱 Plataformas Soportadas
 
 - ✅ Android
@@ -428,7 +487,7 @@ flutter pub get
 flutter run
 ```
 
-O visita la [demo web en vivo](https://flutter-motionly-web.onrender.com/).
+O visita la [demo web en vivo](http://fluttermotionly-doc-whlgkc-bc9a19-217-15-171-136.traefik.me/).
 
 ## 🔧 Requisitos
 

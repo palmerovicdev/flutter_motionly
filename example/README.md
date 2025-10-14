@@ -4,29 +4,36 @@ Una aplicación de demostración interactiva para el paquete **Flutter Motionly*
 
 ## 📖 Descripción
 
-Esta aplicación es una galería interactiva que presenta todos los componentes animados disponibles en el paquete Flutter Motionly. Incluye ejemplos en vivo, documentación y código de implementación para cada componente.
+Esta aplicación es una galería interactiva que presenta todos los componentes animados disponibles en el paquete Flutter Motionly. Incluye ejemplos en vivo, documentación y código de implementación
+para cada componente.
 
 ## ✨ Características
 
 ### 🔘 Botones Animados
+
 - **Ripple Reveal Button** - Botón con efecto de ondulación reveladora
 - **Rect Reveal Button** - Botón con efecto de revelación rectangular
 - **Focus Button** - Botón con gradiente animado al pasar el cursor
 - **State Button** - Botón con estados animados
+- **Pulsating Button** - Botón con efecto de pulsación continua tipo latido
 
 ### 📝 Textos Animados
+
 - **Animated Text** - Texto con animaciones personalizadas
 - **Fuzzy Text** - Texto con efecto difuminado animado
 
 ### ⏳ Loaders
+
 - **Wave Sticks Loader** - Loader con efecto de onda gaussiana suave
 - **Square Matrix Loader** - Loader con matriz de cuadrados animados en múltiples direcciones
 - **Circle Matrix Loader** - Loader con matriz de círculos que se desvanecen elegantemente
 
 ### ⭕ Indicadores
+
 - **Circular Reveal Indicator** - Indicador con revelación circular animada
 
 ### 🎨 Interfaz
+
 - Diseño responsivo (adaptable a escritorio y móvil)
 - Tema oscuro moderno
 - Navegación fluida entre componentes
@@ -104,14 +111,15 @@ La aplicación funciona como una galería interactiva:
 
 1. **Navegación lateral** (escritorio) o **menú desplegable** (móvil) para seleccionar componentes
 2. Cada página de componente incluye:
-   - Demostración interactiva en vivo
-   - Código de ejemplo
-   - Documentación de parámetros
-   - Casos de uso
+    - Demostración interactiva en vivo
+    - Código de ejemplo
+    - Documentación de parámetros
+    - Casos de uso
 
 ## 👨‍💻 Autor
 
 **Palmerodev**
+
 - LinkedIn: [in/palmerodev](https://linkedin.com/in/palmerodev)
 - GitHub: [palmerovicdev](https://github.com/palmerovicdev)
 - Email: palmerodev@gmail.com

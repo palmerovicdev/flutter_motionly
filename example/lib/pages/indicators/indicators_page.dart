@@ -279,9 +279,9 @@ CircularRevealIndicator(
                   if (isNarrow)
                     Column(
                       children: [
-                        buildPracticeCard('✓ Hacer', _dos, isNarrow, true),
+                        buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
                         const SizedBox(height: 20),
-                        buildPracticeCard('✗ Evitar', _donts, isNarrow, false),
+                        buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
                       ],
                     )
                   else
@@ -289,11 +289,11 @@ CircularRevealIndicator(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: buildPracticeCard('✓ Hacer', _dos, isNarrow, true),
+                          child: buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
                         ),
                         const SizedBox(width: 24),
                         Expanded(
-                          child: buildPracticeCard('✗ Evitar', _donts, isNarrow, false),
+                          child: buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
                         ),
                       ],
                     ),
@@ -389,14 +389,14 @@ final _properties = [
   },
 ];
 
-final _dos = [
+final dos = [
   'Usa duraciones apropiadas según el contexto (1-3 segundos para loaders)',
   'Ajusta activeSegments según la velocidad de animación',
   'Usa colores con buen contraste para mejor visibilidad',
   'Combina múltiples indicadores para efectos complejos',
 ];
 
-final _donts = [
+final donts = [
   'Evita usar demasiados segmentos (>100) en dispositivos lentos',
   'No uses animaciones muy rápidas (<500ms) que puedan causar mareos',
   'Evita strokeWidth muy grueso que dificulte ver los segmentos',

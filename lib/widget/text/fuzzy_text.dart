@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 /// Modos de efecto difuso disponibles para el texto.
@@ -15,7 +16,7 @@ enum FuzzyMode {
   ///
   /// Hace que el texto fluctúe ligeramente en tamaño, creando un efecto
   /// de "respiración" o vibración sutil.
-  height
+  height,
 }
 
 /// Texto con efectos difusos animados que simula fallos digitales o fluctuaciones.
@@ -122,14 +123,14 @@ class FuzzyText extends StatefulWidget {
 
   /// Constructor privado. Usa los factory constructors [FuzzyText.glitch] o [FuzzyText.height].
   const FuzzyText._(
-      this.text, {
-        super.key,
-        required this.style,
-        required this.mode,
-        this.amplitude = 12,
-        this.speed = 1.6,
-        this.debugBox = false,
-      });
+    this.text, {
+    super.key,
+    required this.style,
+    required this.mode,
+    this.amplitude = 12,
+    this.speed = 1.6,
+    this.debugBox = false,
+  });
 
   /// Crea un [FuzzyText] con efecto glitch.
   ///
@@ -157,22 +158,21 @@ class FuzzyText extends StatefulWidget {
   /// )
   /// ```
   factory FuzzyText.glitch(
-      String text, {
-        required TextStyle style,
-        Key? key,
-        double amplitude = 12,
-        double speed = 1.6,
-        bool debugBox = false,
-      }) =>
-      FuzzyText._(
-        text,
-        key: key,
-        style: style,
-        mode: FuzzyMode.glitch,
-        amplitude: amplitude,
-        speed: speed,
-        debugBox: debugBox,
-      );
+    String text, {
+    required TextStyle style,
+    Key? key,
+    double amplitude = 12,
+    double speed = 1.6,
+    bool debugBox = false,
+  }) => FuzzyText._(
+    text,
+    key: key,
+    style: style,
+    mode: FuzzyMode.glitch,
+    amplitude: amplitude,
+    speed: speed,
+    debugBox: debugBox,
+  );
 
   /// Crea un [FuzzyText] con efecto de fluctuación de altura.
   ///
@@ -200,22 +200,21 @@ class FuzzyText extends StatefulWidget {
   /// )
   /// ```
   factory FuzzyText.height(
-      String text, {
-        required TextStyle style,
-        Key? key,
-        double amplitude = 12,
-        double speed = 1.6,
-        bool debugBox = false,
-      }) =>
-      FuzzyText._(
-        text,
-        key: key,
-        style: style,
-        mode: FuzzyMode.height,
-        amplitude: amplitude,
-        speed: speed,
-        debugBox: debugBox,
-      );
+    String text, {
+    required TextStyle style,
+    Key? key,
+    double amplitude = 12,
+    double speed = 1.6,
+    bool debugBox = false,
+  }) => FuzzyText._(
+    text,
+    key: key,
+    style: style,
+    mode: FuzzyMode.height,
+    amplitude: amplitude,
+    speed: speed,
+    debugBox: debugBox,
+  );
 
   @override
   State<FuzzyText> createState() => _FuzzyTextState();
@@ -276,15 +275,13 @@ class _FuzzyTextState extends State<FuzzyText> with SingleTickerProviderStateMix
     Widget child = Stack(
       alignment: Alignment.center,
       children: [
-        if (widget.mode == FuzzyMode.glitch)
-          Transform.translate(offset: Offset(offset, 0), child: red),
+        if (widget.mode == FuzzyMode.glitch) Transform.translate(offset: Offset(offset, 0), child: red),
         if (widget.mode == FuzzyMode.height)
           Transform.scale(
             scale: 1 + (_rng.nextDouble() - 0.5) * 0.1,
             child: base,
           ),
-        if (widget.mode == FuzzyMode.glitch)
-          Transform.translate(offset: Offset(-offset, 0), child: blue),
+        if (widget.mode == FuzzyMode.glitch) Transform.translate(offset: Offset(-offset, 0), child: blue),
       ],
     );
 

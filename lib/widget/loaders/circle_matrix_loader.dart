@@ -237,8 +237,7 @@ class _CircleMatrixLoaderState extends State<CircleMatrixLoader> with SingleTick
                 final col = index % widget.numberOfSquares;
                 final circle = _matrix[row][col];
 
-                final opacity = ((circle.height - (widget.squareHeight / 5)) / widget.squareHeight)
-                    .clamp(0.0, 1.0);
+                final opacity = ((circle.height - (widget.squareHeight / 5)) / widget.squareHeight).clamp(0.0, 1.0);
 
                 return Positioned(
                   left: col * cellSize + (cellSize - circleSize) / 2,

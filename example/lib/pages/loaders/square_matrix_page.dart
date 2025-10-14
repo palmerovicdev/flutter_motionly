@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_motionly/widget/loaders/square_matrix_loader.dart';
 import 'package:flutter_motionly/common/utils.dart';
+import 'package:flutter_motionly/widget/loaders/square_matrix_loader.dart';
 
 import '../../common/utils.dart';
 
@@ -410,13 +410,13 @@ SquareMatrixLoader(
   }
 
   Widget _buildBestPractices(bool isNarrow) {
-    final _dos = [
+    final dos = [
       'Usa numberOfSquares entre 3-6 para mejor rendimiento. Más cuadrados pueden ser pesados en dispositivos lentos',
       'Ajusta la duración según el tamaño de la matriz. Matrices más grandes (5+) funcionan mejor con duraciones mayores (1500ms+)',
       'Experimenta con diferentes curvas de animación. Curves.easeInOut funciona bien para transiciones suaves',
       'Usa direcciones diagonales para efectos más dinámicos y modernos',
     ];
-    final _donts = [
+    final donts = [
       'Evita matrices muy grandes (8+ cuadrados) ya que pueden afectar el rendimiento',
       'No uses duraciones muy cortas (<600ms) con matrices grandes, puede verse caótico',
       'Evita colores demasiado brillantes que puedan cansar la vista del usuario',
@@ -424,9 +424,9 @@ SquareMatrixLoader(
     if (isNarrow) {
       return Column(
         children: [
-          buildPracticeCard('✓ Hacer', _dos, isNarrow, true),
+          buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
           const SizedBox(height: 20),
-          buildPracticeCard('✗ Evitar', _donts, isNarrow, false),
+          buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
         ],
       );
     } else {
@@ -434,11 +434,11 @@ SquareMatrixLoader(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: buildPracticeCard('✓ Hacer', _dos, isNarrow, true),
+            child: buildPracticeCard('✓ Hacer', dos, success.toColor(), isNarrow),
           ),
           const SizedBox(width: 24),
           Expanded(
-            child: buildPracticeCard('✗ Evitar', _donts, isNarrow, false),
+            child: buildPracticeCard('✗ Evitar', donts, danger.toColor(), isNarrow),
           ),
         ],
       );
@@ -507,4 +507,3 @@ final _properties = [
     'description': 'Curva de animación para las transiciones',
   },
 ];
-

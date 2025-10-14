@@ -154,15 +154,15 @@ class RectRevealButton extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.alignment = Alignment.center,
     this.revealDirection = RevealDirection.fromClick,
-  })  : assert(
-          backgroundColorA != backgroundColorB,
-          'backgroundColorA y backgroundColorB deben ser diferentes',
-        ),
-        assert(
-          rippleColorA != rippleColorB,
-          'rippleColorA y rippleColorB deben ser diferentes',
-        ),
-        assert(radius >= 2, 'El radio debe ser al menos 2');
+  }) : assert(
+         backgroundColorA != backgroundColorB,
+         'backgroundColorA y backgroundColorB deben ser diferentes',
+       ),
+       assert(
+         rippleColorA != rippleColorB,
+         'rippleColorA y rippleColorB deben ser diferentes',
+       ),
+       assert(radius >= 2, 'El radio debe ser al menos 2');
 
   /// Estado inicial del botón (opcional, para control externo).
   ///
@@ -259,8 +259,7 @@ class RectRevealButton extends StatefulWidget {
 /// Estado del widget [RectRevealButton].
 ///
 /// Maneja el estado de selección, la animación del reveal y la posición del tap.
-class _RectRevealButtonState extends State<RectRevealButton>
-    with SingleTickerProviderStateMixin {
+class _RectRevealButtonState extends State<RectRevealButton> with SingleTickerProviderStateMixin {
   late AnimationController _ctrl;
   late Animation<double> _anim;
   bool _selected = false;
@@ -299,8 +298,7 @@ class _RectRevealButtonState extends State<RectRevealButton>
         final h = widget.height;
         final isSelected = _selected;
         final fg = isSelected ? widget.rippleColorA : widget.rippleColorB;
-        final bg =
-            isSelected ? widget.backgroundColorA : widget.backgroundColorB;
+        final bg = isSelected ? widget.backgroundColorA : widget.backgroundColorB;
         final child = isSelected ? widget.widgetB : widget.widgetA;
 
         return MouseRegion(
@@ -432,8 +430,7 @@ class _RectRevealPainter extends CustomPainter {
         final tapXPixels = tapX * size.width;
         final distanceToLeft = tapXPixels;
         final distanceToRight = size.width - tapXPixels;
-        final maxDistance =
-            distanceToLeft > distanceToRight ? distanceToLeft : distanceToRight;
+        final maxDistance = distanceToLeft > distanceToRight ? distanceToLeft : distanceToRight;
         final currentWidth = progress * maxDistance;
 
         left = (tapXPixels - currentWidth).clamp(0.0, size.width);
@@ -446,9 +443,5 @@ class _RectRevealPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _RectRevealPainter old) =>
-      old.progress != progress ||
-      old.tapX != tapX ||
-      old.color != color ||
-      old.direction != direction;
+  bool shouldRepaint(covariant _RectRevealPainter old) => old.progress != progress || old.tapX != tapX || old.color != color || old.direction != direction;
 }
