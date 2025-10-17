@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 
-/// Un botón animado con efecto de pulsación continua tipo latido.
+/// Un botón animado con **efecto de pulsación tipo latido**.
 ///
-/// [PulsatingButton] crea un botón que pulsa continuamente con una animación
-/// de escala y opacidad, similar a un latido del corazón. El efecto crea una
-/// capa exterior que se expande y contrae alrededor del botón principal,
-/// atrayendo la atención del usuario.
+/// [PulsatingButton] crea un halo que se expande y contrae suavemente alrededor
+/// de un botón central, combinando cambios de **escala** y **opacidad** para
+/// atraer la atención del usuario.
 ///
 /// ## Características principales:
 ///
-/// - **Animación continua**: Pulsación infinita sin necesidad de interacción
-/// - **Efecto de halo**: Capa exterior con opacidad que se desvanece al expandirse
-/// - **Escala dinámica**: Expansión y contracción suave del tamaño
-/// - **Radio animado**: Las esquinas se expanden sincronizadas con la pulsación
-/// - **Altamente personalizable**: Control total sobre duración, tamaño, color y forma
+/// - **Pulsación continua** (loop infinito con reversa)
+/// - **Halo con opacidad dinámica** que se desvanece al expandirse
+/// - **Radio animado** sincronizado con la pulsación
+/// - **Personalizable**: duración, tamaño, color, curva, borde y radio
+/// - **Desktop/Web friendly**: cursor tipo *click*
+///
+/// ## Casos de uso ideales:
+///
+/// - CTA principales (“Comenzar”, “Comprar”, “Grabar”)
+/// - Botones de bienvenida o pantallas vacías
+/// - Llamar la atención en onboarding/notificaciones
 ///
 /// ## Ejemplo básico:
 ///
 /// ```dart
 /// PulsatingButton(
 ///   onClick: () => print('¡Botón presionado!'),
-///   child: Text(
-///     'Comenzar',
-///     style: TextStyle(color: Colors.white, fontSize: 16),
-///   ),
+///   child: Text('Comenzar', style: TextStyle(color: Colors.white, fontSize: 16)),
 /// )
 /// ```
 ///
@@ -33,12 +35,12 @@ import 'package:flutter/material.dart';
 /// PulsatingButton(
 ///   onClick: _handleAction,
 ///   color: Colors.red,
-///   width: 200.0,
-///   height: 70.0,
+///   width: 200,
+///   height: 70,
 ///   pulsationDuration: Duration(milliseconds: 1000),
-///   pulsationSize: 20.0,
+///   pulsationSize: 20,
 ///   curve: Curves.easeInOutCubic,
-///   borderRadius: BorderRadius.circular(35.0),
+///   borderRadius: BorderRadius.circular(35),
 ///   child: Row(
 ///     mainAxisAlignment: MainAxisAlignment.center,
 ///     children: [
@@ -50,57 +52,44 @@ import 'package:flutter/material.dart';
 /// )
 /// ```
 ///
-/// ## Ejemplo con borde:
+/// ## Ejemplo con borde (outline):
 ///
 /// ```dart
 /// PulsatingButton(
 ///   onClick: _onPressed,
 ///   color: Colors.transparent,
 ///   border: Border.all(color: Colors.purple, width: 2),
-///   width: 150.0,
-///   height: 50.0,
-///   pulsationSize: 15.0,
-///   child: Text(
-///     'Suscribirse',
-///     style: TextStyle(color: Colors.purple),
-///   ),
+///   width: 150,
+///   height: 50,
+///   pulsationSize: 15,
+///   child: Text('Suscribirse', style: TextStyle(color: Colors.purple)),
 /// )
 /// ```
 ///
-/// ## Casos de uso ideales:
+/// ## Buenas prácticas:
 ///
-/// - Llamadas a la acción (CTA) principales
-/// - Botones de "Comenzar" en pantallas de bienvenida
-/// - Acciones urgentes o importantes que requieren atención
-/// - Botones de notificaciones o alertas
-/// - Elementos destacados en interfaces de juegos
+/// - 1–2 instancias por pantalla para no saturar la UI
+/// - Mantén contraste entre [color] y el **child**
+/// - Para *pill look*: `borderRadius = BorderRadius.circular(height / 2)`
 ///
 /// ## Consideraciones de rendimiento:
 ///
-/// - La animación se ejecuta constantemente, considere el impacto en batería
-/// - Use con moderación (1-2 por pantalla máximo)
-/// - No recomendado para listas largas o elementos repetidos
-/// - El [RepaintBoundary] puede ayudar si tiene múltiples instancias
-///
-/// ## Parámetros clave:
-///
-/// - [pulsationSize]: Controla cuánto se expande el halo (default: 12.0)
-/// - [pulsationDuration]: Velocidad de la pulsación (default: 800ms)
-/// - [curve]: Curva de animación para el efecto (default: Curves.easeInOut)
+/// - Animación permanente: úsalo con moderación (especialmente en listas)
+/// - Envuelto en [RepaintBoundary] para aislar repaints del resto del árbol
 ///
 /// Véase también:
 ///
-/// - [AnimatedStateButton] para botones con múltiples estados
-/// - [FocusButton] para botones con borde gradiente animado
-/// - [RippleRevealButton] para efectos de revelación al presionar
+/// - [AnimatedStateButton] para múltiples estados
+/// - [FocusButton] para borde gradiente animado 360°
+/// - [RippleRevealButton] / [RectRevealButton] para efectos de revelado
 class PulsatingButton extends StatefulWidget {
   /// Crea un botón con efecto de pulsación continua.
   ///
-  /// El botón pulsará automáticamente al ser renderizado. La pulsación
-  /// se ejecuta en un bucle infinito hasta que el widget sea destruido.
+  /// El ciclo se ejecuta indefinidamente hasta que el widget se descarte.
   const PulsatingButton({
     super.key,
     this.onClick,
+    @Deprecated('Usa onClick en su lugar') this.onPressed,
     this.color = Colors.blue,
     this.pulsationDuration = const Duration(milliseconds: 800),
     this.width = 120.0,
@@ -110,139 +99,62 @@ class PulsatingButton extends StatefulWidget {
     this.child,
     this.curve = Curves.easeInOut,
     this.pulsationSize = 12.0,
-  });
+  }) : assert(width > 0, 'width debe ser > 0'),
+       assert(height > 0, 'height debe ser > 0'),
+       assert(pulsationSize >= 0, 'pulsationSize debe ser >= 0');
 
-  /// Callback que se ejecuta cuando el botón es presionado.
+  // -----------------------------
+  // Interacción
+  // -----------------------------
+
+  /// Callback al presionar el botón.
   ///
   /// Si es `null`, el botón seguirá pulsando pero no responderá a toques.
-  /// Útil para botones decorativos o estados deshabilitados.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// onClick: () {
-  ///   print('Botón presionado');
-  ///   Navigator.push(context, ...);
-  /// }
-  /// ```
   final VoidCallback? onClick;
 
-  /// Color principal del botón y del efecto de halo pulsante.
+  /// Alias deprecado para mantener compatibilidad con código legacy.
+  @Deprecated('Usa onClick en su lugar')
+  final VoidCallback? onPressed;
+
+  // -----------------------------
+  // Estilo base
+  // -----------------------------
+
+  /// Color del botón central y base del halo.
   ///
-  /// El halo exterior usará este color con opacidad variable que se
-  /// desvanece a medida que se expande. El botón central usará el
-  /// color a opacidad completa.
-  ///
-  /// Default: `Colors.blue`
+  /// El halo usa este color con opacidad variable.
   final Color color;
 
-  /// Duración de un ciclo completo de pulsación (expansión + contracción).
-  ///
-  /// Un valor menor crea una pulsación más rápida y enérgica.
-  /// Un valor mayor crea una pulsación más lenta y relajada.
-  ///
-  /// Recomendaciones:
-  /// - Rápida: 500-700ms (urgente, alerta)
-  /// - Normal: 800-1000ms (CTA estándar)
-  /// - Lenta: 1200-1500ms (ambiental, decorativo)
-  ///
-  /// Default: `Duration(milliseconds: 800)`
-  final Duration pulsationDuration;
+  /// Borde opcional del botón central (no se anima).
+  final BoxBorder? border;
+
+  /// Radio de esquinas del botón y base para el halo.
+  final BorderRadius? borderRadius;
+
+  /// Contenido del botón (texto, icono, fila, etc.).
+  final Widget? child;
+
+  // -----------------------------
+  // Tamaño
+  // -----------------------------
 
   /// Ancho del botón central (sin contar la expansión del halo).
-  ///
-  /// El tamaño total máximo del widget será [width] + [pulsationSize]
-  /// cuando el halo esté completamente expandido.
-  ///
-  /// Default: `120.0`
   final double width;
 
   /// Alto del botón central (sin contar la expansión del halo).
-  ///
-  /// El tamaño total máximo del widget será [height] + [pulsationSize]
-  /// cuando el halo esté completamente expandido.
-  ///
-  /// Default: `60.0`
   final double height;
 
-  /// Borde opcional para el botón central.
-  ///
-  /// Útil para crear botones con estilo outline o contorno.
-  /// El borde no se anima, permanece en el botón central.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// border: Border.all(
-  ///   color: Colors.white,
-  ///   width: 2.0,
-  /// )
-  /// ```
-  final BoxBorder? border;
+  // -----------------------------
+  // Animación
+  // -----------------------------
 
-  /// Radio de las esquinas del botón.
-  ///
-  /// El radio se anima junto con la pulsación. El halo exterior
-  /// tendrá un radio mayor que se expande proporcionalmente.
-  ///
-  /// Default: `BorderRadius.all(Radius.circular(12.0))`
-  ///
-  /// Ejemplos:
-  /// ```dart
-  /// // Botón totalmente redondeado
-  /// borderRadius: BorderRadius.circular(999)
-  ///
-  /// // Esquinas asimétricas
-  /// borderRadius: BorderRadius.only(
-  ///   topLeft: Radius.circular(20),
-  ///   bottomRight: Radius.circular(20),
-  /// )
-  /// ```
-  final BorderRadius? borderRadius;
-
-  /// Widget hijo que se muestra dentro del botón.
-  ///
-  /// Típicamente un [Text], [Icon], o [Row]/[Column] con múltiples elementos.
-  /// El contenido se centra automáticamente dentro del botón.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// child: Row(
-  ///   mainAxisSize: MainAxisSize.min,
-  ///   children: [
-  ///     Icon(Icons.favorite, color: Colors.white),
-  ///     SizedBox(width: 8),
-  ///     Text('Me gusta', style: TextStyle(color: Colors.white)),
-  ///   ],
-  /// )
-  /// ```
-  final Widget? child;
+  /// Duración de un ciclo completo (expandir + contraer).
+  final Duration pulsationDuration;
 
   /// Curva de animación aplicada a la pulsación.
-  ///
-  /// Controla la aceleración/desaceleración del efecto de expansión
-  /// y contracción.
-  ///
-  /// Curvas recomendadas:
-  /// - `Curves.easeInOut`: Suave y natural (default)
-  /// - `Curves.easeInOutCubic`: Más pronunciada
-  /// - `Curves.elasticInOut`: Efecto elástico divertido
-  /// - `Curves.fastOutSlowIn`: Expansión rápida, contracción lenta
-  ///
-  /// Default: `Curves.easeInOut`
   final Curve curve;
 
-  /// Cantidad de píxeles que se expande el halo en cada dirección.
-  ///
-  /// Este valor determina cuán grande es el efecto de pulsación.
-  /// El halo se expandirá [pulsationSize] píxeles en todas las direcciones.
-  ///
-  /// Recomendaciones:
-  /// - Sutil: 8-12px (discreto)
-  /// - Normal: 12-20px (visible)
-  /// - Dramático: 20-30px (muy llamativo)
-  ///
-  /// Nota: Un valor muy grande puede afectar el layout de widgets adyacentes.
-  ///
-  /// Default: `12.0`
+  /// Número de píxeles que el halo se expande en cada dirección.
   final double pulsationSize;
 
   @override
@@ -250,86 +162,100 @@ class PulsatingButton extends StatefulWidget {
 }
 
 class _PulsatingButtonState extends State<PulsatingButton> with SingleTickerProviderStateMixin {
-  /// Controlador de la animación de pulsación.
-  ///
-  /// Configurado para repetir infinitamente con reversa (ida y vuelta).
+  /// Controlador de la animación de pulsación (loop con reversa).
   late AnimationController _controller;
 
-  /// Animación con curva aplicada para el efecto de pulsación.
-  ///
-  /// Genera valores de 0.0 a 1.0 siguiendo la curva especificada.
+  /// Animación con curva aplicada (0.0 → 1.0).
   late Animation<double> _animation;
+
+  VoidCallback? get _onTap => widget.onClick ?? widget.onPressed;
 
   @override
   void initState() {
     super.initState();
-    // Inicializa el controlador con la duración configurada
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.pulsationDuration,
-    )..repeat(reverse: true); // Repetición infinita con reversa
+    _controller = AnimationController(vsync: this, duration: widget.pulsationDuration)..repeat(reverse: true);
+    _animation = CurvedAnimation(parent: _controller, curve: widget.curve);
+  }
 
-    // Aplica la curva de animación al controlador
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: widget.curve,
-    );
+  @override
+  void didUpdateWidget(covariant PulsatingButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.pulsationDuration != widget.pulsationDuration) {
+      _controller.duration = widget.pulsationDuration;
+      if (!_controller.isAnimating) _controller.repeat(reverse: true);
+    }
+    if (oldWidget.curve != widget.curve) {
+      _animation = CurvedAnimation(parent: _controller, curve: widget.curve);
+    }
   }
 
   @override
   void dispose() {
-    // Libera recursos del controlador para evitar memory leaks
     _controller.dispose();
     super.dispose();
   }
 
+  double _clamp01(double v) => v < 0 ? 0 : (v > 1 ? 1 : v);
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: MouseRegion(
-        // Cambia el cursor a pointer en web/desktop cuando pasa sobre el botón
-        cursor: SystemMouseCursors.click,
-        child: AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            // Calcula el tamaño del halo expandido basado en el valor de animación
-            final scaleWidth = widget.width + (_animation.value * widget.pulsationSize);
-            final scaleHeight = widget.height + (_animation.value * widget.pulsationSize);
+    final double maxWidth = widget.width + widget.pulsationSize;
+    final double maxHeight = widget.height + widget.pulsationSize;
+    final bool disabled = _onTap == null;
 
-            // Calcula el radio de esquinas expandido para el halo
-            final radius = (widget.borderRadius?.topLeft.x ?? 12.0) + (_animation.value * 4);
+    return SizedBox(
+      width: maxWidth,
+      height: maxHeight,
+      child: Center(
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: RepaintBoundary(
+            child: AnimatedBuilder(
+              animation: _animation,
+              builder: (context, _) {
+                final double scaleW = widget.width + (_animation.value * widget.pulsationSize);
+                final double scaleH = widget.height + (_animation.value * widget.pulsationSize);
 
-            return GestureDetector(
-              onTap: widget.onClick,
-              child: Container(
-                // Contenedor exterior: halo pulsante
-                width: scaleWidth,
-                height: scaleHeight,
-                decoration: BoxDecoration(
-                  // Opacidad inversa: más transparente cuando está más expandido
-                  color: widget.color.withOpacity(1 / (_animation.value + 1)),
-                  borderRadius: widget.borderRadius?.copyWith(
-                    bottomLeft: Radius.circular(radius),
-                    bottomRight: Radius.circular(radius),
-                    topLeft: Radius.circular(radius),
-                    topRight: Radius.circular(radius),
+                final double baseR = (widget.borderRadius?.topLeft.x ?? 12.0);
+                final double animR = baseR + (_animation.value * 4);
+
+                final double haloOpacity = _clamp01(1 / (_animation.value + 1));
+
+                return GestureDetector(
+                  onTap: _onTap,
+                  behavior: HitTestBehavior.opaque,
+                  child: Opacity(
+                    opacity: disabled ? 0.7 : 1.0,
+                    child: Container(
+                      width: scaleW,
+                      height: scaleH,
+                      decoration: BoxDecoration(
+                        color: widget.color.withOpacity(haloOpacity),
+                        borderRadius: widget.borderRadius?.copyWith(
+                          bottomLeft: Radius.circular(animR),
+                          bottomRight: Radius.circular(animR),
+                          topLeft: Radius.circular(animR),
+                          topRight: Radius.circular(animR),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: widget.width,
+                        height: widget.height,
+                        decoration: BoxDecoration(
+                          color: widget.color,
+                          border: widget.border,
+                          borderRadius: widget.borderRadius,
+                        ),
+                        alignment: Alignment.center,
+                        child: widget.child,
+                      ),
+                    ),
                   ),
-                ),
-                alignment: Alignment.center,
-                child: Container(
-                  // Contenedor interior: botón principal (tamaño fijo)
-                  width: widget.width,
-                  height: widget.height,
-                  decoration: BoxDecoration(
-                    border: widget.border,
-                    borderRadius: widget.borderRadius,
-                    color: widget.color,
-                  ),
-                  child: Center(child: widget.child),
-                ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
       ),
     );

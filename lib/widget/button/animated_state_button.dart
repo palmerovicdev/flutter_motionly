@@ -1,416 +1,328 @@
 import 'package:flutter/material.dart';
 
-/// Definición de un estado personalizado del botón.
-///
-/// Permite crear estados con nombres únicos, colores y widgets personalizados.
-/// Cada estado representa una configuración visual del botón (color, contenido, tamaño).
-///
-/// Ejemplo de uso:
-/// ```dart
-/// final customState = ButtonState(
-///   id: 'processing',
-///   color: Colors.orange,
-///   child: Icon(Icons.hourglass_empty, color: Colors.white),
-///   isCompact: true,
-/// );
-/// ```
+// -----------------------------
+// Typedefs
+// -----------------------------
+typedef StateId = String;
+typedef AsyncStateTask = Future<StateId> Function();
+typedef StateWidgetBuilder = Widget Function(BuildContext context, ButtonState state);
+
+// =====================================================
+// ButtonState (DX: foregroundColor, builder, copyWith)
+// =====================================================
 class ButtonState {
-  /// Identificador único del estado.
-  /// Se usa para cambiar entre estados mediante el controlador.
-  final String id;
+  /// Identificador único del estado (p.ej. 'loading', 'success', 'error', ...).
+  final StateId id;
 
   /// Color de fondo del botón en este estado.
   final Color color;
 
-  /// Widget a mostrar en este estado (opcional).
-  /// Si es null, se mostrará un CircularProgressIndicator por defecto.
+  /// Color sugerido para icono/texto del estado.
+  final Color? foregroundColor;
+
+  /// Contenido a mostrar (si no usas [builder]).
   final Widget? child;
 
-  /// Si es true, el botón se muestra en modo compacto (circular).
-  /// Si es false, mantiene el ancho completo.
+  /// Builder para construir el contenido de forma dinámica.
+  final StateWidgetBuilder? builder;
+
+  /// Si `true`, el botón se muestra en modo compacto (circular).
   final bool isCompact;
 
   const ButtonState({
     required this.id,
     required this.color,
+    this.foregroundColor,
     this.child,
+    this.builder,
     this.isCompact = true,
-  });
+  }) : assert(child != null || builder != null, 'Provee child o builder (al menos uno).');
 
-  /// Estado de carga predefinido.
-  ///
-  /// Muestra un CircularProgressIndicator animado en color azul claro.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// final loadingState = ButtonState.loading();
-  /// // o personalizado:
-  /// final customLoading = ButtonState.loading(
-  ///   color: Colors.blue,
-  ///   child: SizedBox(
-  ///     width: 20,
-  ///     height: 20,
-  ///     child: CircularProgressIndicator(strokeWidth: 2),
-  ///   ),
-  /// );
-  /// ```
+  ButtonState copyWith({
+    StateId? id,
+    Color? color,
+    Color? foregroundColor,
+    Widget? child,
+    StateWidgetBuilder? builder,
+    bool? isCompact,
+  }) {
+    return ButtonState(
+      id: id ?? this.id,
+      color: color ?? this.color,
+      foregroundColor: foregroundColor ?? this.foregroundColor,
+      child: child ?? this.child,
+      builder: builder ?? this.builder,
+      isCompact: isCompact ?? this.isCompact,
+    );
+  }
+
+  // -------- Presets prácticos --------
   static ButtonState loading({
     Color color = Colors.lightBlue,
+    Color fg = Colors.white,
+    double size = 22,
+    double stroke = 3,
+    bool isCompact = true,
     Widget? child,
   }) => ButtonState(
     id: 'loading',
     color: color,
+    foregroundColor: fg,
+    isCompact: isCompact,
     child:
         child ??
-        const SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(
-            strokeWidth: 3,
-            color: Colors.white,
-          ),
+        SizedBox(
+          width: size,
+          height: size,
+          child: CircularProgressIndicator(strokeWidth: stroke, color: fg),
         ),
-    isCompact: true,
   );
 
-  /// Estado de éxito predefinido.
-  ///
-  /// Muestra un icono de check en color verde.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// final successState = ButtonState.success();
-  /// // o personalizado:
-  /// final customSuccess = ButtonState.success(
-  ///   color: Colors.teal,
-  ///   child: Icon(Icons.check_circle, color: Colors.white),
-  /// );
-  /// ```
   static ButtonState success({
     Color color = Colors.green,
+    Color fg = Colors.white,
+    double iconSize = 24,
+    bool isCompact = true,
     Widget? child,
   }) => ButtonState(
     id: 'success',
     color: color,
-    child: child ?? const Icon(Icons.check, color: Colors.white, size: 28),
-    isCompact: true,
+    foregroundColor: fg,
+    isCompact: isCompact,
+    child: child ?? Icon(Icons.check_rounded, color: fg, size: iconSize),
   );
 
-  /// Estado de error predefinido.
-  ///
-  /// Muestra un icono de error en color rojo.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// final errorState = ButtonState.error();
-  /// // o personalizado:
-  /// final customError = ButtonState.error(
-  ///   color: Colors.deepOrange,
-  ///   child: Icon(Icons.close, color: Colors.white),
-  /// );
-  /// ```
   static ButtonState error({
     Color color = Colors.red,
+    Color fg = Colors.white,
+    double iconSize = 24,
+    bool isCompact = true,
     Widget? child,
   }) => ButtonState(
     id: 'error',
     color: color,
-    child: child ?? const Icon(Icons.error, color: Colors.white, size: 28),
-    isCompact: true,
+    foregroundColor: fg,
+    isCompact: isCompact,
+    child: child ?? Icon(Icons.close_rounded, color: fg, size: iconSize),
+  );
+
+  static ButtonState warning({
+    Color color = Colors.orange,
+    Color fg = Colors.white,
+    double iconSize = 24,
+    bool isCompact = true,
+    Widget? child,
+  }) => ButtonState(
+    id: 'warning',
+    color: color,
+    foregroundColor: fg,
+    isCompact: isCompact,
+    child: child ?? Icon(Icons.warning_amber_rounded, color: fg, size: iconSize),
+  );
+
+  static ButtonState info({
+    Color color = Colors.blueGrey,
+    Color fg = Colors.white,
+    double iconSize = 24,
+    bool isCompact = true,
+    Widget? child,
+  }) => ButtonState(
+    id: 'info',
+    color: color,
+    foregroundColor: fg,
+    isCompact: isCompact,
+    child: child ?? Icon(Icons.info_rounded, color: fg, size: iconSize),
   );
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ButtonState && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) => identical(this, other) || (other is ButtonState && id == other.id);
 
   @override
   int get hashCode => id.hashCode;
 }
 
-/// Controlador para manejar el estado del botón animado.
-///
-/// Permite controlar estados personalizados del botón y ejecutar tareas asíncronas
-/// con manejo automático de estados de carga, éxito y error.
-///
-/// Ejemplo básico:
-/// ```dart
-/// final controller = AnimatedStateButtonController(
-///   states: {
-///     'success': ButtonState.success(),
-///     'error': ButtonState.error(),
-///   },
-/// );
-///
-/// // Cambiar manualmente a un estado
-/// controller.changeState('success');
-/// ```
-///
-/// Ejemplo avanzado con estados personalizados:
-/// ```dart
-/// final controller = AnimatedStateButtonController(
-///   states: {
-///     'success': ButtonState.success(),
-///     'error': ButtonState.error(),
-///     'warning': ButtonState(
-///       id: 'warning',
-///       color: Colors.orange,
-///       child: Icon(Icons.warning, color: Colors.white),
-///     ),
-///   },
-///   stateCallbacks: {
-///     'success': () => print('¡Operación exitosa!'),
-///     'error': () => print('Hubo un error'),
-///   },
-/// );
-///
-/// // Ejecutar una tarea asíncrona
-/// await controller.run(() async {
-///   await Future.delayed(Duration(seconds: 2));
-///   // Simular lógica de negocio
-///   if (Random().nextBool()) {
-///     return 'success';
-///   } else {
-///     return 'error';
-///   }
-/// });
-/// ```
-class AnimatedStateButtonController extends ValueNotifier<String> {
-  /// Estados disponibles del botón.
-  /// Cada clave es el id del estado y el valor es el ButtonState correspondiente.
-  final Map<String, ButtonState> states;
+// ==========================================================
+// AnimatedStateButtonController (limpio y sin sorpresas)
+// ==========================================================
+class AnimatedStateButtonController extends ValueNotifier<StateId> {
+  final Map<StateId, ButtonState> states;
 
-  /// Estado de carga (siempre presente).
-  /// Se puede personalizar pasando un loadingState en el constructor.
+  /// Estado de carga configurable (si no lo pasas, se autogenera).
   final ButtonState loadingState;
 
-  /// Estado actual del botón como String (id del estado).
-  String get currentStateId => value;
+  /// Callback al cambiar de estado.
+  final void Function(StateId newStateId)? onStateChanged;
 
-  /// Obtiene el estado actual como objeto ButtonState.
-  /// Retorna null si está en estado inicial.
-  ButtonState? get currentState => states[value];
+  /// Delay por defecto para volver a `init` en `run*` si `resetToInit=true`.
+  final Duration autoResetDelay;
 
-  /// Verifica si el botón está en estado inicial.
-  bool get isInit => value == 'init';
-
-  /// Verifica si el botón está cargando.
-  bool get isLoading => value == 'loading';
-
-  /// Callbacks opcionales que se ejecutan cuando se alcanza cada estado.
-  /// La clave es el id del estado y el valor es la función a ejecutar.
-  final Map<String, VoidCallback> stateCallbacks;
-
-  /// Crea un controlador de estados para [AnimatedStateButton].
-  ///
-  /// [states] es un mapa de estados personalizados (opcional).
-  /// [loadingState] permite personalizar el estado de carga (opcional).
-  /// [stateCallbacks] son callbacks que se ejecutan al alcanzar cada estado (opcional).
   AnimatedStateButtonController({
-    Map<String, ButtonState>? states,
+    Map<StateId, ButtonState>? states,
     ButtonState? loadingState,
-    this.stateCallbacks = const {},
-  }) : states = states ?? {},
+    this.onStateChanged,
+    this.autoResetDelay = const Duration(milliseconds: 600),
+  }) : states = {...?states},
        loadingState = loadingState ?? ButtonState.loading(),
        super('init') {
     this.states['loading'] = this.states['loading'] ?? this.loadingState;
   }
 
-  void _set(String stateId) {
-    if (value == stateId) return;
-    value = stateId;
+  StateId get currentStateId => value;
+
+  ButtonState? get currentState => states[value];
+
+  bool get isInit => value == 'init';
+
+  bool get isLoading => value == 'loading';
+
+  bool contains(StateId id) => id == 'init' || states.containsKey(id);
+
+  void register(ButtonState state) => states[state.id] = state;
+
+  void _set(StateId id) {
+    if (value == id) return;
+    value = id;
+    onStateChanged?.call(id);
   }
 
-  /// Cambia el estado a inicial.
   void init() => _set('init');
 
-  /// Cambia el estado a carga.
   void loading() => _set('loading');
 
-  /// Cambia a un estado personalizado.
-  ///
-  /// Lanza un [ArgumentError] si el estado no está definido.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// controller.changeState('success');
-  /// controller.changeState('error');
-  /// controller.changeState('warning'); // Si 'warning' está definido
-  /// ```
-  void changeState(String stateId) {
-    if (!states.containsKey(stateId) && stateId != 'init') {
-      throw ArgumentError('Estado "$stateId" no está definido');
+  void changeState(StateId id) {
+    if (!contains(id)) {
+      throw ArgumentError('Estado "$id" no está definido');
     }
-    _set(stateId);
+    _set(id);
   }
 
-  /// Ejecuta una tarea asíncrona y maneja los estados automáticamente.
-  ///
-  /// [task] es la función asíncrona que debe retornar el id del estado final deseado.
-  /// [stateDelay] es el tiempo que se muestra el estado final antes de volver a init.
-  /// [resetToInit] si es false, no vuelve automáticamente al estado inicial.
-  ///
-  /// Si [task] lanza una excepción y existe un estado 'error', cambia a ese estado.
-  /// De lo contrario, vuelve al estado inicial y relanza la excepción.
-  ///
-  /// Ejemplo:
-  /// ```dart
-  /// await controller.run(() async {
-  ///   try {
-  ///     final result = await apiCall();
-  ///     return result.success ? 'success' : 'error';
-  ///   } catch (e) {
-  ///     return 'error';
-  ///   }
-  /// });
-  /// ```
-  ///
-  /// Ejemplo sin reseteo automático:
-  /// ```dart
-  /// await controller.run(
-  ///   () async {
-  ///     await performOperation();
-  ///     return 'success';
-  ///   },
-  ///   resetToInit: false, // Permanece en el estado final
-  /// );
-  /// ```
+  bool safeChangeState(StateId id) {
+    if (!contains(id)) return false;
+    _set(id);
+    return true;
+  }
+
+  /// Ejecuta una tarea que devuelve el `StateId` final.
   Future<void> run(
-    Future<String> Function() task, {
-    Duration stateDelay = const Duration(milliseconds: 600),
+    AsyncStateTask task, {
+    Duration? stateDelay,
     bool resetToInit = true,
   }) async {
     loading();
-    String resultStateId = 'init';
+    StateId result = 'init';
     try {
-      resultStateId = await task();
-      changeState(resultStateId);
+      result = await task();
+      changeState(result);
     } catch (_) {
-      if (states.containsKey('error')) {
-        resultStateId = 'error';
+      if (contains('error')) {
+        result = 'error';
         changeState('error');
       } else {
         init();
         rethrow;
       }
     }
+    await Future.delayed(stateDelay ?? autoResetDelay);
+    if (resetToInit) init();
+  }
 
-    await Future.delayed(stateDelay);
+  /// Task booleana → success/error.
+  Future<void> runBool(
+    Future<bool> Function() task, {
+    StateId successId = 'success',
+    StateId errorId = 'error',
+    Duration? stateDelay,
+    bool resetToInit = true,
+  }) async {
+    await run(() async => (await task()) ? successId : errorId, stateDelay: stateDelay, resetToInit: resetToInit);
+  }
 
-    stateCallbacks[resultStateId]?.call();
-
-    if (resetToInit) {
-      init();
-    }
+  /// Task que solo puede lanzar o terminar bien → success/error.
+  Future<void> runGuarded(
+    Future<void> Function() task, {
+    StateId successId = 'success',
+    StateId errorId = 'error',
+    Duration? stateDelay,
+    bool resetToInit = true,
+  }) async {
+    await run(
+      () async {
+        await task();
+        return successId;
+      },
+      stateDelay: stateDelay,
+      resetToInit: resetToInit,
+    );
   }
 }
 
-/// Botón animado con estados personalizables y widgets customizables.
-///
-/// Este botón transiciona suavemente entre un botón de ancho completo y estados
-/// compactos circulares, perfecto para indicar progreso de operaciones asíncronas.
-///
-/// Ejemplo básico:
-/// ```dart
-/// class MyWidget extends StatefulWidget {
-///   @override
-///   State<MyWidget> createState() => _MyWidgetState();
-/// }
-///
-/// class _MyWidgetState extends State<MyWidget> {
-///   late AnimatedStateButtonController _controller;
-///
-///   @override
-///   void initState() {
-///     super.initState();
-///     _controller = AnimatedStateButtonController(
-///       states: {
-///         'success': ButtonState.success(),
-///         'error': ButtonState.error(),
-///       },
-///     );
-///   }
-///
-///   @override
-///   void dispose() {
-///     _controller.dispose();
-///     super.dispose();
-///   }
-///
-///   @override
-///   Widget build(BuildContext context) {
-///     return AnimatedStateButton(
-///       controller: _controller,
-///       initChild: Text('Enviar'),
-///       onPressed: () async {
-///         await _controller.run(() async {
-///           await Future.delayed(Duration(seconds: 2));
-///           return 'success';
-///         });
-///       },
-///     );
-///   }
-/// }
-/// ```
-///
-/// Ejemplo avanzado con personalización completa:
-/// ```dart
-/// AnimatedStateButton(
-///   controller: controller,
-///   initChild: Row(
-///     mainAxisSize: MainAxisSize.min,
-///     children: [
-///       Icon(Icons.send),
-///       SizedBox(width: 8),
-///       Text('Enviar formulario'),
-///     ],
-///   ),
-///   initColor: Colors.deepPurple,
-///   borderRadius: 12,
-///   height: 56,
-///   elevation: 4,
-///   shadowColor: Colors.deepPurple.withOpacity(0.4),
-///   onPressed: () async {
-///     await controller.run(() async {
-///       // Lógica de envío
-///       final success = await sendForm();
-///       return success ? 'success' : 'error';
-///     });
-///   },
-/// )
-/// ```
+// ==============================================
+// AnimatedStateButton (compila y hace lo suyo)
+// ==============================================
 class AnimatedStateButton extends StatefulWidget {
-  /// Crea un [AnimatedStateButton].
-  ///
-  /// [controller] es requerido para manejar los estados del botón.
-  ///
-  /// [width] define el ancho del botón en estado inicial. Si es null,
-  /// usa el ancho disponible menos el padding horizontal (por defecto).
-  ///
-  /// [onPressed] es la acción a ejecutar al presionar el botón.
-  /// Si es null, ejecuta una animación de demostración.
-  ///
-  /// [initChild] es el widget mostrado en estado inicial.
-  /// Por defecto muestra el texto 'Enviar'.
-  ///
-  /// [initColor] es el color de fondo en estado inicial.
-  ///
-  /// [borderRadius] define el radio de las esquinas del botón en estado inicial.
-  ///
-  /// [height] es la altura del botón (constante en todos los estados).
-  ///
-  /// [compactSize] es el tamaño del botón cuando está en estado compacto.
-  ///
-  /// [animationDuration] controla la duración de la animación de cambio de tamaño.
-  ///
-  /// [switchDuration] controla la duración de la transición entre widgets.
-  ///
-  /// [enabled] controla si el botón está habilitado o deshabilitado.
-  ///
-  /// [elevation] y [shadowColor] configuran la sombra del botón.
+  /// Ancho del botón en estado inicial (si null, usa el ancho disponible).
+  final double? width;
+
+  /// Controlador (en factory `simple` se crea interno).
+  final AnimatedStateButtonController controller;
+
+  /// Acción al presionar (en estado init).
+  final Future<void> Function()? onClick;
+
+  /// Alias por compatibilidad.
+  @Deprecated('Usa onClick en su lugar')
+  final Future<void> Function()? onPressed;
+
+  /// Contenido del estado inicial.
+  final Widget? initChild;
+
+  /// Color de fondo en `init`.
+  final Color initColor;
+
+  /// Radio en `init`.
+  final double borderRadius;
+
+  /// Padding exterior (alrededor del contenedor animado).
+  final EdgeInsetsGeometry padding;
+
+  /// Altura constante del botón.
+  final double height;
+
+  /// Tamaño del botón cuando está compacto (círculo).
+  final double compactSize;
+
+  /// Duración/curva del contenedor animado.
+  final Duration animationDuration;
+  final Curve animationCurve;
+
+  /// Duración/curvas del AnimatedSwitcher.
+  final Duration switchDuration;
+  final Curve switchInCurve;
+  final Curve switchOutCurve;
+
+  /// Estilo del FilledButton en `init`.
+  final ButtonStyle? buttonStyle;
+
+  /// Habilitado/deshabilitado.
+  final bool enabled;
+
+  /// Sombras del contenedor animado (no del FilledButton).
+  final double? elevation;
+  final Color? shadowColor;
+
+  /// Micro-interacciones: escala en hover y press.
+  final double hoverScale;
+  final double pressScale;
+
+  /// Prop interno: si el controller fue creado por la factory `simple`.
+  final bool _ownController;
+
   const AnimatedStateButton({
     super.key,
     this.width,
     required this.controller,
-    this.onPressed,
+    this.onClick,
+    @Deprecated('Usa onClick en su lugar') this.onPressed,
     this.initChild,
     this.initColor = Colors.black,
     this.borderRadius = 8,
@@ -426,152 +338,227 @@ class AnimatedStateButton extends StatefulWidget {
     this.enabled = true,
     this.elevation,
     this.shadowColor,
-  }) : assert(height > 0, 'La altura debe ser mayor a 0'),
-       assert(compactSize > 0, 'El tamaño compacto debe ser mayor a 0');
+    this.hoverScale = .02,
+    this.pressScale = .04,
+  }) : _ownController = false;
 
-  /// Ancho del botón en estado inicial.
-  /// Si es null, usa el ancho disponible menos el padding horizontal.
-  final double? width;
+  /// Factory simple sin armar controller a mano.
+  factory AnimatedStateButton.simple({
+    Key? key,
+    required Future<void> Function() onAction,
+    Widget? label,
+    Color initColor = Colors.black,
+    double borderRadius = 8,
+    double height = 48,
+    double compactSize = 48,
+    Duration animationDuration = const Duration(milliseconds: 400),
+    Curve animationCurve = Curves.easeInOut,
+    Duration switchDuration = const Duration(milliseconds: 300),
+    Curve switchInCurve = Curves.easeOut,
+    Curve switchOutCurve = Curves.easeIn,
+    ButtonStyle? buttonStyle,
+    bool enabled = true,
+    double hoverScale = .02,
+    double pressScale = .04,
+    double? width,
+    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+    void Function(StateId newStateId)? onStateChanged,
+    Duration autoResetDelay = const Duration(milliseconds: 600),
+    double? elevation,
+    Color? shadowColor,
+  }) {
+    final controller = AnimatedStateButtonController(
+      states: {
+        'success': ButtonState.success(),
+        'error': ButtonState.error(),
+      },
+      onStateChanged: onStateChanged,
+      autoResetDelay: autoResetDelay,
+    );
 
-  /// Controlador de estado del botón.
-  final AnimatedStateButtonController controller;
+    return AnimatedStateButton._internal(
+      key: key,
+      width: width,
+      controller: controller,
+      onClick: () => controller.runGuarded(onAction),
+      initChild: label ?? const Text('Enviar', style: TextStyle(color: Colors.white)),
+      initColor: initColor,
+      borderRadius: borderRadius,
+      height: height,
+      compactSize: compactSize,
+      animationDuration: animationDuration,
+      animationCurve: animationCurve,
+      switchDuration: switchDuration,
+      switchInCurve: switchInCurve,
+      switchOutCurve: switchOutCurve,
+      buttonStyle: buttonStyle,
+      enabled: enabled,
+      hoverScale: hoverScale,
+      pressScale: pressScale,
+      padding: padding,
+      elevation: elevation,
+      shadowColor: shadowColor,
+      ownController: true,
+    );
+  }
 
-  /// Acción asíncrona al presionar el botón.
-  /// Si es null, ejecuta una animación de demostración.
-  final Future<void> Function()? onPressed;
-
-  /// Widget mostrado en estado inicial.
-  /// Por defecto muestra el texto 'Enviar'.
-  final Widget? initChild;
-
-  /// Color de fondo en estado inicial.
-  final Color initColor;
-
-  /// Radio de las esquinas del botón en estado inicial.
-  final double borderRadius;
-
-  /// Padding exterior del botón.
-  final EdgeInsetsGeometry padding;
-
-  /// Altura del botón (constante en todos los estados).
-  final double height;
-
-  /// Tamaño del botón cuando está en estado compacto (circular).
-  final double compactSize;
-
-  /// Duración de la animación de cambio de tamaño del contenedor.
-  final Duration animationDuration;
-
-  /// Curva de animación del cambio de tamaño.
-  final Curve animationCurve;
-
-  /// Duración de la transición entre widgets (AnimatedSwitcher).
-  final Duration switchDuration;
-
-  /// Curva para la entrada de widgets.
-  final Curve switchInCurve;
-
-  /// Curva para la salida de widgets.
-  final Curve switchOutCurve;
-
-  /// Estilo personalizado del botón en estado inicial.
-  /// Si es null, usa un estilo predeterminado basado en [initColor] y [borderRadius].
-  final ButtonStyle? buttonStyle;
-
-  /// Si es false, el botón estará deshabilitado y no se podrá presionar.
-  final bool enabled;
-
-  /// Elevación del botón en estado inicial.
-  final double? elevation;
-
-  /// Color de sombra del botón.
-  final Color? shadowColor;
+  const AnimatedStateButton._internal({
+    super.key,
+    this.width,
+    required this.controller,
+    this.onClick,
+    this.onPressed,
+    this.initChild,
+    required this.initColor,
+    required this.borderRadius,
+    required this.padding,
+    required this.height,
+    required this.compactSize,
+    required this.animationDuration,
+    required this.animationCurve,
+    required this.switchDuration,
+    required this.switchInCurve,
+    required this.switchOutCurve,
+    this.buttonStyle,
+    required this.enabled,
+    this.elevation,
+    this.shadowColor,
+    required this.hoverScale,
+    required this.pressScale,
+    bool ownController = false,
+  }) : _ownController = ownController;
 
   @override
   State<AnimatedStateButton> createState() => _AnimatedStateButtonState();
 }
 
-/// Estado del widget [AnimatedStateButton].
-///
-/// Maneja los listeners del controlador y renderiza el botón según su estado actual.
 class _AnimatedStateButtonState extends State<AnimatedStateButton> {
-  late final Widget _loadingWidget;
-  late final double _fullWidth;
+  // Hover/Press state
+  bool _isHover = false;
+  bool _isPressed = false;
 
-  @override
-  void initState() {
-    super.initState();
+  Widget get _defaultLoading => const SizedBox(
+    width: 22,
+    height: 22,
+    child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white),
+  );
 
-    _loadingWidget = const SizedBox(
-      width: 22,
-      height: 22,
-      child: CircularProgressIndicator(
-        strokeWidth: 3,
-        color: Colors.white,
-      ),
-    );
+  Future<void> _handlePressed() async {
+    if (!widget.enabled || widget.controller.value != 'init') return;
+    final handler = widget.onClick ?? widget.onPressed;
+    if (handler != null) {
+      await handler();
+      return;
+    }
+    // Demo: loading -> success -> init
+    widget.controller.loading();
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (!mounted) return;
+    if (widget.controller.contains('success')) {
+      widget.controller.changeState('success');
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+    if (!mounted) return;
+    widget.controller.init();
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _fullWidth = widget.width ?? MediaQuery.sizeOf(context).width - 48;
+  void dispose() {
+    // Si el controller fue creado por la factory, lo liberamos aquí.
+    if (widget._ownController) {
+      widget.controller.dispose();
+    }
+    super.dispose();
+  }
+
+  double _currentScale() {
+    double s = 1.0;
+    if (_isHover) s -= widget.hoverScale;
+    if (_isPressed) s -= widget.pressScale;
+    if (s < 0.85) s = 0.85; // límite por seguridad
+    return s;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.padding,
-      child: ValueListenableBuilder<String>(
+      child: ValueListenableBuilder<StateId>(
         valueListenable: widget.controller,
-        builder: (context, currentStateId, child) {
-          final isInit = currentStateId == 'init';
-          final currentState = widget.controller.states[currentStateId];
-          final bgColor = isInit ? widget.initColor : (currentState?.color ?? widget.initColor);
+        builder: (context, stateId, _) {
+          final bool isInit = stateId == 'init';
+          final state = widget.controller.states[stateId];
+          final Color bgColor = isInit ? widget.initColor : (state?.color ?? widget.initColor);
 
-          return AnimatedContainer(
-            duration: widget.animationDuration,
-            curve: widget.animationCurve,
-            width: isInit ? _fullWidth : widget.compactSize,
-            height: widget.height,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.circular(
-                isInit ? widget.borderRadius : widget.compactSize / 2,
-              ),
-              boxShadow: widget.elevation != null && widget.shadowColor != null
-                  ? [
-                      BoxShadow(
-                        color: widget.shadowColor!,
-                        blurRadius: widget.elevation!,
-                        offset: Offset(0, widget.elevation! / 2),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final double fullWidth = widget.width ?? constraints.maxWidth;
+
+              return MouseRegion(
+                onEnter: (_) => setState(() => _isHover = true),
+                onExit: (_) => setState(() {
+                  _isHover = false;
+                  _isPressed = false;
+                }),
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTapDown: (_) => setState(() => _isPressed = true),
+                  onTapUp: (_) => setState(() => _isPressed = false),
+                  onTapCancel: () => setState(() => _isPressed = false),
+                  onTap: _handlePressed,
+                  child: AnimatedScale(
+                    scale: _currentScale(),
+                    duration: const Duration(milliseconds: 120),
+                    curve: Curves.easeOut,
+                    child: AnimatedContainer(
+                      duration: widget.animationDuration,
+                      curve: widget.animationCurve,
+                      width: isInit ? fullWidth : widget.compactSize,
+                      height: widget.height,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius: BorderRadius.circular(
+                          isInit ? widget.borderRadius : widget.compactSize / 2,
+                        ),
+                        boxShadow: (widget.elevation != null && widget.shadowColor != null)
+                            ? [
+                                BoxShadow(
+                                  color: widget.shadowColor!,
+                                  blurRadius: widget.elevation!,
+                                  offset: Offset(0, (widget.elevation! / 2).clamp(0, 100)),
+                                ),
+                              ]
+                            : null,
                       ),
-                    ]
-                  : null,
-            ),
-            child: AnimatedSwitcher(
-              duration: widget.switchDuration,
-              switchInCurve: widget.switchInCurve,
-              switchOutCurve: widget.switchOutCurve,
-              layoutBuilder: (currentChild, previousChildren) => Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  ...previousChildren,
-                  if (currentChild != null) currentChild,
-                ],
-              ),
-              child: isInit ? _buildInitButton(currentStateId) : _buildStateWidget(currentState, currentStateId),
-            ),
+                      child: AnimatedSwitcher(
+                        duration: widget.switchDuration,
+                        switchInCurve: widget.switchInCurve,
+                        switchOutCurve: widget.switchOutCurve,
+                        layoutBuilder: (current, previous) => Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ...previous,
+                            if (current != null) current,
+                          ],
+                        ),
+                        child: isInit ? _buildInitButton(stateId) : _buildStateWidget(state, stateId),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  Widget _buildInitButton(String stateId) {
+  Widget _buildInitButton(StateId stateId) {
     return SizedBox(
-      key: ValueKey('wide-button-$stateId'),
+      key: ValueKey('wide-$stateId'),
       width: double.infinity,
       height: widget.height,
       child: FilledButton(
@@ -580,55 +567,35 @@ class _AnimatedStateButtonState extends State<AnimatedStateButton> {
             widget.buttonStyle ??
             FilledButton.styleFrom(
               backgroundColor: widget.initColor,
-              disabledBackgroundColor: widget.initColor.withValues(alpha: 0.6),
+              disabledBackgroundColor: widget.initColor.withOpacity(0.6),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(widget.borderRadius),
               ),
-              elevation: widget.elevation,
-              shadowColor: widget.shadowColor,
-              textStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
         child: FittedBox(
           fit: BoxFit.scaleDown,
-          child: widget.initChild ?? const Text('Enviar'),
+          child: widget.initChild ?? const Text('Enviar', style: TextStyle(color: Colors.white)),
         ),
       ),
     );
   }
 
-  Widget _buildStateWidget(ButtonState? state, String stateId) {
-    final child = state?.child ?? _loadingWidget;
+  Widget _buildStateWidget(ButtonState? state, StateId stateId) {
+    final Widget child = state?.child ?? (state?.builder != null ? state!.builder!(context, state) : _defaultLoading);
+    final Color? fg = state?.foregroundColor;
 
     return SizedBox(
       key: ValueKey('state-$stateId'),
       width: widget.compactSize,
       height: widget.compactSize,
-      child: Center(child: child),
+      child: DefaultTextStyle.merge(
+        style: TextStyle(color: fg),
+        child: IconTheme.merge(
+          data: IconThemeData(color: fg),
+          child: Center(child: child),
+        ),
+      ),
     );
-  }
-
-  Future<void> _handlePressed() async {
-    if (!widget.enabled || widget.controller.value != 'init') return;
-
-    if (widget.onPressed != null) {
-      await widget.onPressed!();
-      return;
-    }
-
-    widget.controller.loading();
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
-
-    final firstState = widget.controller.states.keys.where((k) => k != 'loading').firstOrNull;
-    if (firstState != null) {
-      widget.controller.changeState(firstState);
-      await Future.delayed(const Duration(milliseconds: 500));
-      if (!mounted) return;
-    }
-
-    widget.controller.init();
   }
 }

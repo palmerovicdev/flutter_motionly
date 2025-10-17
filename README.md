@@ -68,7 +68,7 @@ Añade esta línea a tu archivo `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_motionly: ^0.0.1
+  flutter_motionly: ^1.0.0
 ```
 
 Luego ejecuta:
@@ -81,20 +81,22 @@ flutter pub get
 
 ### RippleRevealButton
 
-Botón con efecto de ondulación que alterna entre dos estados:
+Botón con efecto de ondulación que alterna entre dos estados (API unificada):
 
 ```dart
 import 'package:flutter_motionly/widget/button/ripple_reveal_button.dart';
 
 RippleRevealButton(
-  widgetA: const Text('ON', style: TextStyle(color: Colors.black)),
-  widgetB: const Text('OFF', style: TextStyle(color: Colors.white)),
-  backgroundColorA: Colors.black,
-  backgroundColorB: Colors.white,
-  rippleColorA: Colors.white,
-  rippleColorB: Colors.black,
+  selectedChild: const Text('ON', style: TextStyle(color: Colors.white)),
+  unselectedChild: const Text('OFF', style: TextStyle(color: Colors.black)),
+  selectedBackgroundColor: Colors.black,
+  unselectedBackgroundColor: Colors.white,
+  selectedRippleColor: Colors.white,
+  unselectedRippleColor: Colors.black,
   height: 45,
-  radius: 8,
+  borderRadius: 8,
+  animationDuration: Duration(milliseconds: 300),
+  isSelected: false, // opcional: controla desde fuera
   onPressed: () {
     print('Estado alternado!');
   },
@@ -384,21 +386,23 @@ CircularRevealIndicator(
 
 ### RectRevealButton
 
-Botón con revelación rectangular:
+Botón con revelación rectangular (API unificada):
 
 ```dart
 import 'package:flutter_motionly/widget/button/rect_reveal_button.dart';
 
 RectRevealButton(
-  widgetA: Icon(Icons.favorite, color: Colors.white),
-  widgetB: Icon(Icons.favorite_border, color: Colors.red),
-  backgroundColorA: Colors.red,
-  backgroundColorB: Colors.white,
-  rippleColorA: Colors.red,
-  rippleColorB: Colors.white,
+  selectedChild: Icon(Icons.favorite, color: Colors.white),
+  unselectedChild: Icon(Icons.favorite_border, color: Colors.red),
+  selectedBackgroundColor: Colors.red,
+  unselectedBackgroundColor: Colors.white,
+  selectedRippleColor: Colors.red,
+  unselectedRippleColor: Colors.white,
   revealDirection: RevealDirection.fromLeft,
   height: 50,
-  radius: 12,
+  borderRadius: 12,
+  animationDuration: Duration(milliseconds: 300),
+  isSelected: false,
   onPressed: () => toggleFavorite(),
 )
 ```
@@ -513,17 +517,23 @@ Las contribuciones son bienvenidas! Si encuentras un bug o tienes una sugerencia
 
 ## ✨ Nuevo release:
 
-1- Actualiza la versión en `pubspec.yaml` y `CHANGELOG.md`.
-2- Actualiza el README.md si es necesario.
-3- Actualiza example/README.md si es necesario.
-4- Actualiza example/lib/ si es necesario.
+- Versión objetivo: `0.0.8` (documentación, ejemplos y unificación de API)
+
+Pasos recomendados para release:
+
+1. Actualiza la versión en `pubspec.yaml` a `0.0.8` y revisa `CHANGELOG.md`.
+2. Revisa `example/` y asegúrate de que los snippets funcionan con la nueva API.
+3. Ejecuta tests y `flutter analyze` en todo el repo.
+4. Haz commit y tag (por ejemplo `v0.0.8`) y publica.
+
+Comandos sugeridos:
 
 ```git
 git add . && \
-git commit -m "<message>" && \
-git tag -a v<num> -m "<tag-message>" && \
+git commit -m "chore(release): v1.0.0 - unificación API y mejoras" && \
+git tag -a v1.0.0 -m "Release v1.0.0" && \
 git push origin main && \
-git push origin v<num>
+git push origin v1.0.0
 ```
 
 ## 📄 Licencia

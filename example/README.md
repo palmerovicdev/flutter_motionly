@@ -4,63 +4,79 @@ Una aplicación de demostración interactiva para el paquete **Flutter Motionly*
 
 ## 📖 Descripción
 
-Esta aplicación es una galería interactiva que presenta todos los componentes animados disponibles en el paquete Flutter Motionly. Incluye ejemplos en vivo, documentación y código de implementación
-para cada componente.
+Esta aplicación es una galería interactiva que presenta todos los componentes animados disponibles en el paquete Flutter Motionly. Incluye ejemplos en vivo, documentación y código de implementación para cada componente.
 
-## ✨ Características
+## ✨ Novedades (v0.0.8)
 
-### 🔘 Botones Animados
+- Unificación y estandarización de la API pública para botones de revelado:
+  - `RippleRevealButton` y `RectRevealButton` ahora usan propiedades consistentes como `selectedChild`, `unselectedChild`, `selectedBackgroundColor`, `unselectedBackgroundColor`, `selectedRippleColor`, `unselectedRippleColor`, `isSelected`, `animationDuration`, `borderRadius`, `revealDirection` (cuando aplica), etc.
+- Mejoras de rendimiento y estabilidad en:
+  - `PulsatingButton` (estabilidad en animaciones y documentación ampliada)
+  - `FocusButton` (optimización del gradiente y reducción de repaints)
+  - `AnimatedStateButton` (caching y reducción de rebuilds)
+- Documentación y ejemplos en la app actualizados para ser copy/paste y servir como referencia inmediata.
 
-- **Ripple Reveal Button** - Botón con efecto de ondulación reveladora
-- **Rect Reveal Button** - Botón con efecto de revelación rectangular
-- **Focus Button** - Botón con gradiente animado al pasar el cursor
-- **State Button** - Botón con estados animados
-- **Pulsating Button** - Botón con efecto de pulsación continua tipo latido
+Consulta el `CHANGELOG.md` en la raíz del repositorio para más detalles.
+
+## 🔘 Características
+
+### Botones Animados
+
+- **RippleRevealButton** - Botón con efecto de ondulación/reveal circular desde el punto de toque
+- **RectRevealButton** - Botón con efecto de revelación rectangular (direcciones: `fromClick`, `fromLeft`, `fromRight`)
+- **FocusButton** - Botón con gradiente animado en el borde
+- **AnimatedStateButton** - Botón con estados animados y soporte para loaders
+- **PulsatingButton** - Botón con efecto de pulsación continua tipo latido
 
 ### 📝 Textos Animados
 
-- **Animated Text** - Texto con animaciones personalizadas
-- **Fuzzy Text** - Texto con efecto difuminado animado
+- **AnimatedText** - Texto con animaciones personalizadas
+- **FuzzyText** - Texto con efecto difuminado animado
 
 ### ⏳ Loaders
 
-- **Wave Sticks Loader** - Loader con efecto de onda gaussiana suave
-- **Square Matrix Loader** - Loader con matriz de cuadrados animados en múltiples direcciones
-- **Circle Matrix Loader** - Loader con matriz de círculos que se desvanecen elegantemente
+- **WaveSticksLoader** - Loader con efecto de onda gaussiana suave
+- **SquareMatrixLoader** - Loader con matriz de cuadrados animados en múltiples direcciones
+- **CircleMatrixLoader** - Loader con matriz de círculos que se desvanecen elegantemente
 
 ### ⭕ Indicadores
 
-- **Circular Reveal Indicator** - Indicador con revelación circular animada
+- **CircularRevealIndicator** - Indicador con revelación circular animada
 
 ### 🎨 Interfaz
 
 - Diseño responsivo (adaptable a escritorio y móvil)
 - Tema oscuro moderno
 - Navegación fluida entre componentes
-- Ejemplos de código interactivos
-- Enlaces a redes sociales
+- Ejemplos de código interactivos y actualizados
 
 ## 🚀 Instalación
 
 1. Clona el repositorio:
+
    ```bash
    git clone https://github.com/palmerovicdev/flutter_motionly_web.git
    cd flutter_motionly_web/example
    ```
 
 2. Instala las dependencias:
+
    ```bash
    flutter pub get
    ```
 
-3. Ejecuta la aplicación:
+3. Ejecuta la aplicación (móvil/escritorio/web):
+
    ```bash
    flutter run
+   # o para web
+   flutter run -d chrome
    ```
 
-   O para web:
+4. Para analizar el proyecto (opcional):
+
    ```bash
-   flutter run -d chrome
+   flutter analyze
    ```
 
 ## 📱 Plataformas Soportadas
@@ -72,7 +88,7 @@ para cada componente.
 - ✅ Linux
 - ✅ Windows
 
-## 🏗️ Estructura del Proyecto
+## 🏗️ Estructura del Proyecto (resumen)
 
 ```
 example/
@@ -97,13 +113,13 @@ example/
 └── assets/                         # Recursos (SVG, imágenes)
 ```
 
-## 📦 Dependencias
+## 📦 Dependencias principales
 
 - **flutter_motionly** - Paquete principal con los componentes animados
 - **flutter_svg** - Para renderizar iconos SVG
 - **url_launcher** - Para abrir enlaces externos
 
-Ver `pubspec.yaml` para la lista completa de dependencias.
+Revisa `pubspec.yaml` para la lista completa de dependencias y versiones.
 
 ## 🎯 Uso
 
@@ -112,9 +128,9 @@ La aplicación funciona como una galería interactiva:
 1. **Navegación lateral** (escritorio) o **menú desplegable** (móvil) para seleccionar componentes
 2. Cada página de componente incluye:
     - Demostración interactiva en vivo
-    - Código de ejemplo
+    - Código de ejemplo (actualizado)
     - Documentación de parámetros
-    - Casos de uso
+    - Casos de uso y mejores prácticas
 
 ## 👨‍💻 Autor
 
@@ -132,7 +148,7 @@ Este proyecto está licenciado bajo los términos especificados en el archivo LI
 
 - [Documentación oficial de Flutter](https://docs.flutter.dev/)
 - [Repositorio del paquete Flutter Motionly](https://github.com/palmerovicdev/flutter_motionly_web)
-- [Cookbook de Flutter](https://docs.flutter.dev/cookbook)
+- [CHANGELOG.md (raíz del repo)](../CHANGELOG.md)
 - [Web de Ejemplo](https://flutter-motionly-web.onrender.com/)
 
 ## 🤝 Contribuir

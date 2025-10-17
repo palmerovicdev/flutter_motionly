@@ -168,8 +168,8 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(height: 12),
                             _buildSectionTitle('Home'),
                             RippleRevealButton(
-                              radius: 4,
-                              widgetA: FittedBox(
+                              borderRadius: 4,
+                              unselectedChild: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Text(
                                   'Welcome',
@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                              widgetB: FittedBox(
+                              selectedChild: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Text(
                                   'Welcome',
@@ -198,18 +198,18 @@ class _HomePageState extends State<HomePage> {
                                 });
                               },
                               height: 35,
-                              backgroundColorA: bgLight.toColor(),
-                              selected: components[0].selected,
-                              backgroundColorB: text.toColor(),
-                              rippleColorA: text.toColor(),
-                              rippleColorB: bgLight.toColor(),
+                              unselectedBackgroundColor: bgLight.toColor(),
+                              isSelected: components[0].selected,
+                              selectedBackgroundColor: text.toColor(),
+                              unselectedRippleColor: text.toColor(),
+                              selectedRippleColor: bgLight.toColor(),
                             ),
                             _buildSectionTitle('Buttons'),
                             ...buttons.map(
                               (e) {
                                 return RippleRevealButton(
-                                  radius: 4,
-                                  widgetA: FittedBox(
+                                  borderRadius: 4,
+                                  unselectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  widgetB: FittedBox(
+                                  selectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -238,11 +238,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  backgroundColorA: bgLight.toColor(),
-                                  selected: e.selected,
-                                  backgroundColorB: text.toColor(),
-                                  rippleColorA: text.toColor(),
-                                  rippleColorB: bgLight.toColor(),
+                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  isSelected: e.selected,
+                                  selectedBackgroundColor: text.toColor(),
+                                  unselectedRippleColor: text.toColor(),
+                                  selectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
@@ -250,8 +250,8 @@ class _HomePageState extends State<HomePage> {
                             ...texts.map(
                               (e) {
                                 return RippleRevealButton(
-                                  radius: 4,
-                                  widgetA: FittedBox(
+                                  borderRadius: 4,
+                                  unselectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  widgetB: FittedBox(
+                                  selectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -280,11 +280,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  backgroundColorA: bgLight.toColor(),
-                                  selected: e.selected,
-                                  backgroundColorB: text.toColor(),
-                                  rippleColorA: text.toColor(),
-                                  rippleColorB: bgLight.toColor(),
+                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  isSelected: e.selected,
+                                  selectedBackgroundColor: text.toColor(),
+                                  unselectedRippleColor: text.toColor(),
+                                  selectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
@@ -292,8 +292,8 @@ class _HomePageState extends State<HomePage> {
                             ...indicators.map(
                               (e) {
                                 return RippleRevealButton(
-                                  radius: 4,
-                                  widgetA: FittedBox(
+                                  borderRadius: 4,
+                                  unselectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -304,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  widgetB: FittedBox(
+                                  selectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -322,11 +322,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  backgroundColorA: bgLight.toColor(),
-                                  selected: e.selected,
-                                  backgroundColorB: text.toColor(),
-                                  rippleColorA: text.toColor(),
-                                  rippleColorB: bgLight.toColor(),
+                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  isSelected: e.selected,
+                                  selectedBackgroundColor: text.toColor(),
+                                  unselectedRippleColor: text.toColor(),
+                                  selectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
@@ -334,8 +334,8 @@ class _HomePageState extends State<HomePage> {
                             ...loaders.map(
                               (e) {
                                 return RippleRevealButton(
-                                  radius: 4,
-                                  widgetA: FittedBox(
+                                  borderRadius: 4,
+                                  unselectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -346,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  widgetB: FittedBox(
+                                  selectedChild: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       e.title,
@@ -364,11 +364,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  backgroundColorA: bgLight.toColor(),
-                                  selected: e.selected,
-                                  backgroundColorB: text.toColor(),
-                                  rippleColorA: text.toColor(),
-                                  rippleColorB: bgLight.toColor(),
+                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  isSelected: e.selected,
+                                  selectedBackgroundColor: text.toColor(),
+                                  unselectedRippleColor: text.toColor(),
+                                  selectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),

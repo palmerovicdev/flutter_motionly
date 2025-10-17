@@ -5,6 +5,42 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+### [1.0.0] - 2025-10-16
+
+#### Mejorado
+
+##### Botones
+- **RippleRevealButton**: documentación, ejemplos y API unificados
+  - Estandarizada la `API` pública y los nombres de propiedades en la documentación y ejemplos (`selectedChild`, `unselectedChild`, `selectedBackgroundColor`, `unselectedBackgroundColor`, `selectedRippleColor`, `unselectedRippleColor`, `isSelected`, `animationDuration`, `borderRadius`, etc.).
+  - Ejemplos en la app actualizados para ser copy/paste y mostrar variaciones de tamaño, iconos y combinaciones texto+icono.
+  - Mejora en la descripción y notas de uso (mejores prácticas y accesibilidad: cursor en desktop, origen del ripple desde el tap).
+
+- **RectRevealButton**: pulido de API y documentación
+  - Alineada la terminología y los ejemplos con `RippleRevealButton` (nombres de propiedades homogeneizados: `selectedChild`, `unselectedChild`, `selectedBackgroundColor`, `unselectedBackgroundColor`, `selectedRippleColor`, `unselectedRippleColor`, `revealDirection`, `isSelected`, `animationDuration`, `borderRadius`, etc.).
+  - Añadida documentación de las direcciones (`fromClick`, `fromLeft`, `fromRight`) y ejemplos interactivos en la app de ejemplo.
+  - Correcciones menores en el comportamiento del reveal (mejor manejo de la posición del tap cuando `revealDirection == fromClick`).
+
+- **PulsatingButton** (Pulsating): estabilización y documentación
+  - Documentación inline ampliada con ejemplos de uso y parámetros (duración, magnitud, curvas, border opcional).
+  - Ajustes de implementación para animaciones más estables en dispositivos de baja potencia (menor jitter y uso de `RepaintBoundary` donde aplica).
+
+- **FocusButton**: mejoras visuales y rendimiento
+  - Gradiente de borde optimizado para evitar repaints innecesarios y reducir overhead en animación continua.
+  - Parche en la lógica de rotación del gradiente para evitar saltos al reiniciar la animación.
+  - Documentación actualizada con ejemplos de configuración del grosor y colores del gradiente.
+
+- **AnimatedStateButton**: optimizaciones y caché
+  - Mayor reutilización de widgets internos (por ejemplo, indicador de carga pre-cacheado) para reducir rebuilds.
+  - Ajustes en la gestión de ancho y layout para evitar cálculos repetidos en cada frame.
+  - Documentación ampliada con ejemplos de múltiples estados y cómo integrar loaders.
+
+#### Documentación / Ejemplos
+- Actualizada la app de ejemplo (`example/`) para reflejar los cambios de API y mejorar los snippets copy/paste de `RippleRevealButton` y `RectRevealButton`.
+- Añadidas notas de mejores prácticas y un apartado específico para las direcciones del reveal en la página de `RectRevealButton`.
+
+#### Notas
+- Estos cambios son mayormente orientados a estabilidad de API, claridad de documentación y pequeñas mejoras de rendimiento; la funcionalidad pública sigue siendo compatible en la mayoría de casos, aunque se recomienda revisar los usos de propiedades si se utilizan nombres antiguos.
+
 ### [0.0.7] - 2025-01-14
 
 #### Añadido
@@ -24,9 +60,6 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
   - Perfecto para botones destacados que requieren atención del usuario
 
 #### Mejorado
-- Documentación inline completa del PulsatingButton
-- Efectos visuales más llamativos para mejorar la experiencia de usuario
-
 ### [0.0.6] - 2025-01-14
 
 #### Optimizado

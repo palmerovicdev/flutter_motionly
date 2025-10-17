@@ -229,13 +229,11 @@ class AnimatedTextState extends State<AnimatedText> {
 
   @override
   Widget build(BuildContext context) {
-    var split = widget.text.split(
-      widget.splitType == SplitType.char
-          ? ''
-          : widget.splitType == SplitType.word
-          ? ' '
-          : '\n',
-    );
+    var split = widget.splitType == SplitType.char
+        ? widget.text.characters.toList()
+        : widget.text.split(
+            widget.splitType == SplitType.word ? ' ' : '\n',
+          );
 
     return Wrap(
       key: ValueKey(_animationKey),

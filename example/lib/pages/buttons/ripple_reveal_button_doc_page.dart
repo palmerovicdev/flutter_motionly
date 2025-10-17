@@ -72,7 +72,7 @@ class _RippleRevealButtonDocPageState extends State<RippleRevealButtonDocPage> {
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 300),
                       child: RippleRevealButton(
-                        widgetA: Text(
+                        unselectedChild: Text(
                           'Presiona',
                           style: TextStyle(
                             color: text.toColor(),
@@ -80,7 +80,7 @@ class _RippleRevealButtonDocPageState extends State<RippleRevealButtonDocPage> {
                             fontSize: 16,
                           ),
                         ),
-                        widgetB: Text(
+                        selectedChild: Text(
                           'Otra vez',
                           style: TextStyle(
                             color: bgDark.toColor(),
@@ -89,15 +89,15 @@ class _RippleRevealButtonDocPageState extends State<RippleRevealButtonDocPage> {
                           ),
                         ),
                         height: 56,
-                        radius: 12,
-                        backgroundColorA: text.toColor(),
-                        backgroundColorB: primary.toColor(),
-                        rippleColorA: primary.toColor(),
-                        rippleColorB: text.toColor(),
+                        borderRadius: 12,
+                        unselectedBackgroundColor: text.toColor(),
+                        selectedBackgroundColor: primary.toColor(),
+                        unselectedRippleColor: primary.toColor(),
+                        selectedRippleColor: text.toColor(),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(3),
-                        selected: _example1Selected,
-                        duration: const Duration(milliseconds: 400),
+                        isSelected: _example1Selected,
+                        animationDuration: const Duration(milliseconds: 400),
                         onPressed: () {
                           setState(() {
                             _example1Selected = !_example1Selected;
@@ -127,13 +127,13 @@ class _RippleRevealButtonDocPageState extends State<RippleRevealButtonDocPage> {
                   const SizedBox(height: 24),
                   buildCodeBlock('''
 RippleRevealButton(
-  widgetA: Text('Estado A'),
-  widgetB: Text('Estado B'),
-  backgroundColorA: Colors.black,
-  backgroundColorB: Colors.white,
-  rippleColorA: Colors.white,
-  rippleColorB: Colors.black,
-  selected: isSelected,
+  selectedChild: Text('Estado A'),
+  unselectedChild: Text('Estado B'),
+  selectedBackgroundColor: Colors.black,
+  unselectedBackgroundColor: Colors.white,
+  selectedRippleColor: Colors.white,
+  unselectedRippleColor: Colors.black,
+  isSelected: isSelected,
   onPressed: () {
     setState(() => isSelected = !isSelected);
   },
@@ -153,26 +153,26 @@ RippleRevealButton(
                         width: 64,
                         height: 64,
                         child: RippleRevealButton(
-                          widgetA: Icon(
+                          unselectedChild: Icon(
                             Icons.favorite_border,
                             color: text.toColor(),
                             size: 28,
                           ),
-                          widgetB: Icon(
+                          selectedChild: Icon(
                             Icons.favorite,
                             color: bgDark.toColor(),
                             size: 28,
                           ),
                           height: 64,
-                          radius: 16,
-                          backgroundColorA: text.toColor(),
-                          backgroundColorB: danger.toColor(),
-                          rippleColorA: danger.toColor(),
-                          rippleColorB: text.toColor(),
+                          borderRadius: 16,
+                          unselectedBackgroundColor: text.toColor(),
+                          selectedBackgroundColor: danger.toColor(),
+                          unselectedRippleColor: danger.toColor(),
+                          selectedRippleColor: text.toColor(),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(3),
-                          selected: _example2Selected,
-                          duration: const Duration(milliseconds: 350),
+                          isSelected: _example2Selected,
+                          animationDuration: const Duration(milliseconds: 350),
                           onPressed: () {
                             setState(() {
                               _example2Selected = !_example2Selected;
@@ -183,15 +183,15 @@ RippleRevealButton(
                     ),
                     '''
 RippleRevealButton(
-  widgetA: Icon(Icons.favorite_border),
-  widgetB: Icon(Icons.favorite),
+  selectedChild: Icon(Icons.favorite),
+  unselectedChild: Icon(Icons.favorite_border),
   height: 64,
-  radius: 16,
-  backgroundColorA: Colors.white,
-  backgroundColorB: Colors.red,
-  rippleColorA: Colors.red,
-  rippleColorB: Colors.white,
-  selected: isFavorite,
+  borderRadius: 16,
+  selectedBackgroundColor: Colors.red,
+  unselectedBackgroundColor: Colors.white,
+  selectedRippleColor: Colors.white,
+  unselectedRippleColor: Colors.red,
+  isSelected: isFavorite,
   onPressed: () => toggleFavorite(),
 )''',
                   ),
@@ -206,7 +206,7 @@ RippleRevealButton(
                       child: Container(
                         constraints: const BoxConstraints(maxWidth: 320),
                         child: RippleRevealButton(
-                          widgetA: Row(
+                          unselectedChild: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -225,7 +225,7 @@ RippleRevealButton(
                               ),
                             ],
                           ),
-                          widgetB: Row(
+                          selectedChild: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -245,15 +245,15 @@ RippleRevealButton(
                             ],
                           ),
                           height: 52,
-                          radius: 26,
-                          backgroundColorA: text.toColor(),
-                          backgroundColorB: success.toColor(),
-                          rippleColorA: success.toColor(),
-                          rippleColorB: text.toColor(),
+                          borderRadius: 26,
+                          unselectedBackgroundColor: text.toColor(),
+                          selectedBackgroundColor: success.toColor(),
+                          unselectedRippleColor: success.toColor(),
+                          selectedRippleColor: text.toColor(),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(3),
-                          selected: _example3Selected,
-                          duration: const Duration(milliseconds: 400),
+                          isSelected: _example3Selected,
+                          animationDuration: const Duration(milliseconds: 400),
                           onPressed: () {
                             setState(() {
                               _example3Selected = !_example3Selected;
@@ -264,14 +264,14 @@ RippleRevealButton(
                     ),
                     '''
 RippleRevealButton(
-  widgetA: Row(
+  selectedChild: Row(
     children: [
       Icon(Icons.play_arrow),
       SizedBox(width: 8),
       Text('Reproducir'),
     ],
   ),
-  widgetB: Row(
+  unselectedChild: Row(
     children: [
       Icon(Icons.pause),
       SizedBox(width: 8),
@@ -279,8 +279,8 @@ RippleRevealButton(
     ],
   ),
   height: 52,
-  radius: 26,
-  selected: isPlaying,
+  borderRadius: 26,
+  isSelected: isPlaying,
   onPressed: () => togglePlay(),
 )''',
                   ),
@@ -299,7 +299,7 @@ RippleRevealButton(
                         SizedBox(
                           width: 100,
                           child: RippleRevealButton(
-                            widgetA: Text(
+                            unselectedChild: Text(
                               'Small',
                               style: TextStyle(
                                 color: text.toColor(),
@@ -307,7 +307,7 @@ RippleRevealButton(
                                 fontSize: 12,
                               ),
                             ),
-                            widgetB: Text(
+                            selectedChild: Text(
                               'Small',
                               style: TextStyle(
                                 color: bgDark.toColor(),
@@ -316,15 +316,15 @@ RippleRevealButton(
                               ),
                             ),
                             height: 36,
-                            radius: 8,
-                            backgroundColorA: text.toColor(),
-                            backgroundColorB: info.toColor(),
-                            rippleColorA: info.toColor(),
-                            rippleColorB: text.toColor(),
+                            borderRadius: 8,
+                            unselectedBackgroundColor: text.toColor(),
+                            selectedBackgroundColor: info.toColor(),
+                            unselectedRippleColor: info.toColor(),
+                            selectedRippleColor: text.toColor(),
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(2),
-                            selected: _example4Selected,
-                            duration: const Duration(milliseconds: 300),
+                            isSelected: _example4Selected,
+                            animationDuration: const Duration(milliseconds: 300),
                             onPressed: () {
                               setState(() {
                                 _example4Selected = !_example4Selected;
@@ -336,7 +336,7 @@ RippleRevealButton(
                         SizedBox(
                           width: 120,
                           child: RippleRevealButton(
-                            widgetA: Text(
+                            unselectedChild: Text(
                               'Medium',
                               style: TextStyle(
                                 color: text.toColor(),
@@ -344,7 +344,7 @@ RippleRevealButton(
                                 fontSize: 14,
                               ),
                             ),
-                            widgetB: Text(
+                            selectedChild: Text(
                               'Medium',
                               style: TextStyle(
                                 color: bgDark.toColor(),
@@ -353,15 +353,15 @@ RippleRevealButton(
                               ),
                             ),
                             height: 44,
-                            radius: 10,
-                            backgroundColorA: text.toColor(),
-                            backgroundColorB: warning.toColor(),
-                            rippleColorA: warning.toColor(),
-                            rippleColorB: text.toColor(),
+                            borderRadius: 10,
+                            unselectedBackgroundColor: text.toColor(),
+                            selectedBackgroundColor: warning.toColor(),
+                            unselectedRippleColor: warning.toColor(),
+                            selectedRippleColor: text.toColor(),
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(2),
-                            selected: !_example4Selected,
-                            duration: const Duration(milliseconds: 300),
+                            isSelected: !_example4Selected,
+                            animationDuration: const Duration(milliseconds: 300),
                             onPressed: () {
                               setState(() {
                                 _example4Selected = !_example4Selected;
@@ -373,7 +373,7 @@ RippleRevealButton(
                         SizedBox(
                           width: 140,
                           child: RippleRevealButton(
-                            widgetA: Text(
+                            unselectedChild: Text(
                               'Large',
                               style: TextStyle(
                                 color: text.toColor(),
@@ -381,7 +381,7 @@ RippleRevealButton(
                                 fontSize: 16,
                               ),
                             ),
-                            widgetB: Text(
+                            selectedChild: Text(
                               'Large',
                               style: TextStyle(
                                 color: bgDark.toColor(),
@@ -390,15 +390,15 @@ RippleRevealButton(
                               ),
                             ),
                             height: 56,
-                            radius: 12,
-                            backgroundColorA: text.toColor(),
-                            backgroundColorB: primary.toColor(),
-                            rippleColorA: primary.toColor(),
-                            rippleColorB: text.toColor(),
+                            borderRadius: 12,
+                            unselectedBackgroundColor: text.toColor(),
+                            selectedBackgroundColor: primary.toColor(),
+                            unselectedRippleColor: primary.toColor(),
+                            selectedRippleColor: text.toColor(),
                             alignment: Alignment.center,
                             padding: const EdgeInsets.all(3),
-                            selected: _example4Selected,
-                            duration: const Duration(milliseconds: 350),
+                            isSelected: _example4Selected,
+                            animationDuration: const Duration(milliseconds: 350),
                             onPressed: () {
                               setState(() {
                                 _example4Selected = !_example4Selected;
@@ -458,76 +458,88 @@ RippleRevealButton(
 
   final properties = [
     {
-      'name': 'widgetA',
+      'name': 'selectedChild',
       'type': 'Widget',
       'default': '-',
-      'description': 'Contenido en estado seleccionado',
+      'description': 'Contenido mostrado cuando el botón está en estado seleccionado (true).',
     },
     {
-      'name': 'widgetB',
-      'type': 'Widget',
+      'name': 'unselectedChild',
+      'type': 'Widget?',
       'default': '-',
-      'description': 'Contenido en estado no seleccionado',
+      'description': 'Contenido mostrado cuando el botón está en estado no seleccionado (false). Opcional; si no existe, se puede reutilizar `selectedChild`.',
     },
     {
-      'name': 'backgroundColorA',
+      'name': 'selectedBackgroundColor',
       'type': 'Color',
       'default': 'Colors.black',
-      'description': 'Color de fondo estado A',
+      'description': 'Color de fondo cuando el botón está seleccionado.',
     },
     {
-      'name': 'backgroundColorB',
+      'name': 'unselectedBackgroundColor',
       'type': 'Color',
       'default': 'Colors.white',
-      'description': 'Color de fondo estado B',
+      'description': 'Color de fondo cuando el botón está no seleccionado.',
     },
     {
-      'name': 'rippleColorA',
+      'name': 'selectedRippleColor',
       'type': 'Color',
       'default': 'Colors.white',
-      'description': 'Color ripple estado A',
+      'description': 'Color del círculo de ripple al pasar al estado seleccionado.',
     },
     {
-      'name': 'rippleColorB',
+      'name': 'unselectedRippleColor',
       'type': 'Color',
       'default': 'Colors.black',
-      'description': 'Color ripple estado B',
+      'description': 'Color del círculo de ripple al pasar al estado no seleccionado.',
+    },
+    {
+      'name': 'width',
+      'type': 'double',
+      'default': '120.0',
+      'description': 'Ancho del botón. Si es null, ocupa el ancho disponible.',
     },
     {
       'name': 'height',
       'type': 'double',
       'default': '48.0',
-      'description': 'Altura del botón',
+      'description': 'Altura del botón en píxeles lógicos.',
     },
     {
-      'name': 'radius',
+      'name': 'borderRadius',
       'type': 'double',
       'default': '2.0',
-      'description': 'Radio de las esquinas',
+      'description': 'Radio de las esquinas. Debe ser >= 2.0 para un clip correcto.',
     },
     {
-      'name': 'selected',
+      'name': 'isSelected',
       'type': 'bool?',
       'default': 'null',
-      'description': 'Estado actual (control externo)',
+      'description': 'Estado controlable desde fuera. Si es null, el widget maneja su propio estado.',
     },
     {
-      'name': 'duration',
+      'name': 'animationDuration',
       'type': 'Duration',
-      'default': '300ms',
-      'description': 'Duración de la animación',
+      'default': 'Duration(milliseconds: 300)',
+      'description': 'Duración de la animación del ripple.',
     },
     {
       'name': 'alignment',
       'type': 'Alignment',
-      'default': 'center',
-      'description': 'Alineación del contenido',
+      'default': 'Alignment.center',
+      'description': 'Alineación del contenido dentro del botón.',
     },
     {
       'name': 'padding',
       'type': 'EdgeInsets',
-      'default': 'horizontal(16)',
-      'description': 'Padding interno',
+      'default': 'EdgeInsets.symmetric(horizontal: 16)',
+      'description': 'Padding interno del contenido.',
+    },
+    {
+      'name': 'border',
+      'type': 'BoxBorder?',
+      'default': 'null',
+      'description': 'Borde decorativo opcional (no cambia el área de toque).',
     },
   ];
 

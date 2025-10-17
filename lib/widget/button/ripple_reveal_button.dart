@@ -1,82 +1,106 @@
 import 'package:flutter/material.dart';
 
-/// Botón animado con efecto *ripple/circular reveal* que alterna entre dos widgets.
+/// Botón animado con efecto *ripple/circular reveal* que alterna entre dos estados.
 ///
-/// Genera un círculo que se expande desde el punto del toque (tap) hasta cubrir
+/// Genera un círculo que se expande desde el punto del toque hasta cubrir
 /// el área del botón, creando una transición suave entre dos contenidos
-/// (`widgetA` y `widgetB`) y dos esquemas de color (`backgroundColorA/B` y `rippleColorA/B`).
+/// y dos esquemas de color.
 ///
-/// Es ideal para toggles, switches personalizados y cualquier control donde
-/// quieras comunicar el cambio de estado con un feedback visual claro y moderno.
+/// **Ideal para:** toggles, switches personalizados, botones de favorito/like,
+/// modo claro/oscuro, y cualquier control que requiera feedback visual claro.
 ///
-/// ### Cómo funciona
-/// - El **fondo** del botón cambia entre `backgroundColorA` y `backgroundColorB`
-///   según el estado seleccionado.
-/// - El **ripple** dibuja un círculo del color `rippleColorA/B` (dependiendo del estado actual)
-///   que nace en el punto del tap y se expande hasta cubrir el botón.
-/// - El **contenido** alterna entre `widgetA` (estado seleccionado) y `widgetB` (no seleccionado).
+/// ## Cómo funciona
 ///
-/// ### Buenas prácticas
-/// - Usa **colores contrastantes** entre fondo y ripple para potenciar el efecto.
-/// - Ajusta `radius` para esquinas más suaves (mínimo 2.0).
-/// - Si vas a controlar el estado desde fuera, usa `selected` y actualízalo en `setState`.
+/// - El **fondo** alterna entre `selectedBackgroundColor` y `unselectedBackgroundColor`.
+/// - El **ripple** dibuja un círculo del color correspondiente al estado destino.
+/// - El **contenido** alterna entre `selectedChild` (seleccionado) y `unselectedChild` (no seleccionado).
 ///
-/// ---
+/// ## Anatomía del efecto
 ///
-/// ### Ejemplo básico
+/// ```
+/// Estado inicial: NO SELECCIONADO
+/// ┌─────────────────────┐
+/// │  unselectedChild    │  ← Fondo: unselectedBackgroundColor
+/// └─────────────────────┘
+///
+/// Al tocar:
+/// ┌─────────────────────┐
+/// │    ●────────────     │  ← Círculo expandiéndose (selectedRippleColor)
+/// └─────────────────────┘
+///
+/// Estado final: SELECCIONADO
+/// ┌─────────────────────┐
+/// │   selectedChild     │  ← Fondo: selectedBackgroundColor
+/// └─────────────────────┘
+/// ```
+///
+/// ## Buenas prácticas
+///
+/// - Usa **colores contrastantes** entre fondo y ripple para maximizar el impacto visual.
+/// - Asegúrate de que `selectedChild` y `unselectedChild` sean visualmente distintos.
+/// - Para esquinas suaves, incrementa `borderRadius` (mínimo 2.0).
+/// - Si controlas el estado externamente, usa `isSelected` y actualízalo con `setState`.
+///
+/// ## Ejemplos
+///
+/// ### Ejemplo básico (toggle ON/OFF)
 /// ```dart
 /// RippleRevealButton(
-///   widgetA: const Text('ON', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-///   widgetB: const Text('OFF', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-///   backgroundColorA: Colors.black,
-///   backgroundColorB: Colors.white,
-///   rippleColorA: Colors.white,
-///   rippleColorB: Colors.black,
-///   onPressed: () { debugPrint('Toggled!'); },
+///   selectedChild: const Text(
+///     'ON',
+///     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+///   ),
+///   unselectedChild: const Text(
+///     'OFF',
+///     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+///   ),
+///   selectedBackgroundColor: Colors.black,
+///   unselectedBackgroundColor: Colors.white,
+///   selectedRippleColor: Colors.black,
+///   unselectedRippleColor: Colors.white,
+///   onPressed: () => debugPrint('¡Alternado!'),
 /// )
 /// ```
 ///
-/// ### Ejemplo con personalización visual
+/// ### Ejemplo con iconos (favorito)
 /// ```dart
 /// RippleRevealButton(
-///   widgetA: const Icon(Icons.check, color: Colors.white),
-///   widgetB: const Icon(Icons.close, color: Colors.red),
-///   backgroundColorA: Colors.green.shade700,
-///   backgroundColorB: Colors.grey.shade200,
-///   rippleColorA: Colors.greenAccent,
-///   rippleColorB: Colors.grey,
-///   height: 52,
-///   radius: 12,
-///   padding: const EdgeInsets.symmetric(horizontal: 20),
-///   alignment: Alignment.center,
-///   onPressed: () { /* tu lógica */ },
+///   selectedChild: const Icon(Icons.favorite, color: Colors.white),
+///   unselectedChild: const Icon(Icons.favorite_border, color: Colors.red),
+///   selectedBackgroundColor: Colors.red,
+///   unselectedBackgroundColor: Colors.grey.shade100,
+///   selectedRippleColor: Colors.red,
+///   unselectedRippleColor: Colors.grey.shade300,
+///   height: 56,
+///   width: 56,
+///   borderRadius: 28,
+///   onPressed: () => print('Favorito alternado'),
 /// )
 /// ```
 ///
-/// ### Ejemplo con control externo del estado
+/// ### Ejemplo con control externo
 /// ```dart
 /// class MyToggle extends StatefulWidget {
 ///   const MyToggle({super.key});
+///
 ///   @override
 ///   State<MyToggle> createState() => _MyToggleState();
 /// }
 ///
 /// class _MyToggleState extends State<MyToggle> {
-///   bool active = false;
+///   bool _isActive = false;
 ///
 ///   @override
 ///   Widget build(BuildContext context) {
 ///     return RippleRevealButton(
-///       selected: active,
-///       widgetA: const Text('Activo'),
-///       widgetB: const Text('Inactivo'),
-///       backgroundColorA: Colors.blue,
-///       backgroundColorB: Colors.black12,
-///       rippleColorA: Colors.white,
-///       rippleColorB: Colors.black45,
-///       onPressed: () {
-///         setState(() => active = !active);
-///       },
+///       isSelected: _isActive,
+///       selectedChild: const Text('Activo'),
+///       unselectedChild: const Text('Inactivo'),
+///       selectedBackgroundColor: Colors.blue,
+///       unselectedBackgroundColor: Colors.grey.shade200,
+///       selectedRippleColor: Colors.blue,
+///       unselectedRippleColor: Colors.grey,
+///       onPressed: () => setState(() => _isActive = !_isActive),
 ///     );
 ///   }
 /// }
@@ -85,117 +109,178 @@ import 'package:flutter/material.dart';
 /// ### Ejemplo con borde decorativo
 /// ```dart
 /// RippleRevealButton(
-///   widgetA: const Text('Premium', style: TextStyle(color: Colors.amber)),
-///   widgetB: const Text('Básico'),
-///   backgroundColorA: Colors.black,
-///   backgroundColorB: Colors.white,
-///   rippleColorA: Colors.amber,
-///   rippleColorB: Colors.black,
+///   selectedChild: const Text(
+///     'Premium',
+///     style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+///   ),
+///   unselectedChild: const Text('Básico'),
+///   selectedBackgroundColor: Colors.black,
+///   unselectedBackgroundColor: Colors.white,
+///   selectedRippleColor: Colors.amber,
+///   unselectedRippleColor: Colors.black,
 ///   border: Border.all(color: Colors.amber, width: 2),
-///   radius: 16,
+///   borderRadius: 16,
 ///   height: 56,
-///   onPressed: () { /* upgrade */ },
+///   onPressed: () => print('Plan cambiado'),
 /// )
 /// ```
 ///
-/// ### Notas
-/// - Este widget fija el **cursor** a `click` en desktop (`MouseRegion`) para mejor UX.
-/// - El ripple nace del **tap exacto** usando coordenadas locales del `RenderBox`.
-/// - `duration` controla la velocidad de la expansión circular.
+/// ## Notas técnicas
+///
+/// - El cursor se establece automáticamente a `click` en plataformas desktop.
+/// - El ripple se origina en las coordenadas exactas del tap.
+/// - `animationDuration` controla la velocidad de la expansión circular.
+/// - El widget es completamente responsivo y se adapta al tamaño disponible.
 ///
 class RippleRevealButton extends StatefulWidget {
-  /// Crea un [RippleRevealButton].
+  /// Crea un [RippleRevealButton] con efecto de ripple circular.
   ///
-  /// [widgetA] y [widgetB] son los widgets a mostrar en cada estado.
+  /// **Parámetros requeridos:**
+  /// - [selectedChild]: Widget mostrado cuando el botón está seleccionado.
+  /// - [unselectedChild]: Widget mostrado cuando el botón NO está seleccionado.
+  /// - [onPressed]: Callback ejecutado al presionar el botón.
   ///
-  /// [backgroundColorA] y [backgroundColorB] son los colores de fondo para cada estado.
-  /// Deben ser distintos para que el cambio sea perceptible.
+  /// **Personalización de colores:**
+  /// - [selectedBackgroundColor]: Color de fondo en estado seleccionado (por defecto: negro).
+  /// - [unselectedBackgroundColor]: Color de fondo en estado no seleccionado (por defecto: blanco).
+  /// - [selectedRippleColor]: Color del ripple hacia estado seleccionado (por defecto: blanco).
+  /// - [unselectedRippleColor]: Color del ripple hacia estado no seleccionado (por defecto: negro).
   ///
-  /// [rippleColorA] y [rippleColorB] son los colores del *ripple* para cada estado.
-  /// Deben ser distintos para evitar confusiones visuales.
+  /// **Dimensiones y apariencia:**
+  /// - [width]: Ancho del botón (por defecto: 120).
+  /// - [height]: Alto del botón (por defecto: 48).
+  /// - [borderRadius]: Radio de las esquinas, mínimo 2.0 (por defecto: 2).
+  /// - [border]: Borde decorativo opcional.
+  /// - [padding]: Espaciado interno del contenido (por defecto: horizontal 16).
+  /// - [alignment]: Alineación del contenido (por defecto: centrado).
   ///
-  /// [onPressed] se llama al presionar el botón (antes del cambio de estado interno).
+  /// **Control de estado:**
+  /// - [isSelected]: Controla el estado desde el widget padre. Si no se provee,
+  ///   el botón gestiona su propio estado interno.
+  /// - [animationDuration]: Duración de la animación (por defecto: 300ms).
   ///
-  /// [height], [width], [radius], [duration], [selected], [border],
-  /// [padding] y [alignment] son personalizables.
-  ///
-  /// Se recomienda usar **colores opuestos o muy diferentes** entre A y B
-  /// para un resultado visual más claro.
-  ///
-  /// Ejemplo rápido:
+  /// **Ejemplo:**
   /// ```dart
   /// RippleRevealButton(
-  ///   widgetA: Text('ON'),
-  ///   widgetB: Text('OFF'),
-  ///   onPressed: () {},
+  ///   selectedChild: const Icon(Icons.check),
+  ///   unselectedChild: const Icon(Icons.close),
+  ///   onPressed: () => print('Pulsado'),
   /// )
   /// ```
   const RippleRevealButton({
     super.key,
-    required this.widgetA,
-    required this.widgetB,
-    this.backgroundColorA = Colors.black,
-    this.backgroundColorB = Colors.white,
-    this.rippleColorA = Colors.white,
-    this.rippleColorB = Colors.black,
+    required this.selectedChild,
+    this.unselectedChild,
     required this.onPressed,
+    this.selectedBackgroundColor = Colors.black,
+    this.unselectedBackgroundColor = Colors.white,
+    this.selectedRippleColor = Colors.white,
+    this.unselectedRippleColor = Colors.black,
+    this.width = 120,
     this.height = 48,
-    this.radius = 2,
-    this.duration = const Duration(milliseconds: 300),
-    this.selected,
+    this.borderRadius = 2,
+    this.animationDuration = const Duration(milliseconds: 300),
+    this.isSelected,
     this.border,
     this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.alignment = Alignment.center,
-  }) : assert(backgroundColorA != backgroundColorB, 'backgroundColorA and backgroundColorB must be different'),
+  }) : assert(borderRadius >= 2, 'borderRadius debe ser al menos 2.0 para un renderizado correcto');
 
-       assert(rippleColorA != rippleColorB, 'foregroundColorA and foregroundColorB must be different'),
-       assert(radius >= 2, 'radius must be at least 2');
-
-  /// Estado inicial del botón (opcional, control externo).
+  /// Widget mostrado cuando el botón está en estado **seleccionado**.
   ///
-  /// - `true`: inicia mostrando `widgetA` y usando `backgroundColorA`/`rippleColorA`.
-  /// - `false` o `null`: inicia en no seleccionado, mostrando `widgetB`.
+  /// Aparece junto con [selectedBackgroundColor] después de la animación del ripple.
+  final Widget selectedChild;
+
+  /// Widget mostrado cuando el botón está en estado **no seleccionado**.
   ///
-  /// Si no se provee, el botón gestiona su propio estado interno.
-  final bool? selected;
+  /// Aparece junto con [unselectedBackgroundColor] después de la animación del ripple.
+  final Widget? unselectedChild;
 
-  /// Widget mostrado cuando **está seleccionado**.
-  final Widget widgetA;
+  /// Color de fondo cuando el botón está **seleccionado**.
+  ///
+  /// Por defecto es `Colors.black`. Debe contrastar con [selectedRippleColor]
+  /// para un efecto visual óptimo.
+  final Color selectedBackgroundColor;
 
-  /// Widget mostrado cuando **NO** está seleccionado.
-  final Widget widgetB;
+  /// Color de fondo cuando el botón está **no seleccionado**.
+  ///
+  /// Por defecto es `Colors.white`. Debe contrastar con [unselectedRippleColor]
+  /// para un efecto visual óptimo.
+  final Color unselectedBackgroundColor;
 
-  /// Color de fondo cuando está seleccionado.
-  final Color backgroundColorA;
+  /// Color del círculo de ripple al transicionar **hacia** el estado seleccionado.
+  ///
+  /// Por defecto es `Colors.white`. Este color se expande desde el punto
+  /// de toque hasta cubrir completamente el botón.
+  final Color selectedRippleColor;
 
-  /// Color de fondo cuando NO está seleccionado.
-  final Color backgroundColorB;
+  /// Color del círculo de ripple al transicionar **hacia** el estado no seleccionado.
+  ///
+  /// Por defecto es `Colors.black`. Este color se expande desde el punto
+  /// de toque hasta cubrir completamente el botón.
+  final Color unselectedRippleColor;
 
-  /// Color del ripple cuando está seleccionado.
-  final Color rippleColorA;
-
-  /// Color del ripple cuando NO está seleccionado.
-  final Color rippleColorB;
-
-  /// Callback al presionar el botón (se ejecuta antes del cambio interno).
+  /// Callback ejecutado al presionar el botón, **antes** de cambiar el estado.
+  ///
+  /// Úsalo para ejecutar lógica adicional, logging, haptic feedback, etc.
+  /// El cambio de estado visual ocurre automáticamente después.
   final VoidCallback onPressed;
 
-  /// Altura del botón en píxeles.
+  /// Ancho del botón en píxeles lógicos.
+  ///
+  /// Por defecto: `120.0`
+  final double width;
+
+  /// Alto del botón en píxeles lógicos.
+  ///
+  /// Por defecto: `48.0`
   final double height;
 
-  /// Radio de las esquinas del botón (mínimo 2.0).
-  final double radius;
+  /// Radio de redondeo de las esquinas del botón.
+  ///
+  /// **Debe ser al menos 2.0** para un renderizado correcto del clip.
+  /// Para un botón circular completo, usa `height / 2` o `width / 2`.
+  ///
+  /// Por defecto: `2.0`
+  final double borderRadius;
 
-  /// Duración de la animación del ripple.
-  final Duration duration;
+  /// Duración de la animación del efecto ripple.
+  ///
+  /// Controla qué tan rápido se expande el círculo desde el punto de toque
+  /// hasta cubrir el botón completo.
+  ///
+  /// Por defecto: `Duration(milliseconds: 300)`
+  final Duration animationDuration;
 
-  /// Borde decorativo opcional (no afecta el área de toque).
+  /// Controla el estado del botón externamente (opcional).
+  ///
+  /// - `true`: El botón muestra [selectedChild] y [selectedBackgroundColor].
+  /// - `false`: El botón muestra [unselectedChild] y [unselectedBackgroundColor].
+  /// - `null`: El botón gestiona su propio estado interno (comienza como no seleccionado).
+  ///
+  /// **Importante:** Si usas este parámetro, debes actualizar su valor en el
+  /// callback [onPressed] usando `setState` en el widget padre.
+  final bool? isSelected;
+
+  /// Borde decorativo opcional aplicado al contorno del botón.
+  ///
+  /// No afecta el área táctil ni el comportamiento del ripple.
+  /// Útil para resaltar el botón o darle un estilo premium.
+  ///
+  /// Ejemplo:
+  /// ```dart
+  /// border: Border.all(color: Colors.amber, width: 2)
+  /// ```
   final BoxBorder? border;
 
-  /// Padding interno del contenido.
+  /// Espaciado interno entre el borde del botón y su contenido.
+  ///
+  /// Por defecto: `EdgeInsets.symmetric(horizontal: 16)`
   final EdgeInsetsGeometry padding;
 
   /// Alineación del contenido dentro del botón.
+  ///
+  /// Por defecto: `Alignment.center`
   final AlignmentGeometry alignment;
 
   @override
@@ -203,102 +288,112 @@ class RippleRevealButton extends StatefulWidget {
 }
 
 class _RippleRevealButtonState extends State<RippleRevealButton> with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-  late Animation<double> _anim;
-  bool _selected = false;
-  Offset? _origin;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  bool _isSelected = false;
+  Offset? _tapOrigin;
 
   @override
   void initState() {
-    _selected = widget.selected ?? false;
     super.initState();
-    _ctrl = AnimationController(vsync: this, duration: widget.duration);
-    _anim = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
-    _ctrl.forward(from: 1.0);
+    _isSelected = widget.isSelected ?? false;
+    _controller = AnimationController(vsync: this, duration: widget.animationDuration);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+    _controller.forward(from: 1.0);
   }
 
   @override
   void didUpdateWidget(RippleRevealButton oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.selected != widget.selected) {
+    if (widget.isSelected != null && oldWidget.isSelected != widget.isSelected) {
       setState(() {
-        _selected = widget.selected ?? false;
+        _isSelected = widget.isSelected!;
       });
+    }
+    if (oldWidget.animationDuration != widget.animationDuration) {
+      _controller.duration = widget.animationDuration;
     }
   }
 
   @override
   void dispose() {
-    _ctrl.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, c) {
-        final w = c.maxWidth;
-        final h = widget.height;
-        final isSelected = _selected;
-        final fg = isSelected ? widget.rippleColorA : widget.rippleColorB;
-        final bg = isSelected ? widget.backgroundColorA : widget.backgroundColorB;
-        final child = isSelected ? widget.widgetA : widget.widgetB;
+    return SizedBox(
+      width: widget.width,
+      height: widget.height,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final buttonWidth = constraints.maxWidth;
+          final buttonHeight = widget.height;
 
-        return MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            onTapDown: (d) {
-              final box = context.findRenderObject() as RenderBox;
-              _origin = box.globalToLocal(d.globalPosition);
-            },
-            onTap: () async {
-              widget.onPressed();
-              setState(() => _selected = !_selected);
-              await _ctrl.forward(from: 0);
-              _ctrl.stop();
-              _origin = null;
-            },
-            child: SizedBox(
-              width: c.maxWidth,
-              height: h,
+          final currentBackgroundColor = _isSelected ? widget.selectedBackgroundColor : widget.unselectedBackgroundColor;
+          final rippleColor = _isSelected ? widget.unselectedRippleColor : widget.selectedRippleColor;
+          final currentChild = _isSelected ? widget.selectedChild : widget.unselectedChild ?? widget.selectedChild;
+
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTapDown: (details) {
+                final box = context.findRenderObject() as RenderBox;
+                _tapOrigin = box.globalToLocal(details.globalPosition);
+              },
+              onTap: () async {
+                widget.onPressed();
+
+                if (widget.isSelected == null) {
+                  setState(() => _isSelected = !_isSelected);
+                }
+
+                await _controller.forward(from: 0);
+                _controller.stop();
+                _tapOrigin = null;
+              },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(widget.radius),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: Stack(
                   children: [
-                    Center(
+                    Positioned.fill(
                       child: Container(
-                        width: (c.maxWidth) - 1,
-                        decoration: BoxDecoration(
-                          color: bg,
-                        ),
+                        color: currentBackgroundColor,
                       ),
                     ),
 
                     AnimatedBuilder(
-                      animation: _anim,
-                      builder: (_, __) {
-                        if (_ctrl.isDismissed) return const SizedBox.shrink();
+                      animation: _animation,
+                      builder: (context, child) {
+                        if (_controller.isDismissed) {
+                          return const SizedBox.shrink();
+                        }
 
-                        final o = _origin ?? Offset(w / 2, h / 2);
-                        final maxDia = _diameterToCover(o, w, h);
-                        final dia = _anim.value * (maxDia + 1);
+                        final origin = _tapOrigin ?? Offset(buttonWidth / 2, buttonHeight / 2);
+                        final maxDiameter = _calculateMaxDiameter(origin, buttonWidth, buttonHeight);
+                        final currentDiameter = _animation.value * maxDiameter;
 
                         return CustomPaint(
-                          painter: _CirclePainter(
-                            center: o,
-                            diameter: dia,
-                            color: fg,
-                            radius: widget.radius,
+                          painter: _RippleCirclePainter(
+                            center: origin,
+                            diameter: currentDiameter,
+                            color: rippleColor,
                           ),
-                          size: Size(w, h),
+                          size: Size(buttonWidth, buttonHeight),
                         );
                       },
                     ),
 
-                    Align(
-                      alignment: widget.alignment,
-                      child: Padding(padding: widget.padding, child: child),
+                    Positioned.fill(
+                      child: Align(
+                        alignment: widget.alignment,
+                        child: Padding(
+                          padding: widget.padding,
+                          child: currentChild,
+                        ),
+                      ),
                     ),
 
                     if (widget.border != null)
@@ -306,7 +401,7 @@ class _RippleRevealButtonState extends State<RippleRevealButton> with SingleTick
                         child: Container(
                           decoration: BoxDecoration(
                             border: widget.border,
-                            borderRadius: BorderRadius.circular(widget.radius),
+                            borderRadius: BorderRadius.circular(widget.borderRadius),
                           ),
                         ),
                       ),
@@ -314,57 +409,59 @@ class _RippleRevealButtonState extends State<RippleRevealButton> with SingleTick
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
+  }
+
+  /// Calcula el diámetro necesario para que el círculo cubra completamente el botón
+  /// desde cualquier punto de origen [tapPoint].
+  double _calculateMaxDiameter(Offset tapPoint, double width, double height) {
+    final corners = [
+      const Offset(0, 0),
+      Offset(width, 0),
+      Offset(0, height),
+      Offset(width, height),
+    ];
+
+    final maxDistance = corners.map((corner) => (corner - tapPoint).distance).reduce((a, b) => a > b ? a : b);
+
+    return maxDistance * 2 + 4;
   }
 }
 
-/// Painter que dibuja el círculo del efecto *ripple*.
-/// Se expande desde [center] hasta cubrir el botón, con color [color].
-class _CirclePainter extends CustomPainter {
-  _CirclePainter({
+/// Painter personalizado que dibuja el círculo del efecto ripple.
+///
+/// Se expande desde [center] con un [diameter] específico usando [color].
+class _RippleCirclePainter extends CustomPainter {
+  const _RippleCirclePainter({
     required this.center,
     required this.diameter,
     required this.color,
-    required this.radius,
   });
 
-  /// Centro del círculo (en coordenadas locales del widget).
+  /// Centro del círculo en coordenadas locales del widget.
   final Offset center;
 
-  /// Diámetro actual del círculo.
+  /// Diámetro actual del círculo durante la animación.
   final double diameter;
 
-  /// Color del círculo.
+  /// Color del círculo de ripple.
   final Color color;
-
-  /// Radio de las esquinas del botón (para consistencia visual si luego
-  /// se quisiera recortar/ajustar).
-  final double radius;
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..isAntiAlias = true
-      ..color = color;
+      ..color = color
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true;
+
     canvas.drawCircle(center, diameter / 2, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _CirclePainter old) => old.center != center || old.diameter != diameter || old.color != color;
-}
-
-/// Calcula el diámetro necesario para cubrir por completo el botón
-/// desde un punto [o], considerando ancho [w] y alto [h].
-double _diameterToCover(Offset o, double w, double h) {
-  final corners = <Offset>[
-    const Offset(0, 0),
-    Offset(w, 0),
-    Offset(0, h),
-    Offset(w, h),
-  ];
-  final maxDist = corners.map((c) => (c - o).distance).reduce((a, b) => a > b ? a : b);
-  return maxDist * 2 + 2;
+  bool shouldRepaint(covariant _RippleCirclePainter oldDelegate) {
+    return oldDelegate.center != center || oldDelegate.diameter != diameter || oldDelegate.color != color;
+  }
 }

@@ -72,7 +72,7 @@ class _RectRevealButtonDocPageState extends State<RectRevealButtonDocPage> {
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 300),
                       child: RectRevealButton(
-                        widgetA: Text(
+                        unselectedChild: Text(
                           'Activado',
                           style: TextStyle(
                             color: bgDark.toColor(),
@@ -80,7 +80,7 @@ class _RectRevealButtonDocPageState extends State<RectRevealButtonDocPage> {
                             fontSize: 16,
                           ),
                         ),
-                        widgetB: Text(
+                        selectedChild: Text(
                           'Desactivado',
                           style: TextStyle(
                             color: bgDark.toColor(),
@@ -89,15 +89,15 @@ class _RectRevealButtonDocPageState extends State<RectRevealButtonDocPage> {
                           ),
                         ),
                         height: 56,
-                        radius: 12,
-                        backgroundColorA: text.toColor(),
-                        backgroundColorB: primary.toColor(),
-                        rippleColorA: primary.toColor(),
-                        rippleColorB: text.toColor(),
+                        borderRadius: 12,
+                        unselectedBackgroundColor: text.toColor(),
+                        selectedBackgroundColor: primary.toColor(),
+                        unselectedRippleColor: primary.toColor(),
+                        selectedRippleColor: text.toColor(),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(3),
-                        selected: _example1Selected,
-                        duration: const Duration(milliseconds: 400),
+                        isSelected: _example1Selected,
+                        animationDuration: const Duration(milliseconds: 400),
                         revealDirection: RevealDirection.fromClick,
                         onPressed: () {
                           setState(() {
@@ -128,14 +128,14 @@ class _RectRevealButtonDocPageState extends State<RectRevealButtonDocPage> {
                   const SizedBox(height: 24),
                   buildCodeBlock('''
 RectRevealButton(
-  widgetA: Text('ON'),
-  widgetB: Text('OFF'),
-  backgroundColorA: Colors.green,
-  backgroundColorB: Colors.grey,
-  rippleColorA: Colors.green,
-  rippleColorB: Colors.grey,
+  selectedChild: Text('ON'),
+  unselectedChild: Text('OFF'),
+  selectedBackgroundColor: Colors.green,
+  unselectedBackgroundColor: Colors.grey,
+  selectedRippleColor: Colors.green,
+  unselectedRippleColor: Colors.grey,
   revealDirection: RevealDirection.fromLeft,
-  selected: isActive,
+  isSelected: isActive,
   onPressed: () {
     setState(() => isActive = !isActive);
   },
@@ -154,7 +154,7 @@ RectRevealButton(
                       child: Container(
                         constraints: const BoxConstraints(maxWidth: 300),
                         child: RectRevealButton(
-                          widgetA: Text(
+                          unselectedChild: Text(
                             'Click Anywhere',
                             style: TextStyle(
                               color: bgDark.toColor(),
@@ -162,7 +162,7 @@ RectRevealButton(
                               fontSize: 15,
                             ),
                           ),
-                          widgetB: Text(
+                          selectedChild: Text(
                             'Interactive',
                             style: TextStyle(
                               color: bgDark.toColor(),
@@ -171,15 +171,15 @@ RectRevealButton(
                             ),
                           ),
                           height: 52,
-                          radius: 12,
-                          backgroundColorA: text.toColor(),
-                          backgroundColorB: success.toColor(),
-                          rippleColorA: success.toColor(),
-                          rippleColorB: text.toColor(),
+                          borderRadius: 12,
+                          unselectedBackgroundColor: text.toColor(),
+                          selectedBackgroundColor: success.toColor(),
+                          unselectedRippleColor: success.toColor(),
+                          selectedRippleColor: text.toColor(),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(3),
-                          selected: _example2Selected,
-                          duration: const Duration(milliseconds: 350),
+                          isSelected: _example2Selected,
+                          animationDuration: const Duration(milliseconds: 350),
                           revealDirection: RevealDirection.fromClick,
                           onPressed: () {
                             setState(() {
@@ -191,10 +191,10 @@ RectRevealButton(
                     ),
                     '''
 RectRevealButton(
-  widgetA: Text('Click Anywhere'),
-  widgetB: Text('Interactive'),
+  selectedChild: Text('Click Anywhere'),
+  unselectedChild: Text('Interactive'),
   revealDirection: RevealDirection.fromClick,
-  selected: isSelected,
+  isSelected: isSelected,
   onPressed: () => toggle(),
 )''',
                   ),
@@ -209,7 +209,7 @@ RectRevealButton(
                       child: Container(
                         constraints: const BoxConstraints(maxWidth: 300),
                         child: RectRevealButton(
-                          widgetA: Row(
+                          unselectedChild: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -228,7 +228,7 @@ RectRevealButton(
                               ),
                             ],
                           ),
-                          widgetB: Row(
+                          selectedChild: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -248,15 +248,15 @@ RectRevealButton(
                             ],
                           ),
                           height: 52,
-                          radius: 26,
-                          backgroundColorA: text.toColor(),
-                          backgroundColorB: info.toColor(),
-                          rippleColorA: info.toColor(),
-                          rippleColorB: text.toColor(),
+                          borderRadius: 26,
+                          unselectedBackgroundColor: text.toColor(),
+                          selectedBackgroundColor: info.toColor(),
+                          unselectedRippleColor: info.toColor(),
+                          selectedRippleColor: text.toColor(),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(3),
-                          selected: _example3Selected,
-                          duration: const Duration(milliseconds: 400),
+                          isSelected: _example3Selected,
+                          animationDuration: const Duration(milliseconds: 400),
                           revealDirection: RevealDirection.fromLeft,
                           onPressed: () {
                             setState(() {
@@ -268,20 +268,20 @@ RectRevealButton(
                     ),
                     '''
 RectRevealButton(
-  widgetA: Row(
+  selectedChild: Row(
     children: [
       Icon(Icons.arrow_forward),
       Text('Next'),
     ],
   ),
-  widgetB: Row(
+  unselectedChild: Row(
     children: [
       Icon(Icons.check),
       Text('Complete'),
     ],
   ),
   revealDirection: RevealDirection.fromLeft,
-  selected: isComplete,
+  isSelected: isComplete,
   onPressed: () => proceed(),
 )''',
                   ),
@@ -296,7 +296,7 @@ RectRevealButton(
                       child: Container(
                         constraints: const BoxConstraints(maxWidth: 300),
                         child: RectRevealButton(
-                          widgetA: Row(
+                          unselectedChild: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -315,7 +315,7 @@ RectRevealButton(
                               ),
                             ],
                           ),
-                          widgetB: Row(
+                          selectedChild: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -335,15 +335,15 @@ RectRevealButton(
                             ],
                           ),
                           height: 52,
-                          radius: 26,
-                          backgroundColorA: text.toColor(),
-                          backgroundColorB: warning.toColor(),
-                          rippleColorA: warning.toColor(),
-                          rippleColorB: text.toColor(),
+                          borderRadius: 26,
+                          unselectedBackgroundColor: text.toColor(),
+                          selectedBackgroundColor: warning.toColor(),
+                          unselectedRippleColor: warning.toColor(),
+                          selectedRippleColor: text.toColor(),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(3),
-                          selected: _example4Selected,
-                          duration: const Duration(milliseconds: 400),
+                          isSelected: _example4Selected,
+                          animationDuration: const Duration(milliseconds: 400),
                           revealDirection: RevealDirection.fromRight,
                           onPressed: () {
                             setState(() {
@@ -355,20 +355,20 @@ RectRevealButton(
                     ),
                     '''
 RectRevealButton(
-  widgetA: Row(
+  selectedChild: Row(
     children: [
       Text('Back'),
       Icon(Icons.arrow_back),
     ],
   ),
-  widgetB: Row(
+  unselectedChild: Row(
     children: [
       Text('Cancel'),
       Icon(Icons.close),
     ],
   ),
   revealDirection: RevealDirection.fromRight,
-  selected: isCancelled,
+  isSelected: isCancelled,
   onPressed: () => goBack(),
 )''',
                   ),
@@ -426,76 +426,76 @@ RectRevealButton(
 
   final properties = [
     {
-      'name': 'widgetA',
+      'name': 'selectedChild',
       'type': 'Widget',
       'default': '-',
-      'description': 'Contenido en estado seleccionado',
+      'description': 'Contenido mostrado cuando el botón está seleccionado (true).',
     },
     {
-      'name': 'widgetB',
-      'type': 'Widget',
+      'name': 'unselectedChild',
+      'type': 'Widget?',
       'default': '-',
-      'description': 'Contenido en estado no seleccionado',
+      'description': 'Contenido mostrado cuando el botón NO está seleccionado (false). Opcional; si no existe, se reutiliza `selectedChild`.',
     },
     {
-      'name': 'backgroundColorA',
+      'name': 'selectedBackgroundColor',
       'type': 'Color',
       'default': 'Colors.black',
-      'description': 'Color de fondo estado A',
+      'description': 'Color de fondo cuando el botón está seleccionado.',
     },
     {
-      'name': 'backgroundColorB',
+      'name': 'unselectedBackgroundColor',
       'type': 'Color',
       'default': 'Colors.white',
-      'description': 'Color de fondo estado B',
+      'description': 'Color de fondo cuando el botón NO está seleccionado.',
     },
     {
-      'name': 'rippleColorA',
+      'name': 'selectedRippleColor',
       'type': 'Color',
       'default': 'Colors.white',
-      'description': 'Color reveal estado A',
+      'description': 'Color del rectángulo de reveal al pasar a estado seleccionado.',
     },
     {
-      'name': 'rippleColorB',
+      'name': 'unselectedRippleColor',
       'type': 'Color',
       'default': 'Colors.black',
-      'description': 'Color reveal estado B',
+      'description': 'Color del rectángulo de reveal al pasar a estado no seleccionado.',
     },
     {
       'name': 'revealDirection',
       'type': 'RevealDirection',
-      'default': 'fromClick',
-      'description': 'Dirección del reveal',
+      'default': 'RevealDirection.fromClick',
+      'description': 'Dirección desde la que se expande el reveal: fromClick, fromLeft, fromRight.',
     },
     {
       'name': 'height',
       'type': 'double',
       'default': '48.0',
-      'description': 'Altura del botón',
+      'description': 'Altura del botón en píxeles lógicos.',
     },
     {
       'name': 'width',
-      'type': 'double?',
-      'default': 'null',
-      'description': 'Ancho del botón (opcional)',
+      'type': 'double',
+      'default': '120.0',
+      'description': 'Ancho del botón. Si es null, ocupa el espacio disponible.',
     },
     {
-      'name': 'radius',
+      'name': 'borderRadius',
       'type': 'double',
       'default': '2.0',
-      'description': 'Radio de las esquinas',
+      'description': 'Radio de las esquinas. Debe ser >= 2.0.',
     },
     {
-      'name': 'selected',
+      'name': 'isSelected',
       'type': 'bool?',
       'default': 'null',
-      'description': 'Estado actual (control externo)',
+      'description': 'Estado controlable desde fuera. Si es null, el widget maneja su propio estado.',
     },
     {
-      'name': 'duration',
+      'name': 'animationDuration',
       'type': 'Duration',
-      'default': '300ms',
-      'description': 'Duración de la animación',
+      'default': 'Duration(milliseconds: 300)',
+      'description': 'Duración de la animación del reveal.',
     },
   ];
 
