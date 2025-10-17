@@ -381,6 +381,7 @@ class AnimatedStateButton extends StatefulWidget {
       width: width,
       controller: controller,
       onClick: () => controller.runGuarded(onAction),
+      onPressed: () => controller.runGuarded(onAction),
       initChild: label ?? const Text('Enviar', style: TextStyle(color: Colors.white)),
       initColor: initColor,
       borderRadius: borderRadius,
@@ -433,7 +434,6 @@ class AnimatedStateButton extends StatefulWidget {
 }
 
 class _AnimatedStateButtonState extends State<AnimatedStateButton> {
-  // Hover/Press state
   bool _isHover = false;
   bool _isPressed = false;
 
@@ -450,7 +450,6 @@ class _AnimatedStateButtonState extends State<AnimatedStateButton> {
       await handler();
       return;
     }
-    // Demo: loading -> success -> init
     widget.controller.loading();
     await Future.delayed(const Duration(milliseconds: 800));
     if (!mounted) return;
@@ -464,7 +463,6 @@ class _AnimatedStateButtonState extends State<AnimatedStateButton> {
 
   @override
   void dispose() {
-    // Si el controller fue creado por la factory, lo liberamos aquí.
     if (widget._ownController) {
       widget.controller.dispose();
     }
@@ -475,7 +473,7 @@ class _AnimatedStateButtonState extends State<AnimatedStateButton> {
     double s = 1.0;
     if (_isHover) s -= widget.hoverScale;
     if (_isPressed) s -= widget.pressScale;
-    if (s < 0.85) s = 0.85; // límite por seguridad
+    if (s < 0.85) s = 0.85;
     return s;
   }
 

@@ -196,23 +196,41 @@ class RectRevealButton extends StatefulWidget {
   /// ```
   const RectRevealButton({
     super.key,
-    required this.selectedChild,
-    this.unselectedChild,
+    required Widget selectedChild,
+    Widget? unselectedChild,
     required this.onPressed,
-    this.selectedBackgroundColor = Colors.black,
-    this.unselectedBackgroundColor = Colors.white,
-    this.selectedRippleColor = Colors.white,
-    this.unselectedRippleColor = Colors.black,
-    this.width = 120,
+    Color? selectedBackgroundColor,
+    Color? unselectedBackgroundColor,
+    Color? selectedRippleColor,
+    Color? unselectedRippleColor,
+    this.width = double.infinity,
     this.height = 48,
-    this.borderRadius = 2,
-    this.animationDuration = const Duration(milliseconds: 300),
-    this.isSelected,
+    double? borderRadius,
+    Duration? animationDuration,
+    bool? isSelected,
     this.border,
     this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.alignment = Alignment.center,
     this.revealDirection = RevealDirection.fromClick,
-  }) : assert(borderRadius >= 2, 'borderRadius debe ser al menos 2.0 para un renderizado correcto');
+    @Deprecated('Use selectedChild instead. Will be removed in v2.0.0') Widget? widgetA,
+    @Deprecated('Use unselectedChild instead. Will be removed in v2.0.0') Widget? widgetB,
+    @Deprecated('Use selectedBackgroundColor instead. Will be removed in v2.0.0') Color? backgroundColorA,
+    @Deprecated('Use unselectedBackgroundColor instead. Will be removed in v2.0.0') Color? backgroundColorB,
+    @Deprecated('Use selectedRippleColor instead. Will be removed in v2.0.0') Color? rippleColorA,
+    @Deprecated('Use unselectedRippleColor instead. Will be removed in v2.0.0') Color? rippleColorB,
+    @Deprecated('Use borderRadius instead. Will be removed in v2.0.0') double? radius,
+    @Deprecated('Use animationDuration instead. Will be removed in v2.0.0') Duration? duration,
+    @Deprecated('Use isSelected instead. Will be removed in v2.0.0') bool? selected,
+  }) : selectedChild = widgetA ?? selectedChild,
+       unselectedChild = widgetB ?? unselectedChild,
+       selectedBackgroundColor = backgroundColorA ?? selectedBackgroundColor ?? Colors.black,
+       unselectedBackgroundColor = backgroundColorB ?? unselectedBackgroundColor ?? Colors.white,
+       selectedRippleColor = rippleColorA ?? selectedRippleColor ?? Colors.white,
+       unselectedRippleColor = rippleColorB ?? unselectedRippleColor ?? Colors.black,
+       borderRadius = radius ?? borderRadius ?? 2,
+       animationDuration = duration ?? animationDuration ?? const Duration(milliseconds: 300),
+       isSelected = selected ?? isSelected,
+       assert((radius ?? borderRadius ?? 2) >= 2, 'borderRadius debe ser al menos 2.0 para un renderizado correcto');
 
   /// Widget mostrado cuando el botón está en estado **seleccionado**.
   ///
@@ -372,7 +390,7 @@ class _RectRevealButtonState extends State<RectRevealButton> with SingleTickerPr
           final buttonHeight = widget.height;
 
           final currentBackgroundColor = _isSelected ? widget.selectedBackgroundColor : widget.unselectedBackgroundColor;
-          final rippleColor = _isSelected ? widget.unselectedRippleColor : widget.selectedRippleColor;
+          final rippleColor = _isSelected ? widget.selectedRippleColor : widget.unselectedRippleColor;
           final currentChild = _isSelected ? widget.selectedChild : widget.unselectedChild ?? widget.selectedChild;
 
           return MouseRegion(

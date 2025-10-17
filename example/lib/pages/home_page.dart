@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   'Welcome',
                                   style: TextStyle(
-                                    color: bgDark.toColor(),
+                                    color: text.toColor(),
                                     fontWeight: FontWeight.w400,
                                     fontSize: 15,
                                   ),
@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   'Welcome',
                                   style: TextStyle(
-                                    color: text.toColor(),
+                                    color: bgDark.toColor(),
                                     fontWeight: FontWeight.w400,
                                     fontSize: 15,
                                   ),
@@ -198,11 +198,11 @@ class _HomePageState extends State<HomePage> {
                                 });
                               },
                               height: 35,
-                              unselectedBackgroundColor: bgLight.toColor(),
+                              selectedBackgroundColor: bgLight.toColor(),
                               isSelected: components[0].selected,
-                              selectedBackgroundColor: text.toColor(),
-                              unselectedRippleColor: text.toColor(),
-                              selectedRippleColor: bgLight.toColor(),
+                              unselectedBackgroundColor: text.toColor(),
+                              selectedRippleColor: text.toColor(),
+                              unselectedRippleColor: bgLight.toColor(),
                             ),
                             _buildSectionTitle('Buttons'),
                             ...buttons.map(
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: bgDark.toColor(),
+                                        color: text.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: text.toColor(),
+                                        color: bgDark.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -238,11 +238,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  selectedBackgroundColor: bgLight.toColor(),
                                   isSelected: e.selected,
-                                  selectedBackgroundColor: text.toColor(),
-                                  unselectedRippleColor: text.toColor(),
-                                  selectedRippleColor: bgLight.toColor(),
+                                  unselectedBackgroundColor: text.toColor(),
+                                  selectedRippleColor: text.toColor(),
+                                  unselectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: bgDark.toColor(),
+                                        color: text.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: text.toColor(),
+                                        color: bgDark.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -280,11 +280,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  selectedBackgroundColor: bgLight.toColor(),
                                   isSelected: e.selected,
-                                  selectedBackgroundColor: text.toColor(),
-                                  unselectedRippleColor: text.toColor(),
-                                  selectedRippleColor: bgLight.toColor(),
+                                  unselectedBackgroundColor: text.toColor(),
+                                  selectedRippleColor: text.toColor(),
+                                  unselectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
@@ -298,7 +298,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: bgDark.toColor(),
+                                        color: text.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -309,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: text.toColor(),
+                                        color: bgDark.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -322,11 +322,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  selectedBackgroundColor: bgLight.toColor(),
                                   isSelected: e.selected,
-                                  selectedBackgroundColor: text.toColor(),
-                                  unselectedRippleColor: text.toColor(),
-                                  selectedRippleColor: bgLight.toColor(),
+                                  unselectedBackgroundColor: text.toColor(),
+                                  selectedRippleColor: text.toColor(),
+                                  unselectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: bgDark.toColor(),
+                                        color: text.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -351,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                                     child: Text(
                                       e.title,
                                       style: TextStyle(
-                                        color: text.toColor(),
+                                        color: bgDark.toColor(),
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
                                       ),
@@ -364,11 +364,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   height: 35,
-                                  unselectedBackgroundColor: bgLight.toColor(),
+                                  selectedBackgroundColor: bgLight.toColor(),
                                   isSelected: e.selected,
-                                  selectedBackgroundColor: text.toColor(),
-                                  unselectedRippleColor: text.toColor(),
-                                  selectedRippleColor: bgLight.toColor(),
+                                  unselectedBackgroundColor: text.toColor(),
+                                  selectedRippleColor: text.toColor(),
+                                  unselectedRippleColor: bgLight.toColor(),
                                 );
                               },
                             ),
