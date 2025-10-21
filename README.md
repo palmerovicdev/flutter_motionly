@@ -81,7 +81,7 @@ Añade esta línea a tu archivo `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_motionly: ^1.1.0
+  flutter_motionly: ^1.1.1
 ```
 
 Luego ejecuta:
@@ -645,23 +645,23 @@ Las contribuciones son bienvenidas! Si encuentras un bug o tienes una sugerencia
 
 ## ✨ Nuevo release:
 
-- Versión objetivo: `1.1.0` (nuevos fondos animados, optimizaciones y mejoras)
+- Versión objetivo: `1.1.1` (documentación completa de nuevos componentes)
 
 Pasos recomendados para release:
 
-1. Actualiza la versión en `pubspec.yaml` a `1.1.0` y revisa `CHANGELOG.md`.
+1. Actualiza la versión en `pubspec.yaml` a `1.1.1` y revisa `CHANGELOG.md`.
 2. Revisa `example/` y asegúrate de que los snippets funcionan con la nueva API.
 3. Ejecuta tests y `flutter analyze` en todo el repo.
-4. Haz commit y tag (por ejemplo `v1.1.0`) y publica.
+4. Haz commit y tag (por ejemplo `v1.1.1`) y publica.
 
 Comandos sugeridos:
 
 ```git
 git add . && \
-git commit -m "chore(release): v1.1.0 - fondos animados y optimizaciones" && \
-git tag -a v1.1.0 -m "Release v1.1.0" && \
+git commit -m "chore(release): v1.1.1 - documentación completa de fondos animados" && \
+git tag -a v1.1.1 -m "Release v1.1.1" && \
 git push origin main && \
-git push origin v1.1.0
+git push origin v1.1.1
 ```
 
 ## 📄 Licencia

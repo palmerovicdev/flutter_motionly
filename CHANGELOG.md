@@ -5,6 +5,51 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [1.1.1] - 2025-01-20
+
+#### Mejorado
+
+##### Documentación
+- **FlickTileBox**: Documentación completa en el código fuente
+  - Documentación dartdoc detallada con descripción completa del widget
+  - Sección "Cómo funciona" explicando la mecánica del efecto
+  - Diagrama ASCII "Anatomía del efecto" mostrando el grid visual
+  - Sección de "Rendimiento" con optimizaciones y límites recomendados
+  - Sección de "Buenas prácticas" con consejos de uso
+  - 5 ejemplos completos de código: básico, matriz digital, minimalista, personalizado, reproducible
+  - Sección de "Parámetros avanzados" con explicaciones detalladas
+  - Documentación de las 12 propiedades con tipos, descripciones y rangos recomendados
+  - Clases internas documentadas: `_FlickTileBoxState`, `_TileData`, `_FlickTilePainter`
+  - Comentarios inline en métodos clave (`_initTiles`, `paint`, etc.)
+  - Referencias cruzadas a componentes relacionados
+
+- **ParticleBox**: Documentación completa en el código fuente
+  - Documentación dartdoc detallada con descripción completa del widget
+  - Sección "Cómo funciona" con 4 puntos clave
+  - Diagrama ASCII mostrando el área de animación con partículas
+  - Sección de "Rendimiento" con recomendaciones por tipo de dispositivo
+  - Sección de "Buenas prácticas" con 5 consejos esenciales
+  - 5 ejemplos completos de código: elegante, estrellas, energético, océano digital, contenedor personalizado
+  - Sección de "Interactividad" explicando el hover del mouse
+  - Documentación de las 7 propiedades con tipos, descripciones y rangos recomendados
+  - Clase `Particle` completamente documentada con todas sus propiedades y métodos
+  - Clase `ParticlePainter` con explicación de renderizado
+  - Clase `_ParticleBoxState` con comentarios en el ciclo de vida y actualización
+  - Referencias cruzadas a componentes relacionados
+
+##### Calidad del Código
+- Estándares de documentación consistentes en ambos componentes
+- Formato dartdoc profesional listo para pub.dev
+- Ejemplos de código copy/paste integrados en la documentación
+- Comentarios inline estratégicos para explicar lógica compleja
+- Descripciones técnicas de optimizaciones aplicadas
+
+#### Notas
+- Esta versión se enfoca exclusivamente en mejorar la documentación del código
+- No hay cambios en la funcionalidad o API de los componentes
+- La documentación ahora cumple con los estándares de publicación de pub.dev
+- Los desarrolladores pueden usar la documentación integrada en sus IDEs
+
 ## [1.1.0] - 2025-01-20
 
 #### Añadido
