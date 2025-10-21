@@ -7,6 +7,8 @@ import 'package:example/pages/indicators/indicators_page.dart';
 import 'package:example/pages/loaders/circle_matrix_page.dart';
 import 'package:example/pages/loaders/square_matrix_page.dart';
 import 'package:example/pages/loaders/wave_stick_page.dart';
+import 'package:example/pages/backgrounds/particles_page.dart';
+import 'package:example/pages/backgrounds/flick_tile_page.dart';
 import 'package:example/pages/texts/animated_text_doc_page.dart';
 import 'package:example/pages/texts/fuzzy_text_doc_page.dart';
 import 'package:example/pages/welcome_page.dart';
@@ -161,218 +163,262 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 32.0),
-                        child: Column(
-                          spacing: 12,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 12),
-                            _buildSectionTitle('Home'),
-                            RippleRevealButton(
-                              borderRadius: 4,
-                              unselectedChild: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  'Welcome',
-                                  style: TextStyle(
-                                    color: text.toColor(),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 15,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            spacing: 12,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 12),
+                              _buildSectionTitle('Home'),
+                              RippleRevealButton(
+                                borderRadius: 4,
+                                unselectedChild: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'Welcome',
+                                    style: TextStyle(
+                                      color: text.toColor(),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              selectedChild: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  'Welcome',
-                                  style: TextStyle(
-                                    color: bgDark.toColor(),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 15,
+                                selectedChild: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    'Welcome',
+                                    style: TextStyle(
+                                      color: bgDark.toColor(),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 ),
+                                onPressed: () {
+                                  setState(() {
+                                    selectedIndex = 0;
+                                    toggleButton('Welcome');
+                                  });
+                                },
+                                height: 35,
+                                selectedBackgroundColor: bgLight.toColor(),
+                                isSelected: components[0].selected,
+                                unselectedBackgroundColor: text.toColor(),
+                                selectedRippleColor: text.toColor(),
+                                unselectedRippleColor: bgLight.toColor(),
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  selectedIndex = 0;
-                                  toggleButton('Welcome');
-                                });
-                              },
-                              height: 35,
-                              selectedBackgroundColor: bgLight.toColor(),
-                              isSelected: components[0].selected,
-                              unselectedBackgroundColor: text.toColor(),
-                              selectedRippleColor: text.toColor(),
-                              unselectedRippleColor: bgLight.toColor(),
-                            ),
-                            _buildSectionTitle('Buttons'),
-                            ...buttons.map(
-                              (e) {
-                                return RippleRevealButton(
-                                  borderRadius: 4,
-                                  unselectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: text.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                              _buildSectionTitle('Buttons'),
+                              ...buttons.map(
+                                (e) {
+                                  return RippleRevealButton(
+                                    borderRadius: 4,
+                                    unselectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: text.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  selectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: bgDark.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    selectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: bgDark.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      selectedIndex = components.indexOf(e);
-                                      toggleButton(e.title);
-                                    });
-                                  },
-                                  height: 35,
-                                  selectedBackgroundColor: bgLight.toColor(),
-                                  isSelected: e.selected,
-                                  unselectedBackgroundColor: text.toColor(),
-                                  selectedRippleColor: text.toColor(),
-                                  unselectedRippleColor: bgLight.toColor(),
-                                );
-                              },
-                            ),
-                            _buildSectionTitle('Texts'),
-                            ...texts.map(
-                              (e) {
-                                return RippleRevealButton(
-                                  borderRadius: 4,
-                                  unselectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: text.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedIndex = components.indexOf(e);
+                                        toggleButton(e.title);
+                                      });
+                                    },
+                                    height: 35,
+                                    selectedBackgroundColor: bgLight.toColor(),
+                                    isSelected: e.selected,
+                                    unselectedBackgroundColor: text.toColor(),
+                                    selectedRippleColor: text.toColor(),
+                                    unselectedRippleColor: bgLight.toColor(),
+                                  );
+                                },
+                              ),
+                              _buildSectionTitle('Texts'),
+                              ...texts.map(
+                                (e) {
+                                  return RippleRevealButton(
+                                    borderRadius: 4,
+                                    unselectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: text.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  selectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: bgDark.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    selectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: bgDark.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      selectedIndex = components.indexOf(e);
-                                      toggleButton(e.title);
-                                    });
-                                  },
-                                  height: 35,
-                                  selectedBackgroundColor: bgLight.toColor(),
-                                  isSelected: e.selected,
-                                  unselectedBackgroundColor: text.toColor(),
-                                  selectedRippleColor: text.toColor(),
-                                  unselectedRippleColor: bgLight.toColor(),
-                                );
-                              },
-                            ),
-                            _buildSectionTitle('Indicators'),
-                            ...indicators.map(
-                              (e) {
-                                return RippleRevealButton(
-                                  borderRadius: 4,
-                                  unselectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: text.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedIndex = components.indexOf(e);
+                                        toggleButton(e.title);
+                                      });
+                                    },
+                                    height: 35,
+                                    selectedBackgroundColor: bgLight.toColor(),
+                                    isSelected: e.selected,
+                                    unselectedBackgroundColor: text.toColor(),
+                                    selectedRippleColor: text.toColor(),
+                                    unselectedRippleColor: bgLight.toColor(),
+                                  );
+                                },
+                              ),
+                              _buildSectionTitle('Indicators'),
+                              ...indicators.map(
+                                (e) {
+                                  return RippleRevealButton(
+                                    borderRadius: 4,
+                                    unselectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: text.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  selectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: bgDark.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    selectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: bgDark.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      selectedIndex = components.indexOf(e);
-                                      toggleButton(e.title);
-                                    });
-                                  },
-                                  height: 35,
-                                  selectedBackgroundColor: bgLight.toColor(),
-                                  isSelected: e.selected,
-                                  unselectedBackgroundColor: text.toColor(),
-                                  selectedRippleColor: text.toColor(),
-                                  unselectedRippleColor: bgLight.toColor(),
-                                );
-                              },
-                            ),
-                            _buildSectionTitle('Loaders'),
-                            ...loaders.map(
-                              (e) {
-                                return RippleRevealButton(
-                                  borderRadius: 4,
-                                  unselectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: text.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedIndex = components.indexOf(e);
+                                        toggleButton(e.title);
+                                      });
+                                    },
+                                    height: 35,
+                                    selectedBackgroundColor: bgLight.toColor(),
+                                    isSelected: e.selected,
+                                    unselectedBackgroundColor: text.toColor(),
+                                    selectedRippleColor: text.toColor(),
+                                    unselectedRippleColor: bgLight.toColor(),
+                                  );
+                                },
+                              ),
+                              _buildSectionTitle('Loaders'),
+                              ...loaders.map(
+                                (e) {
+                                  return RippleRevealButton(
+                                    borderRadius: 4,
+                                    unselectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: text.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  selectedChild: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      e.title,
-                                      style: TextStyle(
-                                        color: bgDark.toColor(),
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
+                                    selectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: bgDark.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      selectedIndex = components.indexOf(e);
-                                      toggleButton(e.title);
-                                    });
-                                  },
-                                  height: 35,
-                                  selectedBackgroundColor: bgLight.toColor(),
-                                  isSelected: e.selected,
-                                  unselectedBackgroundColor: text.toColor(),
-                                  selectedRippleColor: text.toColor(),
-                                  unselectedRippleColor: bgLight.toColor(),
-                                );
-                              },
-                            ),
-                          ],
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedIndex = components.indexOf(e);
+                                        toggleButton(e.title);
+                                      });
+                                    },
+                                    height: 35,
+                                    selectedBackgroundColor: bgLight.toColor(),
+                                    isSelected: e.selected,
+                                    unselectedBackgroundColor: text.toColor(),
+                                    selectedRippleColor: text.toColor(),
+                                    unselectedRippleColor: bgLight.toColor(),
+                                  );
+                                },
+                              ),
+                              _buildSectionTitle('Backgrounds'),
+                              ...backgrounds.map(
+                                (e) {
+                                  return RippleRevealButton(
+                                    borderRadius: 4,
+                                    unselectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: text.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    selectedChild: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        e.title,
+                                        style: TextStyle(
+                                          color: bgDark.toColor(),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        selectedIndex = components.indexOf(e);
+                                        toggleButton(e.title);
+                                      });
+                                    },
+                                    height: 35,
+                                    selectedBackgroundColor: bgLight.toColor(),
+                                    isSelected: e.selected,
+                                    unselectedBackgroundColor: text.toColor(),
+                                    selectedRippleColor: text.toColor(),
+                                    unselectedRippleColor: bgLight.toColor(),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -558,6 +604,18 @@ class ButtonItem {
     required this.selected,
   });
 }
+final backgrounds = [
+  ButtonItem(
+    title: 'Particle Box',
+    page: ParticlesPage(),
+    selected: false,
+  ),
+  ButtonItem(
+    title: 'Flick Tile Box',
+    page: FlickTilePage(),
+    selected: false,
+  ),
+];
 
 final components = [
   ButtonItem(
@@ -569,6 +627,7 @@ final components = [
   ...texts,
   ...indicators,
   ...loaders,
+  ...backgrounds,
 ];
 
 final loaders = [

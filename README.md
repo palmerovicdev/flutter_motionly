@@ -32,6 +32,19 @@ Una colección de widgets animados personalizados para Flutter que añaden inter
 - **AnimatedStateButton** - Botón con estados animados personalizables
 - **PulsatingButton** - Botón con efecto de pulsación continua tipo latido
 
+### 🎨 Fondos Animados
+
+- **ParticleBox** - Sistema de partículas animadas para fondos dinámicos e interactivos
+  - Partículas con movimiento continuo y aleatorio
+  - Colores múltiples configurables
+  - Interactividad con mouse/hover
+  - Optimizado para cientos de partículas
+- **FlickTileBox** - Grid de tiles parpadeantes con velocidad y opacidad variables
+  - Matriz configurable de filas y columnas
+  - Cada tile con velocidad única de parpadeo
+  - Control preciso de opacidad y velocidad
+  - Bordes redondeados personalizables
+
 ### 📝 Textos Animados
 
 - **AnimatedText** - Texto con 9 tipos de animación en cascada (fade, blur, rotate, decode, etc.)
@@ -68,7 +81,7 @@ Añade esta línea a tu archivo `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_motionly: ^1.0.1
+  flutter_motionly: ^1.1.0
 ```
 
 Luego ejecuta:
@@ -183,6 +196,121 @@ FuzzyText.height(
   amplitude: 6.0,
 )
 ```
+
+### ParticleBox
+
+Sistema de partículas animadas para fondos dinámicos:
+
+```dart
+import 'package:flutter_motionly/widget/backgrounds/particles_animation.dart';
+
+// Fondo básico de partículas
+ParticleBox(
+  maxHeight: 400,
+  maxWidth: MediaQuery.of(context).size.width,
+  velocityFactor: 0.3,
+  particleCount: 150,
+  heightFactor: 5,
+  colors: [
+    Colors.blue.withValues(alpha: 0.6),
+    Colors.purple.withValues(alpha: 0.6),
+    Colors.pink.withValues(alpha: 0.6),
+  ],
+  backgroundColor: Colors.black,
+)
+
+// Efecto de estrellas
+ParticleBox(
+  maxHeight: 600,
+  maxWidth: 800,
+  velocityFactor: 0.15,
+  particleCount: 100,
+  heightFactor: 3,
+  colors: [
+    Colors.white.withValues(alpha: 0.8),
+    Colors.blue[100]!.withValues(alpha: 0.6),
+  ],
+  backgroundColor: Colors.black,
+)
+
+// Partículas rápidas y energéticas
+ParticleBox(
+  maxHeight: 300,
+  maxWidth: 600,
+  velocityFactor: 0.5,
+  particleCount: 300,
+  heightFactor: 8,
+  colors: [
+    Colors.red.withValues(alpha: 0.7),
+    Colors.orange.withValues(alpha: 0.7),
+    Colors.yellow.withValues(alpha: 0.7),
+  ],
+)
+```
+
+Parámetros configurables:
+- `particleCount` - Cantidad de partículas (50-300 recomendado)
+- `velocityFactor` - Velocidad de movimiento (0.1-0.5 recomendado)
+- `heightFactor` - Variación de tamaño de partículas (3-8 recomendado)
+- `colors` - Lista de colores para las partículas
+- `backgroundColor` - Color de fondo opcional
+
+### FlickTileBox
+
+Grid de tiles parpadeantes para fondos tipo mosaico:
+
+```dart
+import 'package:flutter_motionly/widget/backgrounds/flick_tile_animation.dart';
+
+// Fondo básico de tiles
+FlickTileBox(
+  rows: 12,
+  columns: 8,
+  spacing: 6,
+  color: Colors.blue,
+  minOpacity: 0.1,
+  maxOpacity: 0.9,
+  minSpeed: 0.3,
+  maxSpeed: 0.8,
+  borderRadius: 4,
+  backgroundColor: Colors.black,
+)
+
+// Efecto de matriz digital
+FlickTileBox(
+  rows: 20,
+  columns: 30,
+  spacing: 2,
+  color: Colors.green,
+  minOpacity: 0.1,
+  maxOpacity: 0.8,
+  minSpeed: 0.25,
+  maxSpeed: 0.75,
+  borderRadius: 1,
+)
+
+// Mosaico minimalista
+FlickTileBox(
+  rows: 4,
+  columns: 6,
+  spacing: 12,
+  color: Colors.purple,
+  minOpacity: 0.15,
+  maxOpacity: 0.6,
+  minSpeed: 0.2,
+  maxSpeed: 0.5,
+  borderRadius: 8,
+)
+```
+
+Parámetros configurables:
+- `rows` y `columns` - Tamaño del grid (50-150 tiles total recomendado en móviles)
+- `spacing` - Espaciado entre tiles (2-8px recomendado)
+- `minOpacity` y `maxOpacity` - Rango de opacidad (0.0-1.0)
+- `minSpeed` y `maxSpeed` - Rango de velocidad de parpadeo (0.2-1.0)
+- `borderRadius` - Radio de bordes de cada tile
+- `tileSize` - Tamaño manual de tiles (null = auto-calculado)
+- `seed` - Semilla para aleatoriedad reproducible
 
 ### WaveSticksLoader
 
@@ -517,23 +645,23 @@ Las contribuciones son bienvenidas! Si encuentras un bug o tienes una sugerencia
 
 ## ✨ Nuevo release:
 
-- Versión objetivo: `1.0.1` (documentación, ejemplos y unificación de API)
+- Versión objetivo: `1.1.0` (nuevos fondos animados, optimizaciones y mejoras)
 
 Pasos recomendados para release:
 
-1. Actualiza la versión en `pubspec.yaml` a `1.0.1` y revisa `CHANGELOG.md`.
+1. Actualiza la versión en `pubspec.yaml` a `1.1.0` y revisa `CHANGELOG.md`.
 2. Revisa `example/` y asegúrate de que los snippets funcionan con la nueva API.
 3. Ejecuta tests y `flutter analyze` en todo el repo.
-4. Haz commit y tag (por ejemplo `v1.0.1`) y publica.
+4. Haz commit y tag (por ejemplo `v1.1.0`) y publica.
 
 Comandos sugeridos:
 
 ```git
 git add . && \
-git commit -m "chore(release): v1.0.1 - unificación API y mejoras" && \
-git tag -a v1.0.1 -m "Release v1.0.1" && \
+git commit -m "chore(release): v1.1.0 - fondos animados y optimizaciones" && \
+git tag -a v1.1.0 -m "Release v1.1.0" && \
 git push origin main && \
-git push origin v1.0.1
+git push origin v1.1.0
 ```
 
 ## 📄 Licencia

@@ -5,6 +5,95 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
+## [1.1.0] - 2025-01-20
+
+#### Añadido
+
+##### 🎨 Fondos Animados (Nueva Categoría)
+
+- **FlickTileBox**: Sistema de tiles parpadeantes para fondos dinámicos
+  - Grid configurable de tiles con filas y columnas ajustables
+  - Cada tile tiene velocidad y fase de parpadeo única para efecto orgánico
+  - Control de opacidad con rangos min/max configurables (0.0 - 1.0)
+  - Velocidad de parpadeo variable por tile (minSpeed/maxSpeed)
+  - Espaciado entre tiles personalizable
+  - Bordes redondeados configurables (borderRadius)
+  - Color base personalizable
+  - Tamaño de tile automático o manual (tileSize)
+  - Semilla opcional (seed) para aleatoriedad reproducible
+  - Color de fondo opcional (backgroundColor)
+  - Optimizado con `RepaintBoundary` y `shouldRepaint` eficiente
+  - Uso de `AnimatedBuilder` para mejor rendimiento
+  - Perfecto para fondos tipo mosaico, pantallas de carga y efectos visuales modernos
+  - 12 parámetros configurables para máxima personalización
+
+- **ParticleBox**: Sistema de partículas animadas para fondos interactivos
+  - Partículas con movimiento continuo y fluido
+  - Sistema de física simple con velocidad y posición
+  - Colores múltiples con selección aleatoria por partícula
+  - Control de cantidad de partículas (particleCount)
+  - Factor de velocidad ajustable (velocityFactor)
+  - Factor de altura para variación de tamaño (heightFactor)
+  - Área de animación configurable (maxWidth/maxHeight)
+  - Dirección de movimiento aleatoria (velocityXDirection/velocityYDirection)
+  - Partículas se regeneran al salir del área visible
+  - Color de fondo opcional (backgroundColor)
+  - Interactividad con mouse (hover) que afecta dirección de partículas
+  - Opacidad semi-transparente para efectos sutiles
+  - Optimizado para renderizar cientos de partículas fluidamente
+  - Perfecto para fondos dinámicos, efectos visuales inmersivos y pantallas de bienvenida
+
+#### Mejorado
+
+##### Documentación y Ejemplos
+- Nueva sección "🎨 Fondos Animados" en el README
+- Página de documentación completa para **FlickTileBox**:
+  - 6 características destacadas con iconos
+  - Ejemplos de uso básico copy/paste
+  - 4 ejemplos interactivos: Parpadeo Suave, Energía Vibrante, Matriz Digital, Mosaico Minimalista
+  - Tabla completa de 12 parámetros con tipos y valores por defecto
+  - Sección de mejores prácticas (Hacer/Evitar)
+  
+- Página de documentación completa para **ParticleBox**:
+  - 6 características destacadas
+  - Ejemplos prácticos: Partículas Suaves, Energía Intensa, Espacio Nocturno, Océano Digital
+  - Tabla de parámetros con descripciones detalladas
+  - Guía de mejores prácticas para optimización
+
+- Actualizada estructura del proyecto en README con carpeta `backgrounds/`
+- Integración completa en la app de ejemplo con navegación desde el home
+
+##### Rendimiento
+- **FlickTileBox**: Optimización masiva del cálculo de opacidad
+  - Simplificado cálculo sinusoidal de opacidad (eliminado cálculo complejo `0.5 + 0.5 * sinVal`)
+  - Cálculo directo: `baseOpacity + amplitude * sin(...)`
+  - `shouldRepaint` optimizado: solo compara `time` en lugar de 10+ parámetros
+  - Uso de `AnimatedBuilder` en lugar de `addListener` + `setState`
+  - Reducción significativa de reconstrucciones innecesarias
+  - Pre-cálculo de valores constantes (rangos de opacidad, grid dimensions)
+
+- **ParticleBox**: Optimización para múltiples partículas
+  - Sistema de física ligero y eficiente
+  - `CustomPainter` optimizado con `shouldRepaint` basado en diferencias reales
+  - Regeneración de partículas solo cuando salen del área visible
+  - Colores cacheados con alpha pre-aplicado
+
+#### Estructura del Proyecto
+- Nueva carpeta `lib/widget/backgrounds/` con:
+  - `flick_tile_animation.dart`
+  - `particles_animation.dart`
+  
+- Nueva carpeta `example/lib/pages/backgrounds/` con:
+  - `flick_tile_page.dart`
+  - `particles_page.dart`
+
+#### Notas Técnicas
+- Ambos componentes son 100% Dart puro (sin dependencias nativas)
+- Optimizados para funcionar en todas las plataformas Flutter
+- Recomendaciones de rendimiento documentadas para móviles
+- FlickTileBox: recomendado 50-150 tiles en móviles
+- ParticleBox: recomendado 50-150 partículas en móviles
+
 ### [1.0.1] - 2025-10-16
 
 #### Mejorado

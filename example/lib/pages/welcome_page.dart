@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_motionly/widget/button/focus_button.dart';
+import 'package:flutter_motionly/widget/backgrounds/particles_animation.dart';
 import 'package:flutter_motionly/widget/text/animated_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -52,12 +53,36 @@ class WelcomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
-
-              Icon(
-                Icons.animation,
-                size: width < 940 ? 80 : 120,
-                color: primary.toColor(),
+              Stack(
+                children: [
+                  SizedBox(
+                    height: 300,
+                    child: ParticleBox(
+                      maxHeight: 700,
+                      maxWidth: width,
+                      velocityFactor: 0.2,
+                      particleCount: 200,
+                      heightFactor: 6,
+                      colors: [
+                        Colors.blue[100]!,
+                        Colors.lightBlueAccent,
+                        Colors.blue,
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 100),
+                        Icon(
+                          Icons.animation,
+                          size: width < 940 ? 80 : 120,
+                          color: primary.toColor(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 32),

@@ -28,6 +28,11 @@ Consulta el `CHANGELOG.md` en la raíz del repositorio para más detalles.
 - **AnimatedStateButton** - Botón con estados animados y soporte para loaders
 - **PulsatingButton** - Botón con efecto de pulsación continua tipo latido
 
+### 🎨 Fondos Animados
+
+- **ParticleBox** - Sistema de partículas animadas para fondos dinámicos e interactivos
+- **FlickTileBox** - Grid de tiles parpadeantes con velocidad y opacidad variables
+
 ### 📝 Textos Animados
 
 - **AnimatedText** - Texto con animaciones personalizadas
@@ -98,16 +103,23 @@ example/
 │   │   └── utils.dart              # Utilidades y colores
 │   └── pages/
 │       ├── home_page.dart          # Página principal con navegación
+│       ├── welcome_page.dart       # Página de bienvenida
 │       ├── buttons/                # Páginas de documentación de botones
 │       │   ├── animated_state_button_doc_page.dart
 │       │   ├── focus_button_doc_page.dart
+│       │   ├── pulsating_button_page.dart
 │       │   ├── rect_reveal_button_doc_page.dart
 │       │   └── ripple_reveal_button_doc_page.dart
+│       ├── backgrounds/            # Páginas de documentación de fondos animados
+│       │   ├── particles_page.dart
+│       │   └── flick_tile_page.dart
 │       ├── texts/                  # Páginas de documentación de textos
 │       │   ├── animated_text_doc_page.dart
 │       │   └── fuzzy_text_doc_page.dart
 │       ├── loaders/                # Páginas de documentación de loaders
-│       │   └── wave_sticks_loader_doc_page.dart
+│       │   ├── wave_stick_page.dart
+│       │   ├── square_matrix_page.dart
+│       │   └── circle_matrix_page.dart
 │       └── indicators/             # Páginas de documentación de indicadores
 │           └── indicators_page.dart
 └── assets/                         # Recursos (SVG, imágenes)
