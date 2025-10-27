@@ -3,6 +3,7 @@ import 'package:example/pages/buttons/focus_button_doc_page.dart';
 import 'package:example/pages/buttons/pulsating_button_page.dart';
 import 'package:example/pages/buttons/rect_reveal_button_doc_page.dart';
 import 'package:example/pages/buttons/ripple_reveal_button_doc_page.dart';
+import 'package:example/pages/indicators/dots_indicator_page.dart';
 import 'package:example/pages/indicators/indicators_page.dart';
 import 'package:example/pages/loaders/circle_matrix_page.dart';
 import 'package:example/pages/loaders/square_matrix_page.dart';
@@ -663,8 +664,13 @@ final texts = [
 
 final indicators = [
   ButtonItem(
-    title: 'Indicator',
+    title: 'Circular Reveal Indicator',
     page: IndicatorsPage(),
+    selected: false,
+  ),
+  ButtonItem(
+    title: 'Dots Indicator',
+    page: DotsIndicatorPage(),
     selected: false,
   ),
 ];
